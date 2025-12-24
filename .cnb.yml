@@ -1,0 +1,93 @@
+$:
+    vscode:
+        - docker:
+            image: docker.cnb.cool/xmzzuzhi/cnb-docker/node:0.0.1
+          imports:
+            - https://cnb.cool/XMZZUZHI/key/-/blob/main/Claude.yml
+          runner:
+            cpus: 32
+          services:
+            - vscode
+            - docker
+          stages:
+              - name: 授予install_gpg_keys.sh权限
+                script:
+                    - chmod +x /workspace/install_gpg_keys.sh
+              - name: 安装iflow
+                script:
+                    - npm i -g @iflow-ai/iflow-cli@latest
+                    - echo "iflow安装完成"
+              - name: 安装claude
+                script:
+                    - npm install -g @anthropic-ai/claude-code
+                    - echo "claude安装完成"
+              - name: 安装qwen CLI
+                script:
+                    - npm install -g @qwen-code/qwen-code@latest
+                    - echo "qwen CLI安装完成"
+              - name: 安装sudo更新APT源
+                script:
+                    - sudo apt-get update
+                    - sudo apt-get install -y lsof net-tools
+                    - echo "依赖完成"
+              - name: 安装Git LFS
+                script:
+                    - sudo apt-get install -y git-lfs
+                    - git lfs install
+                    - echo "Git LFS安装完成"
+              - name: 下载并替换settings.json
+                script:
+                    - mkdir -p /root/.iflow
+                    - curl -o /root/.iflow/settings.json https://astrbot.mizhoubaobei.top/1.json
+                    - echo "已下载并替换 /root/.iflow/settings.json"
+              - name: 安装iflow智能体
+                script:
+                    - chmod +x /workspace/install_agents.sh
+                    - /workspace/install_agents.sh
+    .pipeline:
+    - services:
+        - docker
+      docker:
+        volumes:
+          - /data/codewiki/${CNB_REPO_SLUG}:data
+      stages:
+        - name: 生成 Code Wiki
+          timeout: 4h
+          image: cnbcool/codewiki:latest
+          settings:
+            git_doc_dir: /data/codewiki/${CNB_REPO_SLUG}
+main:
+  push:
+    - services:
+        - docker
+      stages:
+        # 获取版本号
+        - name: 获取版本号
+          script: |
+            VERSION=$(grep '"version"' package.json | sed 's/.*"version": *"\([^"]*\)".*/\1/')
+            echo "当前版本号: $VERSION"
+            echo "VERSION=$VERSION" >> /env
+        # 同名镜像构建&推送
+        - name: docker build
+          script: docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${VERSION} .
+        - name: docker push
+          script: |
+            docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest
+            docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${VERSION}
+    - services:
+        - docker
+      imports:
+        - https://cnb.cool/XMZZUZHI/key/-/blob/main/Github.yml
+      stages:
+        - name: 同步到GitHub
+          image: tencentcom/git-sync 
+          settings:
+            target_url: https://github.com/xiaomizhoubaobei/LLM-Playground.git
+            auth_type: https
+            username: ${GIT_USERNAME} 
+            password: ${GIT_ACCESS_TOKEN}
+            branch: main
+            git_user: ${GIT_USERNAME}
+            git_email: ${GIT_EMAIL}
+  "crontab: 0 0 1 * *": !reference [.pipeline]
+  web_trigger_one: !reference [.pipeline]

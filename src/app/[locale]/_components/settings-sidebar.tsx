@@ -1,0 +1,411 @@
+/**
+ * @fileoverview 设置侧边栏组件，提供 AI 模型配置和应用程序设置
+ * @author 祁筱欣
+ * @date 2025-12-24
+ * @since 2025-12-24
+ * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @license AGPL-3.0 license
+ * @remark 处理应用程序的设置界面，包括模型选择、参数调整和语言切换
+ */
+
+'use client'
+
+import { ModeSwitcher } from '@/components/mode-switcher'
+import { Button } from '@/components/ui/button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader } from '@/components/ui/sidebar'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Slider } from '@/components/ui/slider'
+import { TooltipButton } from '@/components/ui/tooltip-button'
+import { TooltipHelpIcon } from '@/components/ui/tooltip-help-icon'
+import { cn } from '@/utils/tailwindcss'
+import { Check, RotateCcw } from 'lucide-react'
+import { marked } from 'marked'
+import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
+import { GLOBAL } from '@/constants/values'
+import { startTransition } from 'react'
+import { useRouter } from '@/i18n/routing'
+import { useParams } from 'next/navigation'
+
+/**
+ * 设置侧边栏组件的属性接口
+ * @interface SettingsSidebarProps
+ * @property {Object} settings - 当前设置对象
+ * @property {string} [settings.model] - AI 模型标识符
+ * @property {number} settings.temperature - 温度参数
+ * @property {number} settings.topP - Top P 参数
+ * @property {number} settings.frequencyPenalty - 频率惩罚参数
+ * @property {number} settings.presencePenalty - 存在惩罚参数
+ * @property {number} settings.maxTokens - 最大令牌数
+ * @property {string} settings.apiKey - API 密钥
+ * @property {'expert'|'beginner'} uiMode - 用户界面模式
+ * @property {Array<{id: string}>} models - 可用模型列表
+ * @property {Function} onSettingsChange - 设置变更回调函数
+ * @property {Function} onUiModeChange - UI 模式变更回调函数
+ * @property {Function} onResetSettings - 重置设置回调函数
+ */
+interface SettingsSidebarProps {
+  settings: {
+    model?: string
+    temperature: number
+    topP: number
+    frequencyPenalty: number
+    presencePenalty: number
+    maxTokens: number
+    apiKey: string
+  }
+  uiMode: 'expert' | 'beginner'
+  models: Array<{ id: string }>
+  onSettingsChange: (settings: any) => void
+  onUiModeChange: (value: boolean) => void
+  onResetSettings: () => void
+}
+
+/**
+ * 设置侧边栏组件，提供 AI 模型配置和应用程序设置界面
+ * 
+ * @function SettingsSidebar
+ * @param {SettingsSidebarProps} props - 组件属性
+ * @returns {JSX.Element} 渲染的设置侧边栏组件
+ */
+export function SettingsSidebar({
+  settings,
+  uiMode,
+  models,
+  onSettingsChange,
+  onUiModeChange,
+  onResetSettings,
+}: SettingsSidebarProps) {
+  // 获取国际化翻译函数
+  const t = useTranslations('playground')
+  // API 密钥描述的本地状态
+  const [apiKeyDesc, setApiKeyDesc] = useState('')
+  // 路由器实例，用于页面导航
+  const router = useRouter()
+  // 当前路由参数
+  const params = useParams()
+  // 当前路径名
+  const pathname = '/'
+
+  // 处理 API 密钥描述的 markdown 渲染
+  useEffect(() => {
+    const result = marked(t('settings.apiKeyDesc'))
+    if (result instanceof Promise) {
+      result.then(setApiKeyDesc)
+    } else {
+      setApiKeyDesc(result)
+    }
+  }, [t])
+
+  return (
+    <Sidebar side='right'>
+      <SidebarHeader className='px-4'>
+        <div className='mb-4 flex items-center justify-between'>
+          <h2 className='text-lg font-semibold'>{t('settings.title')}</h2>
+          <TooltipButton
+            variant='ghost'
+            size='icon'
+            onClick={onResetSettings}
+            className='h-8 w-8'
+            tooltipContent={t('settings.resetSettingsDesc')}
+          >
+            <RotateCcw className='h-4 w-4' />
+          </TooltipButton>
+        </div>
+      </SidebarHeader>
+      <SidebarContent className='px-4'>
+        <SidebarGroup>
+          <SidebarGroupLabel className='px-0'>
+            {t('settings.basicConfig')}
+          </SidebarGroupLabel>
+          <SidebarGroupContent className='space-y-8'>
+            <div className='space-y-6'>
+              <div>
+                <div className='flex items-center gap-1'>
+                  <Label className='text-sm font-medium text-gray-700'>
+                    {t('settings.model')}
+                  </Label>
+                  <TooltipHelpIcon content={t('settings.modelDesc')} />
+                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant='outline'
+                      role='combobox'
+                      className='mt-1.5 w-full justify-between border-gray-300 bg-white'
+                    >
+                      {settings.model || t('settings.selectModelPlaceholder')}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-full p-0' side='bottom' align='start'>
+                    <Command className='w-full'>
+                      <CommandInput
+                        placeholder={t('settings.searchModelPlaceholder')}
+                        className='px-3 py-2'
+                      />
+                      <div
+                        className='max-h-[300px] touch-pan-y overflow-hidden'
+                        onWheel={(e) => e.stopPropagation()}
+                        onTouchMove={(e) => e.stopPropagation()}
+                      >
+                        <CommandList className='max-h-[calc(300px-40px)] overflow-y-auto'>
+                          <CommandEmpty className='px-3 py-2'>
+                            {t('settings.noModelFound')}
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {Array.isArray(models) && models.length > 0 ? (
+                              models.map((model) => (
+                                <CommandItem
+                                  key={model.id}
+                                  value={model.id}
+                                  onSelect={() => {
+                                    onSettingsChange({ ...settings, model: model.id })
+                                  }}
+                                  className='px-3 py-1.5'
+                                >
+                                  <Check
+                                    className={cn(
+                                      'mr-2 h-4 w-4',
+                                      settings.model === model.id
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                  {model.id}
+                                </CommandItem>
+                              ))
+                            ) : (
+                              <div className='py-6 text-center text-sm text-gray-500'>
+                                {t('settings.noModelFound')}
+                              </div>
+                            )}
+                          </CommandGroup>
+                        </CommandList>
+                      </div>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div>
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-1'>
+                    <Label className='text-sm font-medium text-gray-700'>
+                      {t('settings.temperature')}
+                    </Label>
+                    <TooltipHelpIcon content={t('settings.temperatureDesc')} />
+                  </div>
+                  <span className='text-sm text-gray-500'>{settings.temperature}</span>
+                </div>
+                <Slider
+                  className='mt-2'
+                  value={[settings.temperature]}
+                  max={1}
+                  min={0}
+                  step={0.1}
+                  onValueChange={(value) =>
+                    onSettingsChange({ ...settings, temperature: value[0] })
+                  }
+                />
+              </div>
+
+              <div>
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-1'>
+                    <Label className='text-sm font-medium text-gray-700'>Top P</Label>
+                    <TooltipHelpIcon content={t('settings.topPDesc')} />
+                  </div>
+                  <span className='text-sm text-gray-500'>{settings.topP}</span>
+                </div>
+                <Slider
+                  className='mt-2'
+                  value={[settings.topP]}
+                  max={1}
+                  min={0}
+                  step={0.1}
+                  onValueChange={(value) =>
+                    onSettingsChange({ ...settings, topP: value[0] })
+                  }
+                />
+              </div>
+
+              <div>
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-1'>
+                    <Label className='text-sm font-medium text-gray-700'>
+                      {t('settings.frequencyPenalty')}
+                    </Label>
+                    <TooltipHelpIcon content={t('settings.frequencyPenaltyDesc')} />
+                  </div>
+                  <span className='text-sm text-gray-500'>
+                    {settings.frequencyPenalty}
+                  </span>
+                </div>
+                <Slider
+                  className='mt-2'
+                  value={[settings.frequencyPenalty]}
+                  max={2}
+                  min={-2}
+                  step={0.1}
+                  onValueChange={(value) =>
+                    onSettingsChange({
+                      ...settings,
+                      frequencyPenalty: value[0],
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-1'>
+                    <Label className='text-sm font-medium text-gray-700'>
+                      {t('settings.presencePenalty')}
+                    </Label>
+                    <TooltipHelpIcon content={t('settings.presencePenaltyDesc')} />
+                  </div>
+                  <span className='text-sm text-gray-500'>
+                    {settings.presencePenalty}
+                  </span>
+                </div>
+                <Slider
+                  className='mt-2'
+                  value={[settings.presencePenalty]}
+                  max={2}
+                  min={-2}
+                  step={0.1}
+                  onValueChange={(value) =>
+                    onSettingsChange({
+                      ...settings,
+                      presencePenalty: value[0],
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-1'>
+                    <Label className='text-sm font-medium text-gray-700'>
+                      {t('settings.maxTokens')}
+                    </Label>
+                    <TooltipHelpIcon content={t('settings.maxTokensDesc')} />
+                  </div>
+                </div>
+                <div className='flex items-center justify-between'>
+                  <Input
+                    type='number'
+                    min={1}
+                    value={settings.maxTokens}
+                    onChange={(e) =>
+                      onSettingsChange({
+                        ...settings,
+                        maxTokens: Number(e.target.value),
+                      })
+                    }
+                    placeholder={t('settings.maxTokensPlaceholder')}
+                    className='mt-2'
+                  />
+                </div>
+              </div>
+            </div>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel className='px-0'>
+            <div className='flex items-center gap-1'>
+              {t('settings.apiKey')}
+              <TooltipHelpIcon
+                content={
+                  <div
+                    className='prose prose-sm prose-invert max-w-none'
+                    dangerouslySetInnerHTML={{ __html: apiKeyDesc }}
+                  />
+                }
+              />
+            </div>
+          </SidebarGroupLabel>
+          <SidebarGroupContent className='space-y-8'>
+            <Input
+              placeholder={t('settings.apiKeyPlaceholder')}
+              type='password'
+              value={settings.apiKey}
+              onChange={(e) =>
+                onSettingsChange({ ...settings, apiKey: e.target.value })
+              }
+            />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel className='px-0'>
+            <div className='flex items-center gap-1'>
+              {t('settings.mode')}
+              {uiMode === 'expert' && (
+                <TooltipHelpIcon
+                  content={t('settings.expertModeDeviceNote')}
+                  className='h-4 w-4 text-amber-500'
+                />
+              )}
+            </div>
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <ModeSwitcher
+              className='w-full'
+              value={uiMode === 'expert'}
+              onChange={onUiModeChange}
+              beginnerText={t('settings.beginnerMode')}
+              expertText={t('settings.expertMode')}
+            />
+            <p className='mt-2 text-sm text-gray-500'>
+              {uiMode === 'expert'
+                ? t('settings.expertModeDesc')
+                : t('settings.beginnerModeDesc')}
+            </p>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel className='px-0'>
+            <div className='flex items-center gap-1'>
+              {t('settings.language')}
+              <TooltipHelpIcon content={t('settings.languageTooltip')} />
+            </div>
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <Select
+              value={params.locale as string}
+              onValueChange={(nextLocale) => {
+                startTransition(() => {
+                  router.replace(
+                    // @ts-expect-error -- TypeScript 会验证只有已知的 `params`
+                    // 与给定的 `pathname` 结合使用。由于两者始终
+                    // 匹配当前路由，我们可以跳过运行时检查。
+                    { pathname, params },
+                    { locale: nextLocale }
+                  )
+                })
+              }}
+            >
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder={t('settings.selectLanguage')} />
+              </SelectTrigger>
+              <SelectContent>
+                {GLOBAL.LOCALE.SUPPORTED.map((locale) => (
+                  <SelectItem key={locale} value={locale}>
+                    {t(`settings.languages.${locale}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  )
+}
