@@ -2,7 +2,7 @@
 FROM node:lts AS base
 
 # 使用官方脚本安装yarn
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+RUN corepack enable && corepack prepare yarn@stable --activate
 
 # 安装依赖
 FROM base AS deps
