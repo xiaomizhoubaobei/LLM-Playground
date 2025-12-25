@@ -60,22 +60,6 @@ main:
   push:
     - services:
         - docker
-      stages:
-        # 获取版本号
-        - name: 获取版本号
-          script: |
-            VERSION=$(grep '"version"' package.json | sed 's/.*"version": *"\([^"]*\)".*/\1/')
-            echo "当前版本号: $VERSION"
-            echo "VERSION=$VERSION" >> /env
-        # 同名镜像构建&推送
-        - name: docker build
-          script: docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${VERSION} .
-        - name: docker push
-          script: |
-            docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest
-            docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${VERSION}
-    - services:
-        - docker
       imports:
         - https://cnb.cool/XMZZUZHI/key/-/blob/main/Github.yml
       stages:
