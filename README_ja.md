@@ -11,16 +11,16 @@
 
 ## インタフェースプレビュー
 ユーザ入力に基づいて結果を生成し、Latexエクスプレッションレンダリングをサポートします。
-![エキスパートモード機能](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日1.png)    
+![結果生成](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日1.png)    
 
 コンテキストとして画像をアップロードして会話することができます。
-![エキスパートモード機能](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日2.png)    
+![画像アップロード](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日2.png)    
 
-を使用してインポートしたストロークVSラム速度のデータ点を示します。
-![エキスパートモード機能](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日3.png)      
+チャートレンダリングをサポートします。
+![チャートレンダリング](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日3.png)      
 
 OpenAI モデルには、トークン確率を表示する機能が備わっており、現在選択されているトークンの確率を取得でき、複数の代替トークンとその確率を提供することができます。
-![エキスパートモード機能](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日4.jpg)  
+![トークン確率表示](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日4.jpg)  
 
 ## ✨ 主な機能 ✨
 

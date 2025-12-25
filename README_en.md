@@ -12,16 +12,16 @@
 
 ## Interface Preview 
    Generate results based on user input, supporting Latex expression rendering.
-   ![Expert Mode Features](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英1.png)    
+   ![Results Generation](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英1.png)    
 
    Images can be uploaded as context for dialogue.
-   ![Expert Mode Features](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英2.png)    
+   ![Image Upload](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英2.png)    
 
    Support chart rendering.
-   ![Expert Mode Features](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英3.png)    
+   ![Chart Rendering](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英3.png)    
 
    The OpenAI model has the function of displaying token probabilities. It can obtain the probability of the currently selected token and provide multiple alternative tokens as well as their probabilities.
-   ![Expert Mode Features](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英4.jpg)
+   ![Token Probability Display](https://cnb.mizhoubaobei.top/302_llm_playground/LLM英4.jpg)
 
 
 ## ✨ Key Features ✨
