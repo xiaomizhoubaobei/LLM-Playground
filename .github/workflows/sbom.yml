@@ -30,8 +30,8 @@ jobs:
     - name: Generate SBOM with Syft
       uses: anchore/sbom-action@v0.17.2
       with:
-        output: spdx-json
-        file: sbom.spdx.json
+        format: spdx-json
+        output-file: sbom.spdx.json
 
     - name: Sign SBOM with Sigstore
       uses: sigstore/cosign-installer@v3.5.0

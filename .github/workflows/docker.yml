@@ -95,7 +95,7 @@ jobs:
                 outputs: type=oci,dest=/tmp/image.tar
 
             - name: Install cosign
-              uses: sigstore/cosign-installer@dc72c7d5c1d0ba534a5e7cea8910f9ed2a1cb8a7 # v3.8.0
+              uses: sigstore/cosign-installer@v4.0.0
 
             - name: Sign images with cosign (keyless)
               env:
