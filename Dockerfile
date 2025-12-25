@@ -18,6 +18,11 @@ RUN yarn install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
+# 设置构建所需的环境变量
+ENV AI_302_API_KEY=placeholder_key
+ENV AI_302_API_URL=https://api.302.ai
+ENV NEXT_PUBLIC_AI_302_API_UPLOAD_URL=https://dash-api.302.ai/gpt/api/upload/gpt/image
+
 # 复制依赖和源代码
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

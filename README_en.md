@@ -162,6 +162,29 @@ docker build -t llm_playground .
 docker run -p 3000:3000 llm_playground
 ```
 
+### Runtime Environment Variables
+
+⚠️ **Important**: The Docker image requires a real 302.AI API key to function properly at runtime.
+
+```bash
+docker run -d \
+  -e AI_302_API_KEY=your-actual-api-key \
+  -e AI_302_API_URL=https://api.302.ai \
+  -e NEXT_PUBLIC_AI_302_API_UPLOAD_URL=https://dash-api.302.ai/gpt/api/upload/gpt/image \
+  -p 3000:3000 \
+  llm_playground:latest
+```
+
+**Environment Variables:**
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `AI_302_API_KEY` | 302.AI API key | ✅ Yes |
+| `AI_302_API_URL` | API service URL | ✅ Yes |
+| `NEXT_PUBLIC_AI_302_API_UPLOAD_URL` | File upload URL | ✅ Yes |
+
+Get API key: https://302.ai/en/apis/
+
 ## Contributing 🤝
 
 Contributions are welcome! Please feel free to submit issues and pull requests.

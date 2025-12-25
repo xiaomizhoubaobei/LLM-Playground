@@ -160,6 +160,29 @@ docker build -t llm_playground .
 docker run -p 3000:3000 llm_playground
 ```
 
+### 运行时环境变量
+
+⚠️ **重要**: Docker 镜像运行时需要传入真实的 302.AI API 密钥才能正常工作。
+
+```bash
+docker run -d \
+  -e AI_302_API_KEY=your-actual-api-key \
+  -e AI_302_API_URL=https://api.302.ai \
+  -e NEXT_PUBLIC_AI_302_API_UPLOAD_URL=https://dash-api.302.ai/gpt/api/upload/gpt/image \
+  -p 3000:3000 \
+  llm_playground:latest
+```
+
+**环境变量说明：**
+
+| 变量名 | 说明 | 必需 |
+|--------|------|------|
+| `AI_302_API_KEY` | 302.AI API 密钥 | ✅ 是 |
+| `AI_302_API_URL` | API 服务地址 | ✅ 是 |
+| `NEXT_PUBLIC_AI_302_API_UPLOAD_URL` | 文件上传地址 | ✅ 是 |
+
+获取 API 密钥：https://302.ai/apis/
+
 ## 贡献 🤝
 
 欢迎贡献！请随时提交问题和拉取请求。
