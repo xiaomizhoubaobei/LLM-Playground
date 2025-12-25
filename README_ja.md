@@ -130,7 +130,32 @@ pnpm start
 
 ## Dockerデプロイ 🐳
 
-Dockerを使用してビルドと実行：
+### 事前ビルド済みイメージの使用
+
+- **DockerHub**: `qixiaoxin/iflow-cartoonize-api`
+- **GitHub Container Registry**: `ghcr.io/xiaomizhoubaobei/llm_playground`
+- **Alibaba Cloud**: `crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground`
+- **Huawei Cloud**: `swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground`
+
+```bash
+# DockerHubイメージを使用
+docker pull qixiaoxin/iflow-cartoonize-api:latest
+docker run -p 3000:3000 qixiaoxin/iflow-cartoonize-api:latest
+
+# GHCRイメージを使用
+docker pull ghcr.io/xiaomizhoubaobei/llm_playground:latest
+docker run -p 3000:3000 ghcr.io/xiaomizhoubaobei/llm_playground:latest
+
+# Alibaba Cloudイメージを使用
+docker pull crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground:latest
+docker run -p 3000:3000 crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground:latest
+
+# Huawei Cloudイメージを使用
+docker pull swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground:latest
+docker run -p 3000:3000 swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground:latest
+```
+
+### ソースからビルド
 
 ```bash
 docker build -t llm_playground .

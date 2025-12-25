@@ -4,28 +4,15 @@ FROM node:lts AS base
 # 使用官方脚本安装yarn
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
-# 仅在需要时安装依赖
+# 安装依赖
 FROM base AS deps
 WORKDIR /app
 
 # 复制依赖文件
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY package.json yarn.lock ./
 
-# 根据包管理器安装依赖
-RUN \
-    if [ -f yarn.lock ]; then \
-        corepack enable && \
-        yarn --frozen-lockfile; \
-    elif [ -f package-lock.json ]; then \
-        npm config set registry https://registry.npmmirror.com && \
-        npm ci; \
-    elif [ -f pnpm-lock.yaml ]; then \
-        corepack enable pnpm && \
-        pnpm config set registry https://registry.npmmirror.com && \
-        pnpm i --frozen-lockfile; \
-    else \
-        echo "未找到锁定文件。" && exit 1; \
-    fi
+# 使用 yarn 安装依赖
+RUN yarn install --frozen-lockfile
 
 # 构建阶段
 FROM base AS builder
@@ -35,8 +22,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# 构建应用程序
-RUN corepack enable pnpm && pnpm run build;
+# 使用 yarn 构建应用程序
+RUN yarn build
 
 # 生产环境镜像
 FROM base AS runner
@@ -67,4 +54,4 @@ EXPOSE 3000
 ENV PORT=3000
 
 # 启动命令
-CMD HOSTNAME="0.0.0.0" node server.js
+CMD HOSTNAME="0.0.0.0" yarn start

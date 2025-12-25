@@ -1,0 +1,62 @@
+name: Generate and Sign SBOM
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  sbom:
+    permissions:
+      contents: read
+      id-token: write
+      security-events: write
+    runs-on: ubuntu-latest
+    name: Generate SBOM
+    steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+      with:
+        egress-policy: audit
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Generate SBOM with Syft
+      uses: anchore/sbom-action@v0.17.2
+      with:
+        output: spdx-json
+        file: sbom.spdx.json
+
+    - name: Sign SBOM with Sigstore
+      uses: sigstore/cosign-installer@v3.5.0
+
+    - name: Sign the SBOM
+      env:
+        SIGSTORE_ID_TOKEN: ${{ secrets.SIGSTORE_ID_TOKEN }}
+      run: |
+        cosign sign-blob \
+          --output-signature sbom.spdx.json.sig \
+          --output-certificate sbom.spdx.json.crt \
+          sbom.spdx.json
+
+    - name: Upload SBOM artifacts
+      uses: actions/upload-artifact@v4.6.1
+      with:
+        name: sbom
+        path: |
+          sbom.spdx.json
+          sbom.spdx.json.sig
+          sbom.spdx.json.crt
+        retention-days: 30
+
+    - name: Upload SBOM to GitHub Advanced Security (if available)
+      uses: github/codeql-action/upload-sarif@v3
+      if: github.event_name != 'pull_request'
+      with:
+        sarif_file: sbom.spdx.json
