@@ -13,6 +13,8 @@ on:
 permissions:
     contents: read
     packages: write
+    id-token: write
+    attestations: write
 
 jobs:
     build-and-push:
@@ -80,13 +82,47 @@ jobs:
                   type=raw,value=${{ steps.version.outputs.VERSION }}
                   type=raw,value=latest
                   
-            - name: Build and push
+            - name: Build
               uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
               with:
                 context: .
                 platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x
-                push: true
+                push: false
                 tags: ${{ steps.meta.outputs.tags }}
                 labels: ${{ steps.meta.outputs.labels }}
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
+                outputs: type=oci,dest=/tmp/image.tar
+
+            - name: Install cosign
+              uses: sigstore/cosign-installer@dc72c7d5c1d0ba534a5e7cea8910f9ed2a1cb8a7 # v3.8.0
+
+            - name: Sign images with cosign (keyless)
+              env:
+                  COSIGN_EXPERIMENTAL: "1"
+              run: |
+                  echo "Signing images with cosign keyless mode..."
+                  for tag in ${{ steps.meta.outputs.tags }}; do
+                      echo "Signing $tag"
+                      cosign sign --yes "$tag"
+                  done
+
+            - name: Push images
+              run: |
+                  echo "Pushing images..."
+                  for tag in ${{ steps.meta.outputs.tags }}; do
+                      echo "Pushing $tag"
+                      docker push "$tag"
+                  done
+
+            - name: Sign images with cosign (keyless)
+              env:
+                  COSIGN_EXPERIMENTAL: "1"
+              run: |
+                  echo "Signing images with cosign keyless mode..."
+                  for tag in ${{ steps.meta.outputs.tags }}; do
+                      echo "Signing $tag"
+                      cosign sign --yes "$tag"
+                  done
+
+            
