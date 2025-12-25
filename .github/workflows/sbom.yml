@@ -41,6 +41,7 @@ jobs:
         SIGSTORE_ID_TOKEN: ${{ secrets.SIGSTORE_ID_TOKEN }}
       run: |
         cosign sign-blob \
+          --yes \
           --output-signature sbom.spdx.json.sig \
           --output-certificate sbom.spdx.json.crt \
           sbom.spdx.json
