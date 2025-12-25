@@ -1,10 +1,11 @@
 # 基础镜像
-FROM node:20.14-alpine AS base
+FROM node:lts AS base
+
+# 使用官方脚本安装yarn
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 # 仅在需要时安装依赖
 FROM base AS deps
-# 安装兼容性库
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # 复制依赖文件
@@ -42,8 +43,8 @@ FROM base AS runner
 WORKDIR /app
 
 # 创建非root用户
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN groupadd --system --gid 1001 nodejs
+RUN useradd --system --uid 1001 --gid nodejs nextjs
 
 # 复制公共资源
 COPY --from=builder /app/public ./public
