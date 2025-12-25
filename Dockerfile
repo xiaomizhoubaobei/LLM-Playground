@@ -18,11 +18,6 @@ RUN yarn install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
-# 设置构建所需的环境变量
-ENV AI_302_API_KEY=placeholder_key
-ENV AI_302_API_URL=https://api.302.ai
-ENV NEXT_PUBLIC_AI_302_API_UPLOAD_URL=https://dash-api.302.ai/gpt/api/upload/gpt/image
-
 # 复制依赖和源代码
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -57,6 +52,11 @@ EXPOSE 3000
 
 # 设置环境变量
 ENV PORT=3000
+
+# 运行时需要的环境变量：
+# - AI_302_API_KEY: 302.AI API 密钥（必需）
+# - AI_302_API_URL: API 服务地址（必需）
+# - NEXT_PUBLIC_AI_302_API_UPLOAD_URL: 文件上传地址（必需）
 
 # 启动命令
 CMD HOSTNAME="0.0.0.0" yarn start

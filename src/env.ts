@@ -15,7 +15,7 @@ import { z } from 'zod'
  * 创建并验证环境变量配置
  * 使用 Zod 模式提供类型安全的环境变量访问和运行时验证
  * 为安全起见分离服务端和客户端变量
- * 
+ *
  * @function createEnvConfig
  * @returns {Object} 已验证的环境变量对象
  * @property {Object} server - 服务端环境变量（不暴露给客户端）
@@ -27,11 +27,11 @@ import { z } from 'zod'
  */
 export const env = createEnv({
   server: {
-    AI_302_API_KEY: z.string().min(1),
-    AI_302_API_URL: z.string().min(1),
+    AI_302_API_KEY: z.string().optional(),
+    AI_302_API_URL: z.string().optional(),
   },
   client: {
-    NEXT_PUBLIC_AI_302_API_UPLOAD_URL: z.string().min(1),
+    NEXT_PUBLIC_AI_302_API_UPLOAD_URL: z.string().optional(),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_AI_302_API_UPLOAD_URL: process.env.NEXT_PUBLIC_AI_302_API_UPLOAD_URL,
