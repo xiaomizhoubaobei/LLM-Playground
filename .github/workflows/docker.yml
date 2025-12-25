@@ -52,7 +52,7 @@ jobs:
             - name: Login to Alibaba Cloud Container Registry
               uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
               with:
-                  registry: crpi-g1b02vvz5ek0qb56.cn-beijing.personal.cr.aliyuncs.com
+                  registry: crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com
                   username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
                   password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
 
@@ -70,7 +70,7 @@ jobs:
                 images: |
                   ${{ secrets.DOCKERHUB_USERNAME }}/iflow-cartoonize-api
                   ghcr.io/${{ github.repository }}
-                  crpi-g1b02vvz5ek0qb56.cn-beijing.personal.cr.aliyuncs.com/xmzzy/llm_playground
+                  crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmzzy/llm_playground
                   swr.cn-east-3.myhuaweicloud.com/${{ secrets.SWR_ORGANIZATION }}/llm_playground
                 # 关闭所有默认生成器
                 flavor: |
