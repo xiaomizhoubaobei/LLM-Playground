@@ -84,8 +84,12 @@ export function useFileUpload() {
           )
 
           // 发送上传请求
+          const uploadUrl = env.NEXT_PUBLIC_AI_302_API_UPLOAD_URL
+          if (!uploadUrl) {
+            throw new Error('Upload URL is not configured')
+          }
           const response = await ky
-            .post(env.NEXT_PUBLIC_AI_302_API_UPLOAD_URL, {
+            .post(uploadUrl, {
               body: formData,
             })
             .json<UploadResponse>()

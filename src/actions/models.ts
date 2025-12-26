@@ -1,9 +1,9 @@
 /**
- * @fileoverview 从 API 获取可用 AI 模型的服务器操作
+ * @fileoverview 获取可用 AI 模型的服务器操作
  * 提供检索和验证模型信息的功能
  * @author 祁筱欣
  * @date 2025-12-24
- * @since 2025-12-24
+ * @modified 2025-12-26
  * @contact qixiaoxin @stu.sqxy.edu.cn
  * @license AGPL-3.0 license
  * @remark 处理 AI 模型信息的获取和管理
@@ -11,59 +11,65 @@
 
 'use server'
 
-import { env } from "@/env"
-import { normalizeUrl } from "@/utils/api"
-import ky from "ky"
-import { GResponse } from "./typs"
 import { logger } from '@/utils/logger'
+import { OPENAI_MODELS } from '@/constants/models'
 
 /**
  * 表示单个 AI 模型信息的结构
  * @interface ModelInfo
  * @property {string} id - 模型的唯一标识符
  * @property {string} object - 模型的类型/类别
+ * @property {string} provider - 模型供应商
  */
 export type ModelInfo = {
   id: string
   object: string
+  provider: string
 }
 
 /**
- * 包含模型信息的 API 响应类型定义
- * 将 ModelInfo 数组包装在通用响应结构中
- * @type {GResponse<ModelInfo[]>}
- */
-export type GetModelResponse = GResponse<ModelInfo[]>
-
-/**
  * 获取可用 AI 模型列表的服务器操作
- * 向 AI API 端点发出经过身份验证的请求以检索模型信息
+ * 根据服务提供商和模型提供商返回对应的模型列表
  * 
  * @async
  * @function getModels
+ * @param {string} [provider] - 服务提供商，默认为 '302AI'
+ * @param {string} [modelProvider] - 模型提供商，默认为 'OpenAI'
  * @returns {Promise<ModelInfo[]>} 可用模型信息的数组
- * @throws {Error} 如果 API 请求失败或返回无效数据
  */
-export const getModels = async () => {
-  logger.info('Fetching available models', { module: 'Models' })
-  const baseUrl = normalizeUrl(env.AI_302_API_URL)
+export const getModels = async (provider: string = '302AI', modelProvider: string = 'OpenAI') => {
+  logger.info('Fetching available models', { context: { provider, modelProvider }, module: 'Models' })
   
   try {
-    const model = await ky
-      .get(`${baseUrl}/v1/models?llm=1`, {
-        headers: {
-          Authorization: `Bearer ${env.AI_302_API_KEY}`,
-        },
-      })
-      .json<GetModelResponse>()
+    let models: ModelInfo[] = []
+
+    // 根据服务提供商和模型提供商返回对应的模型列表
+    if (provider === '302AI') {
+      if (modelProvider === 'OpenAI') {
+        // OpenAI 模型列表
+        models = OPENAI_MODELS.map((modelId) => ({
+          id: modelId,
+          object: 'model',
+          provider: '302AI',
+        }))
+      } else {
+        // 其他模型提供商，后续扩展
+        logger.warn('Model provider not implemented yet', { context: { modelProvider }, module: 'Models' })
+        return []
+      }
+    } else {
+      // 其他服务提供商，后续扩展
+      logger.warn('Service provider not implemented yet', { context: { provider }, module: 'Models' })
+      return []
+    }
 
     logger.info('Successfully fetched models', { 
-      context: { modelCount: model.data.length },
+      context: { provider, modelProvider, modelCount: models.length },
       module: 'Models'
     })
-    return model.data
+    return models
   } catch (error) {
-    logger.error('Failed to fetch models', error as Error, { module: 'Models' })
+    logger.error('Failed to fetch models', error as Error, { context: { provider, modelProvider }, module: 'Models' })
     throw error
   }
 }

@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: false,
   output: 'standalone',
+  allowedDevOrigins: ['*.cnb.run', '*.cnb.cool'],
   experimental: {
     serverActions: {
       allowedOrigins: ['*'],

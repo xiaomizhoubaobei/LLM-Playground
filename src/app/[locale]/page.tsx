@@ -36,6 +36,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { SettingsSidebar } from './_components/settings-sidebar'
 import { getModels, ModelInfo } from '@/actions/models'
+import { chatNonStream } from '@/actions/chat-non-stream'
 import { Header } from './_components/header'
 import { InputSection } from './_components/input-section'
 
@@ -170,8 +171,10 @@ export default function Component() {
   const [models, setModels] = useState<ModelInfo[]>([])
 
   useEffect(() => {
-    getModels().then(setModels).catch(console.error)
-  }, [])
+    if (settings.provider && settings.modelProvider) {
+      getModels(settings.provider, settings.modelProvider).then(setModels).catch(console.error)
+    }
+  }, [settings.provider, settings.modelProvider])
 
   /**
    * 启动与 AI 模型的聊天生成
@@ -197,15 +200,39 @@ export default function Component() {
       _messages = [...messages, currentMessage]
     }
 
-    const result = await generate(_messages, settings)
-    if (result) {
-      const { id, content, logprobs } = result
-      await messageStore.addMessage({
-        id,
-        role: 'assistant',
-        content,
-        logprobs: logprobs,
-      })
+    // 根据流式模式选择不同的处理方式
+    if (settings.streamMode !== false) {
+      // 流式模式
+      const result = await generate(_messages, settings)
+      if (result) {
+        const { id, content, logprobs } = result
+        await messageStore.addMessage({
+          id,
+          role: 'assistant',
+          content,
+          logprobs: logprobs,
+        })
+      }
+    } else {
+      // 非流式模式
+      try {
+        const messageId = uuidv4()
+        const result = await chatNonStream({
+          ...settings,
+          messages: _messages,
+        })
+        
+        if (result) {
+          await messageStore.addMessage({
+            id: messageId,
+            role: 'assistant',
+            content: result.content,
+          })
+        }
+      } catch (error) {
+        console.error('Non-stream chat error:', error)
+        toast.error(t('error.chatFailed'))
+      }
     }
   }
 

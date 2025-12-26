@@ -10,10 +10,8 @@
  */
 
 import { chat } from '@/actions/chat'
-import { PlaygroundMessage } from '@/stores/playground'
+import { PlaygroundMessage, LogProbs } from '@/stores/playground'
 import { logger } from '@/utils/logger'
-import { LanguageModelV1LogProbs } from '@ai-sdk/provider'
-import { readStreamableValue } from 'ai/rsc'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -43,7 +41,7 @@ export function useChatGeneration() {
   // 用于管理生成流程的引用
   const shouldStopRef = useRef(false)
   const contentRef = useRef('')
-  const logprobsRef = useRef<LanguageModelV1LogProbs | undefined>(undefined)
+  const logprobsRef = useRef<LogProbs | undefined>(undefined)
   // 国际化 Hooks
   const t = useTranslations('playground')
   const locale = useLocale()
@@ -95,7 +93,7 @@ export function useChatGeneration() {
 
       logger.debug('Processing chat stream', { module: 'ChatGeneration' })
       // 处理流式响应
-      for await (const delta of readStreamableValue(output)) {
+      for await (const delta of output) {
         // 检查手动停止
         if (shouldStopRef.current) {
           logger.info('Chat generation stopped by user', { 
