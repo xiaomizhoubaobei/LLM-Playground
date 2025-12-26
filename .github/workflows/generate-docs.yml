@@ -1,0 +1,49 @@
+name: 文档自动生成
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['src/**']
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize project analysis
+        uses: iflow-ai/iflow-cli-action@v2.0.0
+        with:
+          prompt: "/init"
+          api_key: ${{ secrets.IFLOW_API_KEY }}
+          timeout: "300"
+
+      - name: Generate documentation
+        uses: iflow-ai/iflow-cli-action@v2.0.0
+        with:
+          prompt: "基于代码库分析生成完整的项目说明文档，必须包含以下章节：1. 项目简介 2. 功能特性 3. 快速开始 4. 安装部署 5. 使用指南 6. API 文档 7. 架构设计 8. 开发指南 9. 常见问题 10. 贡献指南。在架构设计章节必须使用 Mermaid 语法生成详细的系统架构图、数据流程图、组件关系图和时序图。每个章节都要详细说明，使用 Markdown 格式，包含代码示例。"
+          api_key: ${{ secrets.IFLOW_API_KEY }}
+          model: "glm-4.7"
+          timeout: "900"
+        id: docs
+
+      - name: Push to docs branch
+        run: |
+          git config --local user.email "qixiaoxin@stu.sqxy.edu.cn"
+          git config --local user.name "xiaomizhoubaobei"
+          git checkout -b docs || git checkout docs
+          echo "${{ steps.docs.outputs.result }}" > README.md
+
+          # 创建 _config.yml 配置文件用于 GitHub Pages
+          printf '%s\n' 'title: 项目文档' 'description: 自动生成的项目文档' 'remote_theme: pages-themes/cayman@v0.2.0' 'plugins:' '- jekyll-remote-theme' 'markdown: kramdown' > _config.yml
+
+          # 创建 .nojekyll 文件
+          touch .nojekyll
+
+          git add README.md _config.yml .nojekyll
+          git diff --quiet && git diff --staged --quiet || git commit -m "docs: 自动生成项目说明文档"
+          git push origin docs --force

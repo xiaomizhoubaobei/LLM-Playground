@@ -2,9 +2,11 @@
 
 <p align="center">A powerful and interactive experimental platform for experimenting with large language models, built based on Next.js 14 and modern web technologies.</p>
 
+<p align="center">This project is a derivative work based on <a href="https://github.com/302ai/302_llm_playground" target="_blank">302ai/302_llm_playground</a></p>
+
 <p align="center"><a href="https://302.ai/en/apis/" target="blank"><img src="https://file.302.ai/gpt/imgs/github/20250102/72a57c4263944b73bf521830878ae39a.png" /></a></p >
 
-<p align="center"><a href="README.md">中文</a> | <a href="README_en.md">English</a> | <a href="README_ja.md">日本語</a></p>
+<p align="center"><a href="../README.md">中文</a> | <a href="README_en.md">English</a> | <a href="README_ja.md">日本語</a> | <a href="README_ru.md">Русский</a> | <a href="README_fr.md">Français</a> | <a href="README_de.md">Deutsch</a></p>
 
 
 

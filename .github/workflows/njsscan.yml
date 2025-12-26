@@ -1,21 +1,21 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# 此工作流使用的操作未经 GitHub 认证。
+# 它们由第三方提供，并受单独的
+# 服务条款、隐私政策和支持
+# 文档约束。
 
-# This workflow integrates njsscan with GitHub's Code Scanning feature
-# nodejsscan is a static security code scanner that finds insecure code patterns in your Node.js applications
+# 此工作流将 njsscan 与 GitHub 的代码扫描功能集成
+# nodejsscan 是一个静态安全代码扫描器，可在 Node.js 应用程序中查找不安全的代码模式
 
-name: njsscan sarif
+name: "Node.js 安全代码扫描"
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ "main" ]
   schedule:
     - cron: '0 0 * * 0'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -23,9 +23,9 @@ permissions:
 jobs:
   njsscan:
     permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+      contents: read # 用于 actions/checkout 获取代码
+      security-events: write # 用于 github/codeql-action/upload-sarif 上传 SARIF 结果
+      actions: read # 仅私有仓库需要，用于 github/codeql-action/upload-sarif 获取 Action 运行状态
     runs-on: ubuntu-latest
     name: njsscan code scanning
     steps:
