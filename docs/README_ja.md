@@ -2,9 +2,11 @@
 
 <p align="center">Next.js 14と最新のWeb技術を使用して構築された、大規模言語モデルを実験するための強力でインタラクティブなプレイグラウンドです。</p>
 
+<p align="center">このプロジェクトは<a href="https://github.com/302ai/302_llm_playground" target="_blank">302ai/302_llm_playground</a>をベースに二次創作されたものです</p>
+
 <p align="center"><a href="https://302.ai/ja/apis/" target="blank"><img src="https://file.302.ai/gpt/imgs/github/20250102/72a57c4263944b73bf521830878ae39a.png" /></a></p >
 
-<p align="center"><a href="README.md">中文</a> | <a href="README_en.md">English</a> | <a href="README_ja.md">日本語</a></p>
+<p align="center"><a href="../README.md">中文</a> | <a href="README_en.md">English</a> | <a href="README_ja.md">日本語</a> | <a href="README_ru.md">Русский</a> | <a href="README_fr.md">Français</a> | <a href="README_de.md">Deutsch</a></p>
 
 ![界面预览](https://cnb.mizhoubaobei.top/302_llm_playground/302-LLM-游乐场jp.png)
 

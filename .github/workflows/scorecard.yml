@@ -1,34 +1,35 @@
-# This workflow uses actions that are not certified by GitHub. They are provided
-# by a third-party and are governed by separate terms of service, privacy
-# policy, and support documentation.
+# 此工作流使用的操作未经 GitHub 认证。它们由
+# 第三方提供，并受单独的
+# 服务条款、隐私政策和支持
+# 文档约束。
 
-name: Scorecard supply-chain security
+name: 供应链安全评分
 on:
-  # For Branch-Protection check. Only the default branch is supported. See
+  # 用于分支保护检查。仅支持默认分支。参见
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
   branch_protection_rule:
-  # To guarantee Maintained check is occasionally updated. See
+  # 确保 Maintained 检查偶尔更新。参见
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   schedule:
     - cron: '35 9 * * 0'
   push:
     branches: [ "main" ]
 
-# Declare default permissions as read only.
+# 声明默认权限为只读。
 permissions: read-all
 
 jobs:
   analysis:
     name: Scorecard analysis
     runs-on: ubuntu-latest
-    # `publish_results: true` only works when run from the default branch. conditional can be removed if disabled.
+    # `publish_results: true` 仅在从默认分支运行时有效。如果禁用，可以删除此条件。
     if: github.event.repository.default_branch == github.ref_name || github.event_name == 'pull_request'
     permissions:
-      # Needed to upload the results to code-scanning dashboard.
+      # 需要此权限将结果上传到代码扫描仪表板。
       security-events: write
-      # Needed to publish results and get a badge (see publish_results below).
+      # 需要此权限发布结果并获取徽章（参见下方的 publish_results）。
       id-token: write
-      # Uncomment the permissions below if installing in a private repository.
+      # 如果在私有仓库中安装，请取消注释以下权限。
       # contents: read
       # actions: read
 
@@ -48,28 +49,28 @@ jobs:
         with:
           results_file: results.sarif
           results_format: sarif
-          # (Optional) "write" PAT token. Uncomment the `repo_token` line below if:
-          # - you want to enable the Branch-Protection check on a *public* repository, or
-          # - you are installing Scorecard on a *private* repository
-          # To create the PAT, follow the steps in https://github.com/ossf/scorecard-action?tab=readme-ov-file#authentication-with-fine-grained-pat-optional.
+          # (可选) "write" PAT 令牌。如果满足以下条件，请取消注释 `repo_token` 行：
+          # - 您希望在*公共*仓库上启用分支保护检查，或
+          # - 您正在*私有*仓库上安装 Scorecard
+          # 要创建 PAT，请按照 https://github.com/ossf/scorecard-action?tab=readme-ov-file#authentication-with-fine-grained-pat-optional 中的步骤操作。
           # repo_token: ${{ secrets.SCORECARD_TOKEN }}
 
-          # Public repositories:
-          #   - Publish results to OpenSSF REST API for easy access by consumers
-          #   - Allows the repository to include the Scorecard badge.
-          #   - See https://github.com/ossf/scorecard-action#publishing-results.
-          # For private repositories:
-          #   - `publish_results` will always be set to `false`, regardless
-          #     of the value entered here.
+          # 公共仓库：
+          #   - 将结果发布到 OpenSSF REST API，方便使用者访问
+          #   - 允许仓库包含 Scorecard 徽章。
+          #   - 参见 https://github.com/ossf/scorecard-action#publishing-results。
+          # 对于私有仓库：
+          #   - `publish_results` 将始终设置为 `false`，
+          #     无论在此处输入的值如何。
           publish_results: true
-          # Use OIDC for authentication (no manual login required)
+          # 使用 OIDC 进行身份验证（无需手动登录）
           use_oidc: true
 
-          # (Optional) Uncomment file_mode if you have a .gitattributes with files marked export-ignore
+          # (可选) 如果您有标记为 export-ignore 的文件的 .gitattributes，请取消注释 file_mode
           # file_mode: git
 
-      # Upload the results as artifacts (optional). Commenting out will disable uploads of run results in SARIF
-      # format to the repository Actions tab.
+      # 将结果作为构件上传（可选）。注释掉将禁用运行结果以 SARIF
+      # 格式上传到仓库 Actions 标签页。
       - name: "Upload artifact"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
@@ -77,8 +78,8 @@ jobs:
           path: results.sarif
           retention-days: 5
 
-      # Upload the results to GitHub's code scanning dashboard (optional).
-      # Commenting out will disable upload of results to your repo's Code Scanning dashboard
+      # 将结果上传到 GitHub 的代码扫描仪表板（可选）。
+      # 注释掉将禁用结果上传到您的仓库代码扫描仪表板
       - name: "Upload to code-scanning"
         uses: github/codeql-action/upload-sarif@v4
         with:
