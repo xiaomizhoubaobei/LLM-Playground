@@ -19,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader } from '@/components/ui/sidebar'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
+import { Switch } from '@/components/ui/switch'
 import { TooltipButton } from '@/components/ui/tooltip-button'
 import { TooltipHelpIcon } from '@/components/ui/tooltip-help-icon'
 import { cn } from '@/utils/tailwindcss'
@@ -36,6 +37,9 @@ import { useParams } from 'next/navigation'
  * @interface SettingsSidebarProps
  * @property {Object} settings - 当前设置对象
  * @property {string} [settings.model] - AI 模型标识符
+ * @property {string} [settings.provider] - 服务提供商
+ * @property {string} [settings.modelProvider] - 模型提供商
+ * @property {boolean} [settings.streamMode] - 是否使用流式响应
  * @property {number} settings.temperature - 温度参数
  * @property {number} settings.topP - Top P 参数
  * @property {number} settings.frequencyPenalty - 频率惩罚参数
@@ -43,7 +47,7 @@ import { useParams } from 'next/navigation'
  * @property {number} settings.maxTokens - 最大令牌数
  * @property {string} settings.apiKey - API 密钥
  * @property {'expert'|'beginner'} uiMode - 用户界面模式
- * @property {Array<{id: string}>} models - 可用模型列表
+ * @property {Array<{id: string, provider: string}>} models - 可用模型列表
  * @property {Function} onSettingsChange - 设置变更回调函数
  * @property {Function} onUiModeChange - UI 模式变更回调函数
  * @property {Function} onResetSettings - 重置设置回调函数
@@ -51,6 +55,9 @@ import { useParams } from 'next/navigation'
 interface SettingsSidebarProps {
   settings: {
     model?: string
+    provider?: string
+    modelProvider?: string
+    streamMode?: boolean
     temperature: number
     topP: number
     frequencyPenalty: number
@@ -59,7 +66,7 @@ interface SettingsSidebarProps {
     apiKey: string
   }
   uiMode: 'expert' | 'beginner'
-  models: Array<{ id: string }>
+  models: Array<{ id: string; provider: string }>
   onSettingsChange: (settings: any) => void
   onUiModeChange: (value: boolean) => void
   onResetSettings: () => void
@@ -127,6 +134,117 @@ export function SettingsSidebar({
               <div>
                 <div className='flex items-center gap-1'>
                   <Label className='text-sm font-medium text-gray-700'>
+                    Service Provider
+                  </Label>
+                  <TooltipHelpIcon content='选择服务提供商' />
+                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant='outline'
+                      role='combobox'
+                      className='mt-1.5 w-full justify-between border-gray-300 bg-white'
+                    >
+                      {settings.provider || '302AI'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-full p-0' side='bottom' align='start'>
+                    <Command className='w-full'>
+                      <div
+                        className='max-h-[300px] touch-pan-y overflow-hidden'
+                        onWheel={(e) => e.stopPropagation()}
+                        onTouchMove={(e) => e.stopPropagation()}
+                      >
+                        <CommandList className='max-h-[300px] overflow-y-auto'>
+                          <CommandGroup>
+                            <CommandItem
+                              value='302AI'
+                              onSelect={() => {
+                                onSettingsChange({ 
+                                  ...settings, 
+                                  provider: '302AI',
+                                  modelProvider: 'OpenAI',
+                                  model: undefined 
+                                })
+                              }}
+                              className='px-3 py-1.5'
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  settings.provider === '302AI'
+                                    ? 'opacity-100'
+                                    : 'opacity-0'
+                                )}
+                              />
+                              302AI
+                            </CommandItem>
+                          </CommandGroup>
+                        </CommandList>
+                      </div>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div>
+                <div className='flex items-center gap-1'>
+                  <Label className='text-sm font-medium text-gray-700'>
+                    Model Provider
+                  </Label>
+                  <TooltipHelpIcon content='选择模型提供商以过滤可用模型' />
+                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant='outline'
+                      role='combobox'
+                      className='mt-1.5 w-full justify-between border-gray-300 bg-white'
+                    >
+                      {settings.modelProvider || 'OpenAI'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-full p-0' side='bottom' align='start'>
+                    <Command className='w-full'>
+                      <div
+                        className='max-h-[300px] touch-pan-y overflow-hidden'
+                        onWheel={(e) => e.stopPropagation()}
+                        onTouchMove={(e) => e.stopPropagation()}
+                      >
+                        <CommandList className='max-h-[300px] overflow-y-auto'>
+                          <CommandGroup>
+                            <CommandItem
+                              value='OpenAI'
+                              onSelect={() => {
+                                onSettingsChange({ 
+                                  ...settings, 
+                                  modelProvider: 'OpenAI',
+                                  model: undefined 
+                                })
+                              }}
+                              className='px-3 py-1.5'
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  settings.modelProvider === 'OpenAI'
+                                    ? 'opacity-100'
+                                    : 'opacity-0'
+                                )}
+                              />
+                              OpenAI
+                            </CommandItem>
+                          </CommandGroup>
+                        </CommandList>
+                      </div>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div>
+                <div className='flex items-center gap-1'>
+                  <Label className='text-sm font-medium text-gray-700'>
                     {t('settings.model')}
                   </Label>
                   <TooltipHelpIcon content={t('settings.modelDesc')} />
@@ -189,6 +307,23 @@ export function SettingsSidebar({
                     </Command>
                   </PopoverContent>
                 </Popover>
+              </div>
+
+              <div>
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-1'>
+                    <Label className='text-sm font-medium text-gray-700'>
+                      Stream Mode
+                    </Label>
+                    <TooltipHelpIcon content='启用流式响应以实时显示生成内容' />
+                  </div>
+                  <Switch
+                    checked={settings.streamMode ?? true}
+                    onCheckedChange={(checked) =>
+                      onSettingsChange({ ...settings, streamMode: checked })
+                    }
+                  />
+                </div>
               </div>
 
               <div>

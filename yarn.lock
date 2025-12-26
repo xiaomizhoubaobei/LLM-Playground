@@ -2,55 +2,6 @@
 # yarn lockfile v1
 
 
-"@ai-sdk/gateway@3.0.2":
-  version "3.0.2"
-  resolved "https://repo.huaweicloud.com/repository/npm/@ai-sdk/gateway/-/gateway-3.0.2.tgz#0a345ae3c7cf6e9533936dcba2fb7a4664131f19"
-  integrity sha512-giJEg9ob45htbu3iautK+2kvplY2JnTj7ir4wZzYSQWvqGatWfBBfDuNCU5wSJt9BCGjymM5ZS9ziD42JGCZBw==
-  dependencies:
-    "@ai-sdk/provider" "3.0.0"
-    "@ai-sdk/provider-utils" "4.0.1"
-    "@vercel/oidc" "3.0.5"
-
-"@ai-sdk/openai@^1.0.8":
-  version "1.3.24"
-  resolved "https://repo.huaweicloud.com/repository/npm/@ai-sdk/openai/-/openai-1.3.24.tgz#169b78a1ccf338e5dbd8696a55f57d3ca2e3d6bc"
-  integrity sha512-GYXnGJTHRTZc4gJMSmFRgEQudjqd4PUN0ZjQhPwOAYH1yOAvQoG/Ikqs+HyISRbLPCrhbZnPKCNHuRU4OfpW0Q==
-  dependencies:
-    "@ai-sdk/provider" "1.1.3"
-    "@ai-sdk/provider-utils" "2.2.8"
-
-"@ai-sdk/provider-utils@2.2.8":
-  version "2.2.8"
-  resolved "https://repo.huaweicloud.com/repository/npm/@ai-sdk/provider-utils/-/provider-utils-2.2.8.tgz#ad11b92d5a1763ab34ba7b5fc42494bfe08b76d1"
-  integrity sha512-fqhG+4sCVv8x7nFzYnFo19ryhAa3w096Kmc3hWxMQfW/TubPOmt3A6tYZhl4mUfQWWQMsuSkLrtjlWuXBVSGQA==
-  dependencies:
-    "@ai-sdk/provider" "1.1.3"
-    nanoid "^3.3.8"
-    secure-json-parse "^2.7.0"
-
-"@ai-sdk/provider-utils@4.0.1":
-  version "4.0.1"
-  resolved "https://repo.huaweicloud.com/repository/npm/@ai-sdk/provider-utils/-/provider-utils-4.0.1.tgz#6102fe98138021cd7196b2cdc1ce33f7f956426b"
-  integrity sha512-de2v8gH9zj47tRI38oSxhQIewmNc+OZjYIOOaMoVWKL65ERSav2PYYZHPSPCrfOeLMkv+Dyh8Y0QGwkO29wMWQ==
-  dependencies:
-    "@ai-sdk/provider" "3.0.0"
-    "@standard-schema/spec" "^1.1.0"
-    eventsource-parser "^3.0.6"
-
-"@ai-sdk/provider@1.1.3", "@ai-sdk/provider@^1.0.2":
-  version "1.1.3"
-  resolved "https://repo.huaweicloud.com/repository/npm/@ai-sdk/provider/-/provider-1.1.3.tgz#ebdda8077b8d2b3f290dcba32c45ad19b2704681"
-  integrity sha512-qZMxYJ0qqX/RfnuIaab+zp8UAeJn/ygXXAffR5I4N0n1IrvA6qBsjc8hXLmBiMV2zoXlifkacF7sEFnYnjBcqg==
-  dependencies:
-    json-schema "^0.4.0"
-
-"@ai-sdk/provider@3.0.0":
-  version "3.0.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@ai-sdk/provider/-/provider-3.0.0.tgz#de5b60ae8570177604048e79edf4a032c92851e6"
-  integrity sha512-m9ka3ptkPQbaHHZHqDXDF9C9B5/Mav0KTdky1k2HZ3/nrW2t1AgObxIVPyGDWQNS9FXT/FS6PIoSjpcP/No8rQ==
-  dependencies:
-    json-schema "^0.4.0"
-
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://repo.huaweicloud.com/repository/npm/@alloc/quick-lru/-/quick-lru-5.2.0.tgz#7bf68b20c0a350f936915fcae06f58e32007ce30"
@@ -347,11 +298,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
-
-"@opentelemetry/api@1.9.0":
-  version "1.9.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
-  integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
 "@radix-ui/number@1.1.1":
   version "1.1.1"
@@ -930,11 +876,6 @@
   resolved "https://repo.huaweicloud.com/repository/npm/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz#a90ab31d0cc1dfb54c66a69e515bf624fa7b2224"
   integrity sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==
 
-"@standard-schema/spec@^1.1.0":
-  version "1.1.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/@standard-schema/spec/-/spec-1.1.0.tgz#a79b55dbaf8604812f52d140b2c9ab41bc150bb8"
-  integrity sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==
-
 "@swc/counter@^0.1.3":
   version "0.1.3"
   resolved "https://repo.huaweicloud.com/repository/npm/@swc/counter/-/counter-0.1.3.tgz#cc7463bd02949611c6329596fccd2b0ec782b0e9"
@@ -1287,25 +1228,10 @@
   resolved "https://repo.huaweicloud.com/repository/npm/@ungap/structured-clone/-/structured-clone-1.3.0.tgz#d06bbb384ebcf6c505fde1c3d0ed4ddffe0aaff8"
   integrity sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==
 
-"@vercel/oidc@3.0.5":
-  version "3.0.5"
-  resolved "https://repo.huaweicloud.com/repository/npm/@vercel/oidc/-/oidc-3.0.5.tgz#bd8db7ee777255c686443413492db4d98ef49657"
-  integrity sha512-fnYhv671l+eTTp48gB4zEsTW/YtRgRPnkI2nT7x6qw5rkI1Lq2hTmQIpHPgyThI0znLK+vX2n9XxKdXZ7BUbbw==
-
 acorn@^8.15.0:
   version "8.15.0"
   resolved "https://repo.huaweicloud.com/repository/npm/acorn/-/acorn-8.15.0.tgz#a360898bc415edaac46c8241f6383975b930b816"
   integrity sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==
-
-ai@^6.0.3:
-  version "6.0.3"
-  resolved "https://repo.huaweicloud.com/repository/npm/ai/-/ai-6.0.3.tgz#6fa7f59a0cac12ca46b3abea5ca1cdf57c3b43bf"
-  integrity sha512-OOo+/C+sEyscoLnbY3w42vjQDICioVNyS+F+ogwq6O5RJL/vgWGuiLzFwuP7oHTeni/MkmX8tIge48GTdaV7QQ==
-  dependencies:
-    "@ai-sdk/gateway" "3.0.2"
-    "@ai-sdk/provider" "3.0.0"
-    "@ai-sdk/provider-utils" "4.0.1"
-    "@opentelemetry/api" "1.9.0"
 
 any-promise@^1.0.0:
   version "1.3.0"
@@ -1892,11 +1818,6 @@ estree-util-is-identifier-name@^3.0.0:
   resolved "https://repo.huaweicloud.com/repository/npm/estree-util-is-identifier-name/-/estree-util-is-identifier-name-3.0.0.tgz#0b5ef4c4ff13508b34dcd01ecfa945f61fce5dbd"
   integrity sha512-hFtqIDZTIUZ9BXLb8y4pYGyk6+wekIivNVTcmvk8NoOh+VeRn5y6cEHzbURrWbfp1fIqdVipilzj+lfaadNZmg==
 
-eventsource-parser@^3.0.6:
-  version "3.0.6"
-  resolved "https://repo.huaweicloud.com/repository/npm/eventsource-parser/-/eventsource-parser-3.0.6.tgz#292e165e34cacbc936c3c92719ef326d4aeb4e90"
-  integrity sha512-Vo1ab+QXPzZ4tCa8SwIHJFaSzy4R6SHf7BY79rFBDf0idraZWAkYrDjDj8uWaSm3S2TK+hJ7/t1CEmZ7jXw+pg==
-
 extend@^3.0.0:
   version "3.0.2"
   resolved "https://repo.huaweicloud.com/repository/npm/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
@@ -2237,11 +2158,6 @@ jotai@^2.10.3:
   version "4.0.0"
   resolved "https://repo.huaweicloud.com/repository/npm/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
-
-json-schema@^0.4.0:
-  version "0.4.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/json-schema/-/json-schema-0.4.0.tgz#f7de4cf6efab838ebaeb3236474cbba5a1930ab5"
-  integrity sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==
 
 katex@^0.16.0, katex@^0.16.15, katex@^0.16.22:
   version "0.16.27"
@@ -2897,7 +2813,7 @@ mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-nanoid@^3.3.11, nanoid@^3.3.6, nanoid@^3.3.8:
+nanoid@^3.3.11, nanoid@^3.3.6:
   version "3.3.11"
   resolved "https://repo.huaweicloud.com/repository/npm/nanoid/-/nanoid-3.3.11.tgz#4f4f112cefbe303202f2199838128936266d185b"
   integrity sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==
@@ -3365,11 +3281,6 @@ scheduler@^0.23.2:
   integrity sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==
   dependencies:
     loose-envify "^1.1.0"
-
-secure-json-parse@^2.7.0:
-  version "2.7.0"
-  resolved "https://repo.huaweicloud.com/repository/npm/secure-json-parse/-/secure-json-parse-2.7.0.tgz#5a5f9cd6ae47df23dba3151edd06855d47e09862"
-  integrity sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==
 
 shiki@^1.24.2:
   version "1.29.2"

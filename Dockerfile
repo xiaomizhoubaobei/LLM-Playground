@@ -31,10 +31,11 @@ WORKDIR /app
 
 # 创建非root用户
 RUN groupadd --system --gid 1001 nodejs
-RUN useradd --system --uid 1001 --gid nodejs nextjs
+RUN useradd --system --uid 1001 --gid nodejs --home-dir /home/nextjs nextjs
+RUN mkdir -p /home/nextjs && chown nextjs:nodejs /home/nextjs
 
-# 复制公共资源
-COPY --from=builder /app/public ./public
+# 复制公共资源（如果存在）
+COPY --from=builder --chown=nextjs:nodejs /app/public ./
 
 # 设置预渲染缓存权限
 RUN mkdir .next
@@ -58,5 +59,5 @@ ENV PORT=3000
 # - AI_302_API_URL: API 服务地址（必需）
 # - NEXT_PUBLIC_AI_302_API_UPLOAD_URL: 文件上传地址（必需）
 
-# 启动命令
-CMD HOSTNAME="0.0.0.0" yarn start
+# 启动命令（standalone模式）
+CMD ["node", "server.js"]

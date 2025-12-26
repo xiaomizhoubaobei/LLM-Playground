@@ -9,8 +9,20 @@
  * @remark 提供完整的状态管理系统，包括设置、消息、UI模式和验证功能
  */
 
-import { LanguageModelV1LogProbs } from '@ai-sdk/provider';
 import { atomWithStorage } from 'jotai/utils';
+
+/**
+ * LogProbs 类型定义
+ * 本地定义替代 @ai-sdk/provider 中的 LanguageModelV1LogProbs
+ */
+export type LogProbs = Array<{
+  token: string
+  logprob: number
+  topLogprobs: Array<{
+    token: string
+    logprob: number
+  }>
+}>
 
 /**
  * 管理 Playground 设置的持久化存储 Atom
@@ -19,6 +31,9 @@ import { atomWithStorage } from 'jotai/utils';
  * @constant playgroundSettiongsAtom
  * @type {Atom<PlaygroundSettings>}
  * @property {string} model - 选中的AI模型标识符
+ * @property {string} provider - 选中的AI模型供应商（服务提供商）
+ * @property {string} modelProvider - 选中的AI模型提供商
+ * @property {boolean} streamMode - 是否使用流式响应
  * @property {number} temperature - 模型温度设置 (0-1)
  * @property {number} topP - Top-p 采样参数 (0-1)
  * @property {number} frequencyPenalty - 频繁令牌使用的惩罚 (0-2)
@@ -28,6 +43,9 @@ import { atomWithStorage } from 'jotai/utils';
  */
 export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
   model: 'gpt-4o',
+  provider: '302AI',
+  modelProvider: 'OpenAI',
+  streamMode: true,
   temperature: 0.7,
   topP: 0.7,
   frequencyPenalty: 0.5,
@@ -50,7 +68,7 @@ export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
  * @property {'image' | 'file'} files[].type - 文件或图片类型
  * @property {string} files[].name - 文件或图片名称
  * @property {number} files[].size - 文件或图片大小
- * @property {LanguageModelV1LogProbs} [logprobs] - 可选的logprobs
+ * @property {LogProbs} [logprobs] - 可选的logprobs
  */
 export type PlaygroundMessage = {
   id: string
@@ -63,7 +81,7 @@ export type PlaygroundMessage = {
     name: string
     size: number
   }[]
-  logprobs?: LanguageModelV1LogProbs
+  logprobs?: LogProbs
 }
 
 /**

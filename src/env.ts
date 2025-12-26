@@ -32,8 +32,10 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_AI_302_API_UPLOAD_URL: z.string().optional(),
+    NEXT_PUBLIC_AI_302_API_KEY: z.string().optional(),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_AI_302_API_UPLOAD_URL: process.env.NEXT_PUBLIC_AI_302_API_UPLOAD_URL,
+    NEXT_PUBLIC_AI_302_API_KEY: process.env.NEXT_PUBLIC_AI_302_API_KEY,
   },
 })
