@@ -70,7 +70,7 @@ jobs:
               with:
                 images: |
                   ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
-                  ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
+                  ghcr.io/${{ github.repository }}/302_llm_playground
                   crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
                   swr.cn-east-3.myhuaweicloud.com/${{ secrets.SWR_ORGANIZATION }}/302_llm_playground
                 # 关闭所有默认生成器
@@ -115,7 +115,7 @@ jobs:
             - name: Attest GHCR image
               uses: actions/attest-build-provenance@v1
               with:
-                subject-name: ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
+                subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}
                 push-to-registry: true
 
