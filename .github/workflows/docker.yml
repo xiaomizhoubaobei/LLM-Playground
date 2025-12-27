@@ -94,10 +94,10 @@ jobs:
                   COSIGN_EXPERIMENTAL: "1"
               run: |
                   echo "Signing images with cosign keyless mode..."
-                  for tag in ${{ steps.meta.outputs.tags }}; do
+                  while IFS= read -r tag; do
                       echo "Signing $tag"
                       cosign sign --yes "$tag"
-                  done
+                  done <<< "${{ steps.meta.outputs.tags }}"
 
             - name: Attest DockerHub image
               uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
