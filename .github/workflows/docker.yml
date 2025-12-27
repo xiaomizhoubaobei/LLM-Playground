@@ -93,7 +93,7 @@ jobs:
                 cache-to: type=gha,mode=max
 
             - name: Install cosign
-              uses: sigstore/cosign-installer@v4.0.0
+              uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
 
             - name: Sign images with cosign (keyless)
               env:
@@ -106,28 +106,28 @@ jobs:
                   done
 
             - name: Attest DockerHub image
-              uses: actions/attest-build-provenance@v1
+              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}
                 push-to-registry: true
 
             - name: Attest GHCR image
-              uses: actions/attest-build-provenance@v1
+              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}
                 push-to-registry: true
 
             - name: Attest Alibaba Cloud image
-              uses: actions/attest-build-provenance@v1
+              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}
                 push-to-registry: true
 
             - name: Attest Huawei Cloud image
-              uses: actions/attest-build-provenance@v1
+              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: swr.cn-east-3.myhuaweicloud.com/${{ secrets.SWR_ORGANIZATION }}/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}

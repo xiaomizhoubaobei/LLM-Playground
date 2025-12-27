@@ -40,11 +40,16 @@ jobs:
       )
     runs-on: 'ubuntu-latest'
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: 'Run iFlow CLI Issue Triage'
-        uses: iflow-ai/iflow-cli-action@v2.0.0
+        uses: iflow-ai/iflow-cli-action@a058c49dfa07d034be8ac12e7e84aab83cfb86c5 # v2.0.0
         id: 'iflow_cli_issue_triage'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
