@@ -17,7 +17,10 @@ permissions:
 
 jobs:
     build-and-push:
-        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                runner: [ubuntu-latest, ubuntu-latest-arm64]
+        runs-on: ${{ matrix.runner }}
         steps:
             - name: Harden the runner (Audit all outbound calls)
               uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
@@ -57,13 +60,6 @@ jobs:
                   username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
                   password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
 
-            - name: Login to Huawei Cloud SWR
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
-              with:
-                  registry: swr.cn-east-3.myhuaweicloud.com
-                  username: ${{ secrets.SWR_USERNAME }}
-                  password: ${{ secrets.SWR_PASSWORD }}
-
             - name: Docker meta
               id: meta
               uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5.9.0
@@ -72,20 +68,18 @@ jobs:
                   ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
                   ghcr.io/${{ github.repository }}/302_llm_playground
                   crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
-                  swr.cn-east-3.myhuaweicloud.com/${{ secrets.SWR_ORGANIZATION }}/302_llm_playground
                 # 关闭所有默认生成器
                 flavor: |
                   latest=false
-                # 只保留两条我们想要的
+                # 只保留版本号标签
                 tags: |
                   type=raw,value=${{ steps.version.outputs.VERSION }}
-                  type=raw,value=latest
                   
             - name: Build and push
               uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
               with:
                 context: .
-                platforms: linux/amd64,linux/arm64
+                platforms: ${{ matrix.runner == 'ubuntu-latest-arm64' && 'linux/arm64' || 'linux/amd64' }}
                 push: true
                 tags: ${{ steps.meta.outputs.tags }}
                 labels: ${{ steps.meta.outputs.labels }}
@@ -93,7 +87,7 @@ jobs:
                 cache-to: type=gha,mode=max
 
             - name: Install cosign
-              uses: sigstore/cosign-installer@v4.0.0
+              uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
 
             - name: Sign images with cosign (keyless)
               env:
@@ -113,22 +107,17 @@ jobs:
                 push-to-registry: true
 
             - name: Attest GHCR image
-              uses: actions/attest-build-provenance@v1
+              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}
                 push-to-registry: true
 
             - name: Attest Alibaba Cloud image
-              uses: actions/attest-build-provenance@v1
+              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}
                 push-to-registry: true
 
-            - name: Attest Huawei Cloud image
-              uses: actions/attest-build-provenance@v1
-              with:
-                subject-name: swr.cn-east-3.myhuaweicloud.com/${{ secrets.SWR_ORGANIZATION }}/302_llm_playground
-                subject-digest: ${{ steps.meta.outputs.digest }}
-                push-to-registry: true
+            

@@ -160,7 +160,7 @@ jobs:
           } >> "${GITHUB_OUTPUT}"
 
       - name: 'Run iFLOW CLI PR Review'
-        uses: iflow-ai/iflow-cli-action@v2.0.0
+        uses: iflow-ai/iflow-cli-action@a058c49dfa07d034be8ac12e7e84aab83cfb86c5 # v2.0.0
         id: 'iflow_cli_pr_review'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'

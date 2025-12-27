@@ -12,8 +12,12 @@ jobs:
     name: 检查 PR 签名提交
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
       - name: 检查 PR 签名提交
-        uses: 1Password/check-signed-commits-action@v1
+        uses: 1Password/check-signed-commits-action@ed2885f3ed2577a4f5d3c3fe895432a557d23d52 # v1.2.0
         with:
           comment: |
             ⚠️ 此 PR 包含未签名的提交

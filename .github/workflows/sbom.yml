@@ -36,16 +36,16 @@ jobs:
       with:
         egress-policy: audit
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
     - name: Generate SBOM with Syft
-      uses: anchore/sbom-action@v0.17.2
+      uses: anchore/sbom-action@61119d458adab75f756bc0b9e4bde25725f86a7a # v0.17.2
       with:
         format: spdx-json
         output-file: sbom.spdx.json
 
     - name: Sign SBOM with Sigstore
-      uses: sigstore/cosign-installer@v3.5.0
+      uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
 
     - name: Sign the SBOM
       env:
