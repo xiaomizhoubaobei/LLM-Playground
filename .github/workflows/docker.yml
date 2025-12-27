@@ -76,6 +76,7 @@ jobs:
                   type=raw,value=${{ steps.version.outputs.VERSION }}
 
             - name: 构建并推送
+              id: build
               uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
               with:
                 context: .
@@ -85,6 +86,7 @@ jobs:
                 labels: ${{ steps.meta.outputs.labels }}
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
+                provenance: false
 
             - name: 安装 cosign
               uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
@@ -108,14 +110,14 @@ jobs:
               uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
-                subject-digest: ${{ steps.meta.outputs.digest }}
+                subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
             - name: 证明 GHCR 镜像
               uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
-                subject-digest: ${{ steps.meta.outputs.digest }}
+                subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
             
