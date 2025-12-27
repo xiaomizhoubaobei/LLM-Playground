@@ -1,5 +1,5 @@
 # 基础镜像
-FROM node:lts AS base
+FROM node:lts@sha256:20988bcdc6dc76690023eb2505dd273bdeefddcd0bde4bfd1efe4ebf8707f747 AS base
 
 # 使用官方脚本安装yarn
 RUN corepack enable && corepack prepare yarn@stable --activate
