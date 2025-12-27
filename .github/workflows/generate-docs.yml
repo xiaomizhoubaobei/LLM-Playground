@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Initialize project analysis
-        uses: iflow-ai/iflow-cli-action@v2.0.0
+        uses: iflow-ai/iflow-cli-action@a058c49dfa07d034be8ac12e7e84aab83cfb86c5 # v2.0.0
         with:
           prompt: "/init"
           api_key: ${{ secrets.IFLOW_API_KEY }}

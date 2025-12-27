@@ -100,7 +100,7 @@ jobs:
                   done
 
             - name: Attest DockerHub image
-              uses: actions/attest-build-provenance@v1
+              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
               with:
                 subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
                 subject-digest: ${{ steps.meta.outputs.digest }}
