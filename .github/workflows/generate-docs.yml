@@ -37,7 +37,7 @@ jobs:
           timeout: "900"
         id: docs
 
-      - name: Push to docs branch
+      - name: 推送到 docs 分支
         run: |
           git config --local user.email "qixiaoxin@stu.sqxy.edu.cn"
           git config --local user.name "xiaomizhoubaobei"

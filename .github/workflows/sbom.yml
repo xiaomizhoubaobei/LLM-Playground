@@ -29,25 +29,25 @@ jobs:
       id-token: write
       security-events: write
     runs-on: ubuntu-latest
-    name: Generate SBOM
+    name: 生成 SBOM
     steps:
-    - name: Harden the runner (Audit all outbound calls)
+    - name: 加固运行器（审计所有出站调用）
       uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
       with:
         egress-policy: audit
-    - name: Checkout code
+    - name: 检出代码
       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-    - name: Generate SBOM with Syft
+    - name: 使用 Syft 生成 SBOM
       uses: anchore/sbom-action@61119d458adab75f756bc0b9e4bde25725f86a7a # v0.17.2
       with:
         format: spdx-json
         output-file: sbom.spdx.json
 
-    - name: Sign SBOM with Sigstore
+    - name: 安装 Sigstore
       uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
 
-    - name: Sign the SBOM
+    - name: 签名 SBOM
       env:
         SIGSTORE_ID_TOKEN: ${{ secrets.SIGSTORE_ID_TOKEN }}
       run: |
@@ -57,7 +57,7 @@ jobs:
           --output-certificate sbom.spdx.json.crt \
           sbom.spdx.json
 
-    - name: Upload SBOM artifacts
+    - name: 上传 SBOM 构件
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
       with:
         name: sbom
@@ -67,7 +67,7 @@ jobs:
           sbom.spdx.json.crt
         retention-days: 30
 
-    - name: Upload SBOM to GitHub Dependency Graph
+    - name: 上传 SBOM 到 GitHub 依赖关系图
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
       if: github.event_name != 'pull_request'
       with:

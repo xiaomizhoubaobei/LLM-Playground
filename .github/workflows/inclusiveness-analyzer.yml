@@ -15,11 +15,11 @@ jobs:
   Inclusiveness-Analyser-scan:
     runs-on: ubuntu-latest
     steps:
-      - name: Harden the runner (Audit all outbound calls)
+      - name: 加固运行器（审计所有出站调用）
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit
-      - name: Checkout code
+      - name: 检出代码
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-      - name: Inclusiveness Analyzer
+      - name: 包容性分析器
         uses: microsoft/InclusivenessAnalyzer@994519a4cd1f0ccc7415fff13b7f287344c420bc # v1.0.1

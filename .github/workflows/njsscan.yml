@@ -27,20 +27,20 @@ jobs:
       security-events: write # 用于 github/codeql-action/upload-sarif 上传 SARIF 结果
       actions: read # 仅私有仓库需要，用于 github/codeql-action/upload-sarif 获取 Action 运行状态
     runs-on: ubuntu-latest
-    name: njsscan code scanning
+    name: njsscan 代码扫描
     steps:
-    - name: Harden the runner (Audit all outbound calls)
+    - name: 加固运行器（审计所有出站调用）
       uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
       with:
         egress-policy: audit
-    - name: Checkout the code
+    - name: 检出代码
       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-    - name: nodejsscan scan
+    - name: nodejsscan 扫描
       id: njsscan
       uses: ajinabraham/njsscan-action@7237412fdd36af517e2745077cedbf9d6900d711
       with:
         args: '. --sarif --output results.sarif || true'
-    - name: Upload njsscan report
+    - name: 上传 njsscan 报告
       uses: github/codeql-action/upload-sarif@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4.31.9
       with:
         sarif_file: results.sarif
