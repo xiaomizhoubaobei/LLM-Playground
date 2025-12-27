@@ -34,7 +34,7 @@
     "cmdk": "1.0.0",
     "dexie": "^4.0.10",
     "file-saver": "^2.0.5",
-    "framer-motion": "^11.14.1",
+    "framer-motion": "^12.23.26",
     "jotai": "^2.10.3",
     "katex": "^0.16.15",
     "ky": "^1.7.3",
