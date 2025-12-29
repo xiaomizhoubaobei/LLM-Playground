@@ -1,0 +1,22 @@
+name: Code Review
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969 # v2.4.0
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+
+      - name: Code Review
+        uses: step-security/ai-codewise@v1
