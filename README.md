@@ -135,7 +135,6 @@ pnpm start
 - **DockerHub**: `qixiaoxin/iflow-cartoonize-api`
 - **GitHub Container Registry**: `ghcr.io/xiaomizhoubaobei/llm_playground`
 - **阿里云**: `crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground`
-- **华为云**: `swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground`
 
 ```bash
 # 使用 DockerHub 镜像
@@ -149,10 +148,6 @@ docker run -p 3000:3000 ghcr.io/xiaomizhoubaobei/llm_playground:latest
 # 使用阿里云镜像
 docker pull crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground:latest
 docker run -p 3000:3000 crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground:latest
-
-# 使用华为云镜像
-docker pull swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground:latest
-docker run -p 3000:3000 swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground:latest
 ```
 
 ### 从源码构建

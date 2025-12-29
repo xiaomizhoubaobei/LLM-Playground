@@ -135,7 +135,6 @@ pnpm start
 - **DockerHub**: `qixiaoxin/iflow-cartoonize-api`
 - **GitHub Container Registry**: `ghcr.io/xiaomizhoubaobei/llm_playground`
 - **Alibaba Cloud**: `crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground`
-- **Huawei Cloud**: `swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground`
 
 ```bash
 # Verwendung des DockerHub-Images
@@ -149,10 +148,6 @@ docker run -p 3000:3000 ghcr.io/xiaomizhoubaobei/llm_playground:latest
 # Verwendung des Alibaba Cloud-Images
 docker pull crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground:latest
 docker run -p 3000:3000 crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground:latest
-
-# Verwendung des Huawei Cloud-Images
-docker pull swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground:latest
-docker run -p 3000:3000 swr.cn-east-3.myhuaweicloud.com/qixiaoxin/llm_playground:latest
 ```
 
 ### Build aus dem Quellcode
