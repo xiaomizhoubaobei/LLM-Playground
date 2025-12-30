@@ -27,7 +27,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      security-events: write
     runs-on: ubuntu-latest
     name: 生成 SBOM
     steps:
@@ -75,9 +74,3 @@ jobs:
         name: dependency-snapshot
         path: sbom.spdx.json
         retention-days: 30
-
-    - name: 上传 SBOM 到 GitHub Security
-      uses: github/codeql-action/upload-sarif@9b8b4a7d0c7f2e6b8f8c9d0e1f2a3b4c5d6e7f8a # v3.27.9
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      with:
-        sarif_file: sbom.spdx.json
