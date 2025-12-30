@@ -1,5 +1,22 @@
 # 基础镜像
-FROM node:lts AS base
+FROM --platform=$BUILDPLATFORM node:lts AS base
+
+LABEL org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/LLM-Playground
+LABEL org.opencontainers.image.description=LLM Playground - 一个用于测试和实验大语言模型的交互式平台
+LABEL org.opencontainers.image.licenses=AGPL-3.0
+LABEL org.opencontainers.image.title=LLM Playground
+LABEL org.opencontainers.image.maintainer=祁筱欣
+LABEL org.opencontainers.image.version=1.0.0
+LABEL org.opencontainers.image.created=${BUILD_DATE:-2025-12-30}
+LABEL org.opencontainers.image.revision=${VCS_REF:-latest}
+LABEL org.opencontainers.image.vendor=xiaomizhoubaobei
+LABEL org.opencontainers.image.authors=qixiaoxin@stu.sqxy.edu.cn
+LABEL build.url=https://github.com/xiaomizhoubaobei/LLM-Playground/actions/runs/${RUN_ID}
+LABEL dependencies.node=${NODE_VERSION:-lts}
+LABEL org.opencontainers.image.nextjs=${NEXTJS_VERSION:-latest}
+LABEL org.opencontainers.image.yarn=${YARN_VERSION:-stable}
+LABEL org.opencontainers.image.typescript=${TYPESCRIPT_VERSION:-latest}
+LABEL org.opencontainers.image.provenance=enabled
 
 # 使用官方脚本安装yarn
 RUN corepack enable && corepack prepare yarn@stable --activate
