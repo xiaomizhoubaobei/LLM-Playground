@@ -49,12 +49,13 @@ jobs:
 
     - name: 签名 SBOM
       env:
-        SIGSTORE_ID_TOKEN: ${{ secrets.SIGSTORE_ID_TOKEN }}
+        COSIGN_EXPERIMENTAL: "1"
       run: |
         cosign sign-blob \
           --yes \
           --output-signature sbom.spdx.json.sig \
           --output-certificate sbom.spdx.json.crt \
+          --bundle sbom.spdx.json.bundle \
           sbom.spdx.json
 
     - name: 上传 SBOM 构件
@@ -74,3 +75,9 @@ jobs:
         name: dependency-snapshot
         path: sbom.spdx.json
         retention-days: 30
+
+    - name: 上传 SBOM 到 GitHub Security
+      uses: github/codeql-action/upload-sarif@9b8b4a7d0c7f2e6b8f8c9d0e1f2a3b4c5d6e7f8a # v3.27.9
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      with:
+        sarif_file: sbom.spdx.json
