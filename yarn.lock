@@ -908,17 +908,17 @@
   dependencies:
     postcss-selector-parser "6.0.10"
 
-"@tanstack/react-virtual@^3.11.1":
-  version "3.13.13"
-  resolved "https://mirrors.huaweicloud.com/repository/npm/@tanstack/react-virtual/-/react-virtual-3.13.13.tgz#1e32e1e64fb4f60d8e9dbdbde6b17e79d82696f8"
-  integrity sha512-4o6oPMDvQv+9gMi8rE6gWmsOjtUZUYIJHv7EB+GblyYdi8U6OqLl8rhHWIUZSL1dUU2dPwTdTgybCKf9EjIrQg==
+"@tanstack/react-virtual@^3.13.14":
+  version "3.13.14"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.13.14.tgz#741ecee962bca03cecd3eda2833d4dc3d1d7138a"
+  integrity sha512-WG0d7mBD54eA7dgA3+sO5csS0B49QKqM6Gy5Rf31+Oq/LTKROQSao9m2N/vz1IqVragOKU5t5k1LAcqh/DfTxw==
   dependencies:
-    "@tanstack/virtual-core" "3.13.13"
+    "@tanstack/virtual-core" "3.13.14"
 
-"@tanstack/virtual-core@3.13.13":
-  version "3.13.13"
-  resolved "https://mirrors.huaweicloud.com/repository/npm/@tanstack/virtual-core/-/virtual-core-3.13.13.tgz#1e55efe82730e60f4d68b1e2bc956bd3d94f307b"
-  integrity sha512-uQFoSdKKf5S8k51W5t7b2qpfkyIbdHMzAn+AMQvHPxKUPeo1SsGaA4JRISQT87jm28b7z8OEqPcg1IOZagQHcA==
+"@tanstack/virtual-core@3.13.14":
+  version "3.13.14"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.13.14.tgz#ee838837e135e576227686e75a46c3fdd1951c4a"
+  integrity sha512-b5Uvd8J2dc7ICeX9SRb/wkCxWk7pUwN214eEPAQsqrsktSKTCmyLxOQWSMgogBByXclZeAdgZ3k4o0fIYUIBqQ==
 
 "@types/d3-array@*":
   version "3.2.2"
