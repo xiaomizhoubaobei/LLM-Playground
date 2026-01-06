@@ -112,7 +112,6 @@ jobs:
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
                 provenance: true
-                outputs: type=image,name=${{ steps.meta.outputs.tags }},annotation-index.org.opencontainers.image.description=LLM Playground - 一个用于测试和实验大语言模型的交互式平台,annotation-index.org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/LLM-Playground,annotation-index.org.opencontainers.image.licenses=AGPL-3.0
 
             - name: 安装 cosign
               uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
