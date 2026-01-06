@@ -18,6 +18,8 @@ import { messageStore } from '@/db/message-store'
 import { useChatGeneration } from '@/hooks/use-chat-generation'
 import { useFileUpload } from '@/hooks/use-file-upload'
 import { useMessages } from '@/hooks/use-messages'
+import { SIDEBAR_CONFIG } from '@/config/layout'
+import { getUserFriendlyErrorMessage } from '@/utils/error-handler'
 
 import {
   PlaygroundMessage,
@@ -147,6 +149,7 @@ export default function Component() {
   const [isDragging, setIsDragging] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false)
 
   /**
    * 处理调整底部面板大小的鼠标拖动事件
@@ -210,12 +213,13 @@ export default function Component() {
       toast.success('已创建新对话')
     } catch (error) {
       console.error('Failed to create conversation:', error)
-      toast.error('创建对话失败')
+      toast.error(getUserFriendlyErrorMessage(error, '创建对话失败'))
     }
   }, [messages])
 
   const handleConversationSelect = useCallback(async (conversationId: number) => {
     try {
+      setIsLoadingMessages(true)
       await conversationStore.switchConversation(conversationId)
       await messageStore.switchConversation(conversationId)
       setCurrentConversationId(conversationId)
@@ -227,7 +231,9 @@ export default function Component() {
       }))
     } catch (error) {
       console.error('Failed to switch conversation:', error)
-      toast.error('切换对话失败')
+      toast.error(getUserFriendlyErrorMessage(error, '切换对话失败'))
+    } finally {
+      setIsLoadingMessages(false)
     }
   }, [])
 
@@ -297,7 +303,7 @@ export default function Component() {
         }
       } catch (error) {
         console.error('Non-stream chat error:', error)
-        toast.error(t('error.chatFailed'))
+        toast.error(getUserFriendlyErrorMessage(error, t('error.chatFailed')))
       }
     }
   }
@@ -400,9 +406,7 @@ export default function Component() {
         toast.success(t('message.upload_success'))
       } catch (error) {
         console.error('Upload error:', error)
-        toast.error(
-          error instanceof Error ? error.message : t('message.upload_error')
-        )
+        toast.error(getUserFriendlyErrorMessage(error, t('message.upload_error')))
       } finally {
         if (fileInputRef.current) {
           fileInputRef.current.value = ''
@@ -430,8 +434,8 @@ export default function Component() {
           className='h-screen w-full'
           style={
             {
-              '--sidebar-width': '20rem',
-              '--sidebar-width-mobile': '20rem',
+              '--sidebar-width': SIDEBAR_CONFIG.width,
+              '--sidebar-width-mobile': SIDEBAR_CONFIG.widthMobile,
             } as React.CSSProperties
           }
         >
@@ -460,6 +464,7 @@ export default function Component() {
                 messages={messages}
                 generatingMessage={generatingMessage}
                 isRunning={isRunning}
+                loading={isLoadingMessages}
                 onDragEnd={handleDragEnd}
                 onEdit={handleEdit}
                 onDelete={handleDelete}

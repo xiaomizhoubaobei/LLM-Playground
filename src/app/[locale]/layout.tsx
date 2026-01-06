@@ -16,6 +16,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { Toaster } from 'sonner'
+import { ThemeProvider } from 'next-themes'
 
 /**
  * 页面元数据配置
@@ -53,14 +54,16 @@ export default async function RootLayout({
   // 获取国际化消息
   const messages = await getMessages()
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body className='min-h-screen antialiased'>
-        <JotaiProvider>
-          <NextIntlClientProvider messages={messages}>
-            <Toaster />
-            {children}
-          </NextIntlClientProvider>
-        </JotaiProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <JotaiProvider>
+            <NextIntlClientProvider messages={messages}>
+              <Toaster />
+              {children}
+            </NextIntlClientProvider>
+          </JotaiProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

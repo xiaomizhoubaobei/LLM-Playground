@@ -9,6 +9,7 @@
 
 import { messageStore } from '@/db/message-store'
 import { useChatGeneration } from '@/hooks/use-chat-generation'
+import { MessageSkeleton } from '@/components/playground/message-skeleton'
 import { PlaygroundMessage, playgroundSettiongsAtom } from '@/stores/playground'
 import {
   closestCenter,
@@ -45,6 +46,7 @@ interface MessageListProps {
   messages: PlaygroundMessage[]
   generatingMessage: PlaygroundMessage | null
   isRunning: boolean
+  loading?: boolean
   onDragEnd: (event: DragEndEvent) => void
   onEdit: (id: string, message: PlaygroundMessage) => void
   onDelete: (id: string) => void
@@ -61,6 +63,7 @@ export const MessageList = memo(function MessageList({
   messages,
   generatingMessage,
   isRunning,
+  loading = false,
   onDragEnd,
   onEdit,
   onDelete,
@@ -216,30 +219,34 @@ export const MessageList = memo(function MessageList({
         }}
       >
         <div className='w-full p-4 space-y-3'>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={onDragEnd}
-            modifiers={[restrictToVerticalAxis]}
-          >
-            <SortableContext
-              items={allMessages}
-              strategy={verticalListSortingStrategy}
+          {loading && allMessages.length === 0 ? (
+            <MessageSkeleton count={3} />
+          ) : (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={onDragEnd}
+              modifiers={[restrictToVerticalAxis]}
             >
-              {allMessages.map((message) => (
-                <MemoizedSortableMessage
-                  key={message.id}
-                  message={message}
-                  handleEdit={onEdit}
-                  handleDelete={onDelete}
-                  handleRegenerate={handleRegenerate}
-                  isRunning={
-                    message.id === (generatingMessage?.id || regeneratingMessage?.id)
-                  }
-                />
-              ))}
-            </SortableContext>
-          </DndContext>
+              <SortableContext
+                items={allMessages}
+                strategy={verticalListSortingStrategy}
+              >
+                {allMessages.map((message) => (
+                  <MemoizedSortableMessage
+                    key={message.id}
+                    message={message}
+                    handleEdit={onEdit}
+                    handleDelete={onDelete}
+                    handleRegenerate={handleRegenerate}
+                    isRunning={
+                      message.id === (generatingMessage?.id || regeneratingMessage?.id)
+                    }
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
+          )}
           <div ref={messagesEndRef} />
         </div>
       </div>

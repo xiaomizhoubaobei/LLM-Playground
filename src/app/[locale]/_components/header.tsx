@@ -11,6 +11,8 @@
 'use client'
 
 import { SettingTrigger } from '@/components/playground/setting-trigger'
+import { ThemeSwitcher } from '@/components/theme-switcher'
+import { KeyboardShortcuts } from '@/components/keyboard-shortcuts'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { MessageSquare, FileDown, Plus, Trash2 } from 'lucide-react'
@@ -151,6 +153,10 @@ export function Header({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+
+        <ThemeSwitcher />
+
+        <KeyboardShortcuts />
 
         <TooltipProvider delayDuration={0}>
           <Tooltip>
