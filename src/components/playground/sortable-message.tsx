@@ -74,9 +74,9 @@ interface SortableMessageProps {
 const LoadingIndicator = () => {
   const t = useTranslations('playground')
   return (
-    <div className='flex items-center gap-2 rounded-md bg-gray-50 p-3 text-gray-500'>
-      <Loader2 className='h-4 w-4 animate-spin' />
-      <span className='text-sm font-medium'>{t('generating')}</span>
+    <div className='flex items-center gap-2 rounded-md bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 p-2.5 text-gray-600 dark:text-gray-400 border border-blue-100 dark:border-blue-900/30'>
+      <Loader2 className='h-3.5 w-3.5 animate-spin text-blue-500' />
+      <span className='text-xs font-medium'>{t('generating')}</span>
     </div>
   )
 }
@@ -225,15 +225,19 @@ export const SortableMessage = memo(
         onMouseEnter={() => setIsInCard(true)}
         onMouseLeave={() => setIsInCard(false)}
         className={cn(
-          'mb-4 cursor-default rounded-lg bg-background p-4 shadow-sm ring-1 ring-gray-300',
-          'hover:ring-primary/95',
-          'focus-within:ring-primary',
-          'focus-within:hover:ring-primary',
-          isFocused && 'ring-primary hover:ring-primary'
+          'cursor-default rounded-lg p-4 transition-all duration-200',
+          'bg-gradient-to-br from-card via-card to-muted/20',
+          'shadow-sm hover:shadow-md',
+          'border border-border/40 hover:border-border/60',
+          'animate-fade-in',
+          'hover:border-primary/40',
+          'focus-within:ring-1 focus-within:ring-primary/30',
+          isFocused && 'ring-1 ring-primary/40 shadow-md',
+          message.role === 'assistant' && 'from-primary/5 via-card to-card border-primary/20'
         )}
       >
-        <div className='flex items-center justify-between gap-2 text-sm text-gray-500'>
-          <div>
+        <div className='flex items-center justify-between gap-2 text-sm mb-3'>
+          <div className='flex items-center gap-2'>
             {uiMode === 'expert' ? (
               <Select
                 value={currentRole}
@@ -246,7 +250,7 @@ export const SortableMessage = memo(
                   }
                 }}
               >
-                <SelectTrigger className='w-fit'>
+                <SelectTrigger className='w-fit h-7 px-2.5 text-xs font-medium bg-muted/40 hover:bg-muted/60 transition-colors rounded-md border-0'>
                   <SelectValue
                     placeholder={t('message.selectRolePlaceholder')}
                   />
@@ -260,14 +264,17 @@ export const SortableMessage = memo(
                 </SelectContent>
               </Select>
             ) : (
-              <span>{t(`message.${currentRole}`)}</span>
+              <span className='font-semibold text-xs text-muted-foreground bg-muted/40 px-2.5 py-1 rounded-md'>
+                {t(`message.${currentRole}`)}
+              </span>
             )}
           </div>
           <div
             className={cn(
-              'flex items-center gap-2 opacity-100 transition-opacity duration-150',
-              !isInCard && 'opacity-0',
-              isRunning && 'opacity-0'
+              'flex items-center gap-1 transition-all duration-200',
+              !isInCard && 'opacity-0 -translate-x-1',
+              isRunning && 'opacity-0',
+              isInCard && 'opacity-100 translate-x-0'
             )}
           >
             {message.role === 'assistant' && handleRegenerate && (
@@ -275,17 +282,17 @@ export const SortableMessage = memo(
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      variant='outline'
+                      variant='ghost'
                       size='icon'
-                      className='size-6 p-1'
+                      className='h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200'
                       onClick={() => handleRegenerate(message.id)}
                     >
-                      <RefreshCw className='size-4' />
+                      <RefreshCw className='h-3.5 w-3.5' />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent
                     sideOffset={4}
-                    className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                    className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
                   >
                     <p>{t('regenerateFromHere')}</p>
                   </TooltipContent>
@@ -296,24 +303,24 @@ export const SortableMessage = memo(
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant='outline'
+                    variant='ghost'
                     size='icon'
                     className={cn(
-                      'size-6 p-1',
+                      'h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200',
                       uiMode !== 'expert' && 'hidden'
                     )}
                     onClick={() => setIsEditing(!isEditing)}
                   >
                     {isEditing ? (
-                      <Eye className='size-4' />
+                      <Eye className='h-3.5 w-3.5' />
                     ) : (
-                      <Edit2 className='size-4' />
+                      <Edit2 className='h-3.5 w-3.5' />
                     )}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent
                   sideOffset={4}
-                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
                 >
                   <p>
                     {isEditing
@@ -327,21 +334,21 @@ export const SortableMessage = memo(
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant='outline'
+                    variant='ghost'
                     size='icon'
-                    className='size-6 p-1'
+                    className='h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200'
                     onClick={handleCopy}
                   >
                     {isCopied ? (
-                      <Check className='size-4' />
+                      <Check className='h-3.5 w-3.5 text-green-500' />
                     ) : (
-                      <Copy className='size-4' />
+                      <Copy className='h-3.5 w-3.5' />
                     )}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent
                   sideOffset={4}
-                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
                 >
                   <p>{t('message.copyTooltip')}</p>
                 </TooltipContent>
@@ -351,17 +358,17 @@ export const SortableMessage = memo(
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant='outline'
+                    variant='ghost'
                     size='icon'
-                    className={cn('size-6 p-1')}
+                    className='h-7 w-7 rounded-md hover:bg-destructive/10 hover:text-destructive transition-all duration-200'
                     onClick={() => handleDelete(message.id)}
                   >
-                    <Trash2 className='size-4' />
+                    <Trash2 className='h-3.5 w-3.5' />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent
                   sideOffset={4}
-                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
                 >
                   <p>{t('message.deleteTooltip')}</p>
                 </TooltipContent>
@@ -372,18 +379,21 @@ export const SortableMessage = memo(
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      variant='outline'
+                      variant='ghost'
                       size='icon'
-                      className='size-6 p-1'
+                      className={cn(
+                        'h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200',
+                        showProbabilities && 'bg-primary/10 text-primary'
+                      )}
                       onClick={() => setShowProbabilities(!showProbabilities)}
                     >
-                      <BarChart2 className={cn(
-                        'size-4',
-                        showProbabilities && 'text-primary'
-                      )} />
+                      <BarChart2 className='h-3.5 w-3.5' />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent
+                    sideOffset={4}
+                    className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
+                  >
                     <p>{t('message.showProbabilities')}</p>
                   </TooltipContent>
                 </Tooltip>
@@ -394,19 +404,19 @@ export const SortableMessage = memo(
                 <TooltipTrigger asChild>
                   <Button
                     {...listeners}
-                    variant='outline'
+                    variant='ghost'
                     size='icon'
                     className={cn(
-                      'size-6 p-1',
+                      'h-7 w-7 rounded-md hover:bg-muted hover:text-foreground transition-all duration-200',
                       uiMode !== 'expert' && 'hidden'
                     )}
                   >
-                    <GripVertical className='size-4 cursor-move' />
+                    <GripVertical className='h-3.5 w-3.5 cursor-move' />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent
                   sideOffset={4}
-                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                  className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
                 >
                   <p>{t('message.dragTooltip')}</p>
                 </TooltipContent>
@@ -414,7 +424,7 @@ export const SortableMessage = memo(
             </TooltipProvider>
           </div>
         </div>
-        <div className='mt-2 text-sm'>
+        <div className='mt-3 text-sm'>
           {isRunning && message.content.length === 0 ? (
             <LoadingIndicator />
           ) : (
@@ -429,7 +439,7 @@ export const SortableMessage = memo(
                     onChange={handleMessageEdit}
                   />
                   {message.role === 'user' && (
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 mt-2'>
                       {message.files && (
                         <FilePreview
                           files={message.files}
@@ -452,20 +462,23 @@ export const SortableMessage = memo(
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Button
-                                  variant="outline"
+                                  variant="ghost"
                                   size="icon"
-                                  className="shrink-0"
+                                  className="shrink-0 h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200"
                                   onClick={() => fileInputRef.current?.click()}
                                   disabled={isUploading}
                                 >
                                   {isUploading ? (
-                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
                                   ) : (
-                                    <ImagePlus className="h-4 w-4" />
+                                    <ImagePlus className="h-3.5 w-3.5" />
                                   )}
                                 </Button>
                               </TooltipTrigger>
-                              <TooltipContent>
+                              <TooltipContent
+                                sideOffset={4}
+                                className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
+                              >
                                 <p>{t('message.upload_file')}</p>
                               </TooltipContent>
                             </Tooltip>

@@ -17,18 +17,15 @@ permissions:
 
 jobs:
     build-and-push:
-        strategy:
-            matrix:
-                runner: [ubuntu-latest, ubuntu-latest-arm64]
-        runs-on: ${{ matrix.runner }}
+        runs-on: ubuntu-latest
         steps:
             - name: 加固运行器（审计所有出站调用）
-              uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
               with:
                   egress-policy: audit
 
             - name: 检出代码
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
             - name: 从 package.json 提取版本号
               id: version
@@ -38,7 +35,7 @@ jobs:
                   echo "已提取版本: $VERSION"
 
             - name: 设置 Docker Buildx
-              uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+              uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
             - name: 登录 DockerHub
               uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
@@ -75,7 +72,7 @@ jobs:
 
             - name: Docker 元数据
               id: meta
-              uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5.9.0
+              uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
               with:
                 images: |
                   ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
@@ -135,14 +132,14 @@ jobs:
                   done <<< "${{ steps.meta.outputs.tags }}"
 
             - name: 证明 DockerHub 镜像
-              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
+              uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
               with:
                 subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
             - name: 证明 GHCR 镜像
-              uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v1.4.4
+              uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
               with:
                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
                 subject-digest: ${{ steps.build.outputs.digest }}

@@ -110,30 +110,32 @@ export function SettingsSidebar({
 
   return (
     <Sidebar side='right'>
-      <SidebarHeader className='px-4'>
-        <div className='mb-4 flex items-center justify-between'>
-          <h2 className='text-lg font-semibold'>{t('settings.title')}</h2>
+      <SidebarHeader className='px-4 py-3 border-b border-border/40 bg-gradient-to-b from-background to-muted/20'>
+        <div className='mb-1 flex items-center justify-between'>
+          <h2 className='text-base font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent'>
+            {t('settings.title')}
+          </h2>
           <TooltipButton
             variant='ghost'
             size='icon'
             onClick={onResetSettings}
-            className='h-8 w-8'
+            className='h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200'
             tooltipContent={t('settings.resetSettingsDesc')}
           >
-            <RotateCcw className='h-4 w-4' />
+            <RotateCcw className='h-3.5 w-3.5' />
           </TooltipButton>
         </div>
       </SidebarHeader>
-      <SidebarContent className='px-4'>
+      <SidebarContent className='px-4 py-3'>
         <SidebarGroup>
-          <SidebarGroupLabel className='px-0'>
+          <SidebarGroupLabel className='px-0 mb-3 text-xs font-semibold text-foreground/80'>
             {t('settings.basicConfig')}
           </SidebarGroupLabel>
-          <SidebarGroupContent className='space-y-8'>
-            <div className='space-y-6'>
+          <SidebarGroupContent className='space-y-4'>
+            <div className='space-y-4'>
               <div>
-                <div className='flex items-center gap-1'>
-                  <Label className='text-sm font-medium text-gray-700'>
+                <div className='flex items-center gap-1 mb-1.5'>
+                  <Label className='text-xs font-medium text-foreground'>
                     Service Provider
                   </Label>
                   <TooltipHelpIcon content='选择服务提供商' />
@@ -143,12 +145,12 @@ export function SettingsSidebar({
                     <Button
                       variant='outline'
                       role='combobox'
-                      className='mt-1.5 w-full justify-between border-gray-300 bg-white'
+                      className='w-full justify-between border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'
                     >
                       {settings.provider || '302AI'}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className='w-full p-0' side='bottom' align='start'>
+                  <PopoverContent className='w-full p-0 rounded-md shadow-md border border-border/40' side='bottom' align='start'>
                     <Command className='w-full'>
                       <div
                         className='max-h-[300px] touch-pan-y overflow-hidden'
@@ -160,18 +162,18 @@ export function SettingsSidebar({
                             <CommandItem
                               value='302AI'
                               onSelect={() => {
-                                onSettingsChange({ 
-                                  ...settings, 
+                                onSettingsChange({
+                                  ...settings,
                                   provider: '302AI',
                                   modelProvider: 'OpenAI',
-                                  model: undefined 
+                                  model: undefined
                                 })
                               }}
-                              className='px-3 py-1.5'
+                              className='px-2.5 py-1.5 rounded-md hover:bg-muted/50 text-xs'
                             >
                               <Check
                                 className={cn(
-                                  'mr-2 h-4 w-4',
+                                  'mr-1.5 h-3.5 w-3.5',
                                   settings.provider === '302AI'
                                     ? 'opacity-100'
                                     : 'opacity-0'
@@ -188,8 +190,8 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center gap-1'>
-                  <Label className='text-sm font-medium text-gray-700'>
+                <div className='flex items-center gap-1 mb-1.5'>
+                  <Label className='text-xs font-medium text-foreground'>
                     Model Provider
                   </Label>
                   <TooltipHelpIcon content='选择模型提供商以过滤可用模型' />
@@ -199,12 +201,12 @@ export function SettingsSidebar({
                     <Button
                       variant='outline'
                       role='combobox'
-                      className='mt-1.5 w-full justify-between border-gray-300 bg-white'
+                      className='w-full justify-between border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'
                     >
                       {settings.modelProvider || 'OpenAI'}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className='w-full p-0' side='bottom' align='start'>
+                  <PopoverContent className='w-full p-0 rounded-md shadow-md border border-border/40' side='bottom' align='start'>
                     <Command className='w-full'>
                       <div
                         className='max-h-[300px] touch-pan-y overflow-hidden'
@@ -216,17 +218,17 @@ export function SettingsSidebar({
                             <CommandItem
                               value='OpenAI'
                               onSelect={() => {
-                                onSettingsChange({ 
-                                  ...settings, 
+                                onSettingsChange({
+                                  ...settings,
                                   modelProvider: 'OpenAI',
-                                  model: undefined 
+                                  model: undefined
                                 })
                               }}
-                              className='px-3 py-1.5'
+                              className='px-2.5 py-1.5 rounded-md hover:bg-muted/50 text-xs'
                             >
                               <Check
                                 className={cn(
-                                  'mr-2 h-4 w-4',
+                                  'mr-1.5 h-3.5 w-3.5',
                                   settings.modelProvider === 'OpenAI'
                                     ? 'opacity-100'
                                     : 'opacity-0'
@@ -243,8 +245,8 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center gap-1'>
-                  <Label className='text-sm font-medium text-gray-700'>
+                <div className='flex items-center gap-1 mb-1.5'>
+                  <Label className='text-xs font-medium text-foreground'>
                     {t('settings.model')}
                   </Label>
                   <TooltipHelpIcon content={t('settings.modelDesc')} />
@@ -254,16 +256,16 @@ export function SettingsSidebar({
                     <Button
                       variant='outline'
                       role='combobox'
-                      className='mt-1.5 w-full justify-between border-gray-300 bg-white'
+                      className='w-full justify-between border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'
                     >
                       {settings.model || t('settings.selectModelPlaceholder')}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className='w-full p-0' side='bottom' align='start'>
+                  <PopoverContent className='w-full p-0 rounded-md shadow-md border border-border/40' side='bottom' align='start'>
                     <Command className='w-full'>
                       <CommandInput
                         placeholder={t('settings.searchModelPlaceholder')}
-                        className='px-3 py-2'
+                        className='px-2.5 py-1.5 text-xs'
                       />
                       <div
                         className='max-h-[300px] touch-pan-y overflow-hidden'
@@ -271,7 +273,7 @@ export function SettingsSidebar({
                         onTouchMove={(e) => e.stopPropagation()}
                       >
                         <CommandList className='max-h-[calc(300px-40px)] overflow-y-auto'>
-                          <CommandEmpty className='px-3 py-2'>
+                          <CommandEmpty className='px-2.5 py-1.5 text-xs'>
                             {t('settings.noModelFound')}
                           </CommandEmpty>
                           <CommandGroup>
@@ -283,11 +285,11 @@ export function SettingsSidebar({
                                   onSelect={() => {
                                     onSettingsChange({ ...settings, model: model.id })
                                   }}
-                                  className='px-3 py-1.5'
+                                  className='px-2.5 py-1.5 rounded-md hover:bg-muted/50 text-xs'
                                 >
                                   <Check
                                     className={cn(
-                                      'mr-2 h-4 w-4',
+                                      'mr-1.5 h-3.5 w-3.5',
                                       settings.model === model.id
                                         ? 'opacity-100'
                                         : 'opacity-0'
@@ -297,7 +299,7 @@ export function SettingsSidebar({
                                 </CommandItem>
                               ))
                             ) : (
-                              <div className='py-6 text-center text-sm text-gray-500'>
+                              <div className='py-6 text-center text-xs text-muted-foreground'>
                                 {t('settings.noModelFound')}
                               </div>
                             )}
@@ -310,9 +312,9 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between mb-1.5'>
                   <div className='flex items-center gap-1'>
-                    <Label className='text-sm font-medium text-gray-700'>
+                    <Label className='text-xs font-medium text-foreground'>
                       Stream Mode
                     </Label>
                     <TooltipHelpIcon content='启用流式响应以实时显示生成内容' />
@@ -327,17 +329,19 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between mb-1.5'>
                   <div className='flex items-center gap-1'>
-                    <Label className='text-sm font-medium text-gray-700'>
+                    <Label className='text-xs font-medium text-foreground'>
                       {t('settings.temperature')}
                     </Label>
                     <TooltipHelpIcon content={t('settings.temperatureDesc')} />
                   </div>
-                  <span className='text-sm text-gray-500'>{settings.temperature}</span>
+                  <span className='text-xs font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded-md'>
+                    {settings.temperature}
+                  </span>
                 </div>
                 <Slider
-                  className='mt-2'
+                  className='mt-1.5'
                   value={[settings.temperature]}
                   max={1}
                   min={0}
@@ -349,15 +353,17 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between mb-1.5'>
                   <div className='flex items-center gap-1'>
-                    <Label className='text-sm font-medium text-gray-700'>Top P</Label>
+                    <Label className='text-xs font-medium text-foreground'>Top P</Label>
                     <TooltipHelpIcon content={t('settings.topPDesc')} />
                   </div>
-                  <span className='text-sm text-gray-500'>{settings.topP}</span>
+                  <span className='text-xs font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded-md'>
+                    {settings.topP}
+                  </span>
                 </div>
                 <Slider
-                  className='mt-2'
+                  className='mt-1.5'
                   value={[settings.topP]}
                   max={1}
                   min={0}
@@ -369,19 +375,19 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between mb-1.5'>
                   <div className='flex items-center gap-1'>
-                    <Label className='text-sm font-medium text-gray-700'>
+                    <Label className='text-xs font-medium text-foreground'>
                       {t('settings.frequencyPenalty')}
                     </Label>
                     <TooltipHelpIcon content={t('settings.frequencyPenaltyDesc')} />
                   </div>
-                  <span className='text-sm text-gray-500'>
+                  <span className='text-xs font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded-md'>
                     {settings.frequencyPenalty}
                   </span>
                 </div>
                 <Slider
-                  className='mt-2'
+                  className='mt-1.5'
                   value={[settings.frequencyPenalty]}
                   max={2}
                   min={-2}
@@ -396,19 +402,19 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between mb-1.5'>
                   <div className='flex items-center gap-1'>
-                    <Label className='text-sm font-medium text-gray-700'>
+                    <Label className='text-xs font-medium text-foreground'>
                       {t('settings.presencePenalty')}
                     </Label>
                     <TooltipHelpIcon content={t('settings.presencePenaltyDesc')} />
                   </div>
-                  <span className='text-sm text-gray-500'>
+                  <span className='text-xs font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded-md'>
                     {settings.presencePenalty}
                   </span>
                 </div>
                 <Slider
-                  className='mt-2'
+                  className='mt-1.5'
                   value={[settings.presencePenalty]}
                   max={2}
                   min={-2}
@@ -423,13 +429,11 @@ export function SettingsSidebar({
               </div>
 
               <div>
-                <div className='flex items-center justify-between'>
-                  <div className='flex items-center gap-1'>
-                    <Label className='text-sm font-medium text-gray-700'>
-                      {t('settings.maxTokens')}
-                    </Label>
-                    <TooltipHelpIcon content={t('settings.maxTokensDesc')} />
-                  </div>
+                <div className='flex items-center gap-1 mb-1.5'>
+                  <Label className='text-xs font-medium text-foreground'>
+                    {t('settings.maxTokens')}
+                  </Label>
+                  <TooltipHelpIcon content={t('settings.maxTokensDesc')} />
                 </div>
                 <div className='flex items-center justify-between'>
                   <Input
@@ -443,7 +447,7 @@ export function SettingsSidebar({
                       })
                     }
                     placeholder={t('settings.maxTokensPlaceholder')}
-                    className='mt-2'
+                    className='border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'
                   />
                 </div>
               </div>
@@ -452,7 +456,7 @@ export function SettingsSidebar({
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className='px-0'>
+          <SidebarGroupLabel className='px-0 mb-3 text-xs font-semibold text-foreground/80'>
             <div className='flex items-center gap-1'>
               {t('settings.apiKey')}
               <TooltipHelpIcon
@@ -465,7 +469,7 @@ export function SettingsSidebar({
               />
             </div>
           </SidebarGroupLabel>
-          <SidebarGroupContent className='space-y-8'>
+          <SidebarGroupContent>
             <Input
               placeholder={t('settings.apiKeyPlaceholder')}
               type='password'
@@ -473,18 +477,19 @@ export function SettingsSidebar({
               onChange={(e) =>
                 onSettingsChange({ ...settings, apiKey: e.target.value })
               }
+              className='border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'
             />
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className='px-0'>
+          <SidebarGroupLabel className='px-0 mb-3 text-xs font-semibold text-foreground/80'>
             <div className='flex items-center gap-1'>
               {t('settings.mode')}
               {uiMode === 'expert' && (
                 <TooltipHelpIcon
                   content={t('settings.expertModeDeviceNote')}
-                  className='h-4 w-4 text-amber-500'
+                  className='h-3.5 w-3.5 text-amber-500'
                 />
               )}
             </div>
@@ -497,7 +502,7 @@ export function SettingsSidebar({
               beginnerText={t('settings.beginnerMode')}
               expertText={t('settings.expertMode')}
             />
-            <p className='mt-2 text-sm text-gray-500'>
+            <p className='mt-1.5 text-xs text-muted-foreground'>
               {uiMode === 'expert'
                 ? t('settings.expertModeDesc')
                 : t('settings.beginnerModeDesc')}
@@ -506,7 +511,7 @@ export function SettingsSidebar({
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className='px-0'>
+          <SidebarGroupLabel className='px-0 mb-3 text-xs font-semibold text-foreground/80'>
             <div className='flex items-center gap-1'>
               {t('settings.language')}
               <TooltipHelpIcon content={t('settings.languageTooltip')} />
@@ -527,7 +532,7 @@ export function SettingsSidebar({
                 })
               }}
             >
-              <SelectTrigger className='w-full'>
+              <SelectTrigger className='w-full border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'>
                 <SelectValue placeholder={t('settings.selectLanguage')} />
               </SelectTrigger>
               <SelectContent>

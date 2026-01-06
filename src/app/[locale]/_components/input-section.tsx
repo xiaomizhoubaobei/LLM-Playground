@@ -115,26 +115,26 @@ export function InputSection({
   return (
     <div
       className={cn(
-        'flex flex-col gap-2 border-t border-gray-200 bg-background',
+        'flex flex-col gap-1 border-t border-border/40 bg-gradient-to-b from-background via-background to-muted/20',
         isAnimating && 'transition-[height] duration-300 ease-in-out'
       )}
       style={{ height }}
     >
       <div
         className={cn(
-          'h-0.5 w-full cursor-ns-resize transition-colors hover:bg-gray-200',
-          isDragging && 'bg-gray-300'
+          'h-0.5 w-full cursor-ns-resize transition-all duration-200 hover:bg-primary/30',
+          isDragging && 'bg-primary/50'
         )}
         onMouseDown={onMouseDown}
       />
-      <div className='flex flex-1 flex-col gap-2 p-4'>
+      <div className='flex flex-1 flex-col gap-2 p-3.5'>
         <div className='flex items-center justify-between gap-2'>
           {uiMode === 'expert' ? (
             <Select
               value={newMessage.role}
               onValueChange={onRoleChange}
             >
-              <SelectTrigger className='w-fit'>
+              <SelectTrigger className='w-fit h-7 px-2.5 text-xs font-medium bg-muted/40 hover:bg-muted/60 transition-colors rounded-md border-0'>
                 <SelectValue placeholder={t('message.selectRolePlaceholder')} />
               </SelectTrigger>
               <SelectContent>
@@ -144,19 +144,22 @@ export function InputSection({
               </SelectContent>
             </Select>
           ) : (
-            <span className='text-sm text-gray-500'>{t('message.user')}</span>
+            <span className='text-xs font-semibold text-muted-foreground bg-muted/40 px-2.5 py-1 rounded-md'>
+              {t('message.user')}
+            </span>
           )}
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-1'>
             <TooltipButton
-              variant='outline'
+              variant='ghost'
               size='icon'
+              className='h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200'
               onClick={onToggleExpand}
               tooltipContent={isExpanded ? t('message.collapse') : t('message.expand')}
             >
               {isExpanded ? (
-                <ChevronDown className='h-4 w-4' />
+                <ChevronDown className='h-3.5 w-3.5' />
               ) : (
-                <ChevronUp className='h-4 w-4' />
+                <ChevronUp className='h-3.5 w-3.5' />
               )}
             </TooltipButton>
 
@@ -167,7 +170,7 @@ export function InputSection({
                     <TooltipTrigger asChild>
                       <PopoverTrigger asChild>
                         <Button
-                          variant='outline'
+                          variant='ghost'
                           onClick={(e) => {
                             e.preventDefault()
                             if (!newMessage.files?.length) {
@@ -177,16 +180,16 @@ export function InputSection({
                             }
                           }}
                           disabled={isUploading}
-                          className='relative'
+                          className='relative h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200'
                           size='icon'
                         >
                           {isUploading ? (
-                            <Loader2 className='size-4 animate-spin' />
+                            <Loader2 className='size-3.5 animate-spin' />
                           ) : (
                             <>
-                              <Upload className='size-4' />
+                              <Upload className='size-3.5' />
                               {newMessage.files && newMessage.files.length > 0 && (
-                                <span className='absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground'>
+                                <span className='absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-primary text-[9px] text-primary-foreground shadow-sm'>
                                   {newMessage.files.length}
                                 </span>
                               )}
@@ -197,28 +200,28 @@ export function InputSection({
                     </TooltipTrigger>
                     <TooltipContent
                       sideOffset={4}
-                      className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                      className='max-w-xs select-text break-words rounded-md bg-gray-900 px-2.5 py-1.5 text-xs text-gray-50 shadow-md'
                     >
                       <p>{t('message.upload_file')}</p>
                     </TooltipContent>
                   </TooltipProvider>
                   {newMessage.files && newMessage.files.length > 0 && (
-                    <PopoverContent className='w-80 p-2' side='top' align='end'>
+                    <PopoverContent className='w-80 p-2.5 rounded-lg shadow-md border border-border/40' side='top' align='end'>
                       <div className='mb-2 flex items-center justify-between'>
-                        <span className='text-sm font-medium'>
+                        <span className='text-xs font-semibold'>
                           {t('message.uploaded_files')}
                         </span>
                         <TooltipButton
                           variant='ghost'
                           size='icon'
-                          className='h-8 w-8'
+                          className='h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary'
                           onClick={() => {
                             setIsPreviewOpen(false)
                             triggerFileUpload()
                           }}
                           tooltipContent={t('message.upload_file')}
                         >
-                          <Plus className='h-4 w-4' />
+                          <Plus className='h-3.5 w-3.5' />
                         </TooltipButton>
                       </div>
                       <FilePreview
@@ -248,18 +251,19 @@ export function InputSection({
 
             {uiMode === 'expert' && (
               <TooltipButton
-                variant='outline'
+                variant='ghost'
                 disabled={!newMessage.content}
                 onClick={onAddMessage}
                 tooltipContent={t('message.addTooltip')}
+                className='h-7 w-7 rounded-md hover:bg-primary/10 hover:text-primary transition-all duration-200'
               >
-                <Plus className='h-4 w-4' />
+                <Plus className='h-3.5 w-3.5' />
                 {t('message.add')}
               </TooltipButton>
             )}
-            
+
             <TooltipButton
-              className='bg-primary hover:bg-primary/90'
+              className='h-8 px-3 rounded-md bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-sm hover:shadow-md transition-all duration-200'
               onClick={isRunning ? onStop : onRun}
               tooltipContent={
                 isRunning
@@ -272,19 +276,19 @@ export function InputSection({
               {isRunning ? (
                 <>
                   {t('message.stop')}
-                  <Square className='ml-2 h-4 w-4' />
+                  <Square className='ml-1.5 h-3.5 w-3.5' />
                 </>
               ) : (
                 <>
                   {t('message.run')}
-                  <PlayCircle className='ml-2 h-4 w-4' />
+                  <PlayCircle className='ml-1.5 h-3.5 w-3.5' />
                 </>
               )}
             </TooltipButton>
           </div>
         </div>
         <Textarea
-          className='flex-1 resize-none rounded-lg border-0 px-0 shadow-none focus-visible:ring-0'
+          className='flex-1 resize-none rounded-lg border border-border/40 bg-muted/30 px-3 py-2.5 shadow-sm focus-visible:ring-1 focus-visible:ring-primary/20 focus-visible:border-primary/30 transition-all duration-200 hover:border-border/60'
           placeholder={t('message.inputPlaceholder')}
           value={newMessage.content}
           onChange={onMessageChange}

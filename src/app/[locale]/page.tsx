@@ -34,11 +34,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 
+import { ConversationList } from '@/components/playground/conversation-list'
 import { SettingsSidebar } from './_components/settings-sidebar'
 import { getModels, ModelInfo } from '@/actions/models'
 import { chatNonStream } from '@/actions/chat-non-stream'
 import { Header } from './_components/header'
 import { InputSection } from './_components/input-section'
+import { conversationStore } from '@/db/conversation-store'
 
 /**
  * AI 模型的默认设置
@@ -74,6 +76,14 @@ export default function Component() {
     role: 'user',
     content: '',
   })
+
+  // 会话相关状态
+  const [currentConversationId, setCurrentConversationId] = useState<number | null>(null)
+  const [showConversationList, setShowConversationList] = useState(false)
+
+  const handleToggleConversationList = useCallback(() => {
+    setShowConversationList((prev) => !prev)
+  }, [])
 
   const { messages, handleEdit, handleDelete, handleDragEnd } = useMessages(
     t('message.systemDefaultContent')
@@ -114,15 +124,16 @@ export default function Component() {
   }
 
   /**
-   * 重置聊天历史到初始状态
+   * 重置当前会话的消息到初始状态
    */
   const handleResetMessages = useCallback(async () => {
     await messageStore.clear()
-    await messageStore.addMessage({
+    const systemMessage = {
       id: uuidv4(),
-      role: 'system',
+      role: 'system' as const,
       content: t('message.systemDefaultContent'),
-    })
+    }
+    await messageStore.addMessage(systemMessage)
     setNewMessage((prev) => ({
       ...prev,
       id: uuidv4(),
@@ -175,6 +186,61 @@ export default function Component() {
       getModels(settings.provider, settings.modelProvider).then(setModels).catch(console.error)
     }
   }, [settings.provider, settings.modelProvider])
+
+  // 会话相关处理函数
+  const handleNewConversation = useCallback(async () => {
+    // 检查当前会话是否为空（只有 system 消息）
+    const isCurrentConversationEmpty = messages.length <= 1
+
+    if (isCurrentConversationEmpty) {
+      toast.info('当前会话为空，请先发送消息后再创建新对话')
+      return
+    }
+
+    try {
+      const newConversationId = await conversationStore.createConversation()
+      await messageStore.switchConversation(newConversationId)
+      setCurrentConversationId(newConversationId)
+      setNewMessage((prev) => ({
+        ...prev,
+        id: uuidv4(),
+        content: '',
+        files: [],
+      }))
+      toast.success('已创建新对话')
+    } catch (error) {
+      console.error('Failed to create conversation:', error)
+      toast.error('创建对话失败')
+    }
+  }, [messages])
+
+  const handleConversationSelect = useCallback(async (conversationId: number) => {
+    try {
+      await conversationStore.switchConversation(conversationId)
+      await messageStore.switchConversation(conversationId)
+      setCurrentConversationId(conversationId)
+      setNewMessage((prev) => ({
+        ...prev,
+        id: uuidv4(),
+        content: '',
+        files: [],
+      }))
+    } catch (error) {
+      console.error('Failed to switch conversation:', error)
+      toast.error('切换对话失败')
+    }
+  }, [])
+
+  // 初始化会话
+  useEffect(() => {
+    const initConversations = async () => {
+      await conversationStore.init()
+      await messageStore.init()
+      const currentId = conversationStore.getCurrentConversationId()
+      setCurrentConversationId(currentId)
+    }
+    initConversations()
+  }, [])
 
   /**
    * 启动与 AI 模型的聊天生成
@@ -369,10 +435,24 @@ export default function Component() {
             } as React.CSSProperties
           }
         >
-          <div className='sticky top-0 flex h-full w-full flex-col overflow-hidden'>
+          {/* 会话列表 */}
+          {showConversationList && (
+            <div className="w-64 border-r border-border/40 bg-background overflow-hidden flex flex-col shrink-0">
+              <ConversationList
+                currentConversationId={currentConversationId}
+                onConversationSelect={handleConversationSelect}
+                onNewConversation={handleNewConversation}
+              />
+            </div>
+          )}
+
+          <div className='flex-1 flex flex-col overflow-hidden'>
             <Header
               onExport={handleExport}
               onResetMessages={handleResetMessages}
+              onNewConversation={handleNewConversation}
+              showConversationList={showConversationList}
+              onToggleConversationList={handleToggleConversationList}
             />
 
             <div className='flex-1 overflow-hidden'>

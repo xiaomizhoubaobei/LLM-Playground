@@ -57,12 +57,13 @@ export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
 /**
  * Playground 中聊天消息的类型定义
  * 表示用户输入和AI响应
- * 
+ *
  * @interface PlaygroundMessage
  * @property {string} id - 唯一消息标识符
  * @property {'system' | 'user' | 'assistant'} role - 消息发送者角色
  * @property {string} content - 消息内容
  * @property {number} [timestamp] - 可选的消息时间戳
+ * @property {number} [conversationId] - 可选的会话ID
  * @property {Object[]} [files] - 可选的文件或图片
  * @property {string} files[].url - 文件或图片URL
  * @property {'image' | 'file'} files[].type - 文件或图片类型
@@ -75,6 +76,7 @@ export type PlaygroundMessage = {
   role: 'system' | 'user' | 'assistant'
   content: string
   timestamp?: number
+  conversationId?: number
   files?: {
     url: string
     type: 'image' | 'file'

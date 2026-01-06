@@ -6,12 +6,13 @@
  * @modified 2025-12-24
  * @contact qixiaoxin @stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 实现观察者模式进行状态更新，处理并发操作，支持国际化
+ * @remark 实现观察者模式进行状态更新，处理并发操作，支持会话管理
  */
 
 import { PlaygroundMessage } from '@/stores/playground'
 import { arrayMove } from '@dnd-kit/sortable'
 import { db } from '.'
+import { conversationStore } from './conversation-store'
 import { logger } from '@/utils/logger'
 
 /**
@@ -24,7 +25,7 @@ type Listener = (messages: PlaygroundMessage[]) => void
 /**
  * 管理 playground 消息的状态和持久化
  * 实现观察者模式进行状态更新，处理并发操作
- * 
+ *
  * @class
  * @since 2024-11-20
  * @modified 2025-12-24
@@ -34,6 +35,7 @@ class MessageStore {
   private messages: PlaygroundMessage[] = []
   private editOperations = new Map<string, Promise<void>>()
   private isSavingReorder = false
+  private currentConversationId: number | null = null
 
   /**
    * 订阅消息状态变化的监听器
@@ -66,32 +68,73 @@ class MessageStore {
    * @since 2024-11-20
    */
   async init() {
-    const messages = await db.messages.orderBy('timestamp').toArray()
+    this.currentConversationId = conversationStore.getCurrentConversationId()
+    await this.loadMessages()
+  }
+
+  /**
+   * 加载当前会话的消息
+   * @async
+   * @private
+   * @since 2025-12-24
+   */
+  private async loadMessages() {
+    if (!this.currentConversationId) {
+      this.messages = []
+      this.notify()
+      return
+    }
+
+    const messages = await db.messages
+      .where('conversationId')
+      .equals(this.currentConversationId)
+      .sortBy('timestamp')
+
     this.messages = messages
     this.notify()
   }
 
   /**
+   * 切换到指定会话并加载消息
+   * @async
+   * @param {number} conversationId - 要切换到的会话 ID
+   * @since 2025-12-24
+   */
+  async switchConversation(conversationId: number) {
+    this.currentConversationId = conversationId
+    await this.loadMessages()
+  }
+
+  /**
    * 向存储中添加新消息
    * @async
-   * @param {Omit<PlaygroundMessage, 'timestamp'>} message - 要添加的消息
+   * @param {Omit<PlaygroundMessage, 'timestamp' | 'conversationId'>} message - 要添加的消息
    * @since 2024-11-20
    */
-  async addMessage(message: Omit<PlaygroundMessage, 'timestamp'>) {
+  async addMessage(message: Omit<PlaygroundMessage, 'timestamp' | 'conversationId'>) {
+    if (!this.currentConversationId) {
+      logger.warn('No current conversation, cannot add message', { module: 'MessageStore' })
+      return
+    }
+
     const timestamp = Date.now()
-    const newMessage = { ...message, timestamp }
-    
-    logger.debug('Adding new message', { 
-      context: { messageId: message.id, role: message.role },
+    const newMessage = { ...message, timestamp, conversationId: this.currentConversationId }
+
+    logger.debug('Adding new message', {
+      context: { messageId: message.id, role: message.role, conversationId: this.currentConversationId },
       module: 'MessageStore'
     })
-    
+
     const updatedMessages = [...this.messages, newMessage]
     this.messages = updatedMessages
     this.notify()
 
     await db.messages.add(newMessage)
-    logger.info('Message added successfully', { 
+
+    // 更新会话的消息计数
+    await conversationStore.updateMessageCount(this.currentConversationId, 1)
+
+    logger.info('Message added successfully', {
       context: { messageId: message.id },
       module: 'MessageStore'
     })
@@ -119,12 +162,12 @@ class MessageStore {
         const currentMessage = this.messages.find(msg => msg.id === id)
         if (!currentMessage) return
 
-        const updatedMessage = typeof update === 'string' 
+        const updatedMessage = typeof update === 'string'
           ? { ...currentMessage, content: update }
           : { ...currentMessage, ...update }
 
         await db.messages.put(updatedMessage)
-        this.messages = this.messages.map(msg => 
+        this.messages = this.messages.map(msg =>
           msg.id === id ? updatedMessage : msg
         )
         this.notify()
@@ -145,21 +188,26 @@ class MessageStore {
    * @since 2024-11-20
    */
   async deleteMessage(id: string) {
-    logger.debug('Deleting message', { 
+    logger.debug('Deleting message', {
       context: { messageId: id },
       module: 'MessageStore'
     })
-    
+
     const currentOperation = this.editOperations.get(id)
     if (currentOperation) {
       await currentOperation
     }
-    
+
     await db.messages.delete(id)
     this.messages = this.messages.filter(msg => msg.id !== id)
     this.notify()
-    
-    logger.info('Message deleted successfully', { 
+
+    // 更新会话的消息计数
+    if (this.currentConversationId) {
+      await conversationStore.updateMessageCount(this.currentConversationId, -1)
+    }
+
+    logger.info('Message deleted successfully', {
       context: { messageId: id },
       module: 'MessageStore'
     })
@@ -175,12 +223,12 @@ class MessageStore {
    */
   async reorderMessages(activeId: string, overId: string) {
     if (this.isSavingReorder) return
-    
-    logger.debug('Reordering messages', { 
+
+    logger.debug('Reordering messages', {
       context: { activeId, overId },
       module: 'MessageStore'
     })
-    
+
     try {
       this.isSavingReorder = true
 
@@ -206,13 +254,13 @@ class MessageStore {
 
       this.messages = updatedMessages
       this.notify()
-      
-      logger.info('Messages reordered successfully', { 
+
+      logger.info('Messages reordered successfully', {
         context: { activeId, overId },
         module: 'MessageStore'
       })
     } catch (error) {
-      logger.error('Error reordering messages', error as Error, { 
+      logger.error('Error reordering messages', error as Error, {
         context: { activeId, overId },
         module: 'MessageStore'
       })
@@ -238,28 +286,45 @@ class MessageStore {
 
     const messagesToDelete = this.messages.slice(index).map(msg => msg.id!)
     await db.messages.bulkDelete(messagesToDelete)
-    
+
+    const deletedCount = messagesToDelete.length
     this.messages = this.messages.slice(0, index)
     this.notify()
+
+    // 更新会话的消息计数
+    if (this.currentConversationId) {
+      await conversationStore.updateMessageCount(this.currentConversationId, -deletedCount)
+    }
   }
 
   /**
-   * 清除存储中的所有消息
+   * 清除当前会话的所有消息
    * @async
    * @since 2024-11-20
    */
   async clear() {
     logger.info('Clearing all messages', { module: 'MessageStore' })
-    
+
     for (const operation of this.editOperations.values()) {
       await operation
     }
 
-    await db.messages.clear()
-    
+    if (!this.currentConversationId) {
+      this.messages = []
+      this.notify()
+      return
+    }
+
+    const deletedCount = this.messages.length
+    await db.messages.where('conversationId').equals(this.currentConversationId).delete()
+
     this.messages = []
-    
+
     this.notify()
+
+    // 更新会话的消息计数
+    await conversationStore.updateMessageCount(this.currentConversationId, -deletedCount)
+
     logger.info('All messages cleared successfully', { module: 'MessageStore' })
   }
 
@@ -274,7 +339,7 @@ class MessageStore {
     if (this.messages.length > 0) {
       return [...this.messages]
     }
-    
+
     const messages = await db.messages.orderBy('timestamp').toArray()
     return messages
   }

@@ -71,10 +71,6 @@ EXPOSE 3000
 # 设置环境变量
 ENV PORT=3000
 
-# 运行时需要的环境变量：
-# - AI_302_API_KEY: 302.AI API 密钥（必需）
-# - AI_302_API_URL: API 服务地址（必需）
-# - NEXT_PUBLIC_AI_302_API_UPLOAD_URL: 文件上传地址（必需）
 
 # 启动命令（standalone模式）
 CMD ["node", "server.js"]

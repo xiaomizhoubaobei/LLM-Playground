@@ -205,17 +205,17 @@ export const MessageList = memo(function MessageList({
 
   return (
     <div className='flex h-full w-full flex-col'>
-      <div 
-        ref={containerRef} 
-        className='h-full w-full overflow-y-auto'
-        style={{ 
-          willChange: 'transform', // 优化滚动性能
-          backfaceVisibility: 'hidden', // 防止闪烁
+      <div
+        ref={containerRef}
+        className='h-full w-full overflow-y-auto custom-scrollbar'
+        style={{
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
           WebkitBackfaceVisibility: 'hidden',
-          transform: 'translateZ(0)', // 强制硬件加速
+          transform: 'translateZ(0)',
         }}
       >
-        <div className='w-full p-6'>
+        <div className='w-full p-4 space-y-3'>
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
