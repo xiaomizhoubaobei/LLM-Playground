@@ -8,21 +8,21 @@
 
 <p align="center"><a href="../README.md">中文</a> | <a href="README_en.md">English</a> | <a href="README_ja.md">日本語</a> | <a href="README_ru.md">Русский</a> | <a href="README_fr.md">Français</a> | <a href="README_de.md">Deutsch</a></p>
 
-![界面预览](https://cnb.mizhoubaobei.top/302_llm_playground/302-LLM-游乐场jp.png)
+![界面预览](../images/302-LLM-游乐场jp.png)
 
 
 ## インタフェースプレビュー
 ユーザ入力に基づいて結果を生成し、Latexエクスプレッションレンダリングをサポートします。
-![結果生成](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日1.png)    
+![結果生成](../images/LLM日1.png)    
 
 コンテキストとして画像をアップロードして会話することができます。
-![画像アップロード](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日2.png)    
+![画像アップロード](../images/LLM日2.png)    
 
 チャートレンダリングをサポートします。
-![チャートレンダリング](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日3.png)      
+![チャートレンダリング](../images/LLM日3.png)      
 
 OpenAI モデルには、トークン確率を表示する機能が備わっており、現在選択されているトークンの確率を取得でき、複数の代替トークンとその確率を提供することができます。
-![トークン確率表示](https://cnb.mizhoubaobei.top/302_llm_playground/LLM日4.jpg)  
+![トークン確率表示](../images/LLM日4.jpg)  
 
 ## ✨ 主な機能 ✨
 
@@ -95,8 +95,8 @@ src/
 
 1. リポジトリをクローン：
    ```bash
-   git clone https://github.com/302ai/302_llm_playground
-   cd 302_llm_playground
+   git clone https://github.com/xiaomizhoubaobei/LLM-Playground
+   cd LLM-Playground
 
    ```
    

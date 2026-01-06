@@ -8,20 +8,20 @@
 
 <p align="center"><a href="README.md">中文</a> | <a href="docs/README_en.md">English</a> | <a href="docs/README_ja.md">日本語</a> | <a href="docs/README_ru.md">Русский</a> | <a href="docs/README_fr.md">Français</a> | <a href="docs/README_de.md">Deutsch</a></p>
 
-![界面预览](https://cnb.mizhoubaobei.top/302_llm_playground/302-LLM-游乐场.png) 
+![界面预览](./images/302-LLM-游乐场.png) 
 
 ## 界面预览
    根据用户输入生成结果，支持Latex表达式渲染。
-   ![生成结果示例](https://cnb.mizhoubaobei.top/302_llm_playground/LLM1.png)     
+   ![生成结果示例](./images/LLM1.png)     
 
    可上传图片作为上下文进行对话。
-   ![图片上传功能](https://cnb.mizhoubaobei.top/302_llm_playground/LLM2.png)     
+   ![图片上传功能](./images/LLM2.png)     
 
    支持图表渲染。
-   ![图表渲染示例](https://cnb.mizhoubaobei.top/302_llm_playground/LLM3.png)
+   ![图表渲染示例](./images/LLM3.png)
 
    OpenAI模型下具有显示词元概率功能，可获取当前选中词元的概率，提供多个备选词元及概率。
-   ![词元概率显示](https://cnb.mizhoubaobei.top/302_llm_playground/LLM4.jpg)
+   ![词元概率显示](./images/LLM4.jpg)
    
 ## ✨ 主要功能 ✨
 
@@ -94,8 +94,8 @@ src/
 
 1. 克隆仓库：
    ```bash
-   git clone https://github.com/302ai/302_llm_playground
-   cd 302_llm_playground
+   git clone https://github.com/xiaomizhoubaobei/LLM-Playground
+   cd LLM-Playground
    ```
    
 2. 安装依赖：

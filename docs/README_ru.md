@@ -8,20 +8,20 @@
 
 <p align="center"><a href="../README.md">中文</a> | <a href="README_en.md">English</a> | <a href="README_ja.md">日本語</a> | <a href="README_ru.md">Русский</a> | <a href="README_fr.md">Français</a> | <a href="README_de.md">Deutsch</a></p>
 
-![Предварительный просмотр интерфейса](https://cnb.mizhoubaobei.top/302_llm_playground/302-LLM-游乐场.png) 
+![Предварительный просмотр интерфейса](../images/302-LLM-游乐场.png) 
 
 ## Предварительный просмотр интерфейса
    Генерация результатов на основе пользовательского ввода с поддержкой рендеринга выражений LaTeX.
-   ![Пример генерации результатов](https://cnb.mizhoubaobei.top/302_llm_playground/LLM1.png)     
+   ![Пример генерации результатов](../images/LLM1.png)     
 
    Возможность загрузки изображений в качестве контекста для диалога.
-   ![Функция загрузки изображений](https://cnb.mizhoubaobei.top/302_llm_playground/LLM2.png)     
+   ![Функция загрузки изображений](../images/LLM2.png)     
 
    Поддержка рендеринга диаграмм.
-   ![Пример рендеринга диаграмм](https://cnb.mizhoubaobei.top/302_llm_playground/LLM3.png)
+   ![Пример рендеринга диаграмм](../images/LLM3.png)
 
    В моделях OpenAI есть функция отображения вероятности токенов, позволяющая получить вероятность текущего выбранного токена, а также несколько альтернативных токенов и их вероятности.
-   ![Отображение вероятности токенов](https://cnb.mizhoubaobei.top/302_llm_playground/LLM4.jpg)
+   ![Отображение вероятности токенов](../images/LLM4.jpg)
    
 ## ✨ Основные функции ✨
 
@@ -94,8 +94,8 @@ src/
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/302ai/302_llm_playground
-   cd 302_llm_playground
+   git clone https://github.com/xiaomizhoubaobei/LLM-Playground
+   cd LLM-Playground
    ```
    
 2. Установите зависимости:
