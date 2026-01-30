@@ -30,22 +30,24 @@ export const metadata: Metadata = {
 
 /**
  * 根布局组件，为应用程序提供基础结构和国际化支持
- * 
+ *
  * @async
  * @function RootLayout
  * @param {Object} props - 组件属性
  * @param {React.ReactNode} props.children - 子组件
- * @param {Object} props.params - 路由参数
- * @param {string} props.params.locale - 语言代码
+ * @param {Promise<{ locale: string }>} props.params - 路由参数（Next.js 16 中为 Promise）
  * @returns {Promise<JSX.Element>} 渲染的布局组件
  */
 export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }) {
+  // 解构 params 中的 locale（Next.js 16 需要使用 await）
+  const { locale } = await params
+
   // 验证语言代码是否在支持的语言列表中
   if (!routing.locales.includes(locale as any)) {
     notFound()
