@@ -97,6 +97,95 @@ export function SettingsSidebar({
   const params = useParams()
   // 当前路径名
   const pathname = '/'
+  // 从 API 获取的所有模型列表
+  const [allModels, setAllModels] = useState<Array<{ id: string; provider: string }>>([])
+  // 可用的 Model Providers 列表
+  const [modelProviders, setModelProviders] = useState<string[]>(['OpenAI'])
+  // 是否正在加载模型列表
+  const [isLoadingModels, setIsLoadingModels] = useState(false)
+
+  // 当 Service Provider 改变时，获取所有模型列表
+  useEffect(() => {
+    const fetchModels = async () => {
+      if (settings.provider) {
+        setIsLoadingModels(true)
+        try {
+          const response = await fetch('/api/models', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              provider: settings.provider,
+              apiKey: settings.apiKey,
+              action: 'fetchAll',
+            }),
+          })
+
+          if (response.ok) {
+            const data = await response.json()
+            // 确保数据是纯对象数组
+            const models = (data.models || []).map((model: any) => ({
+              id: String(model.id),
+              provider: String(model.provider),
+            }))
+            setAllModels(models)
+
+            // 提取 Model Providers
+            const providers = extractProvidersFromModels(models)
+            setModelProviders(providers)
+
+            // 如果当前选择的 Model Provider 不在列表中，重置为第一个
+            if (settings.modelProvider && !providers.includes(settings.modelProvider)) {
+              onSettingsChange({
+                ...settings,
+                modelProvider: providers[0],
+                model: undefined,
+              })
+            }
+          }
+        } catch (error) {
+          console.error('Failed to fetch models:', error)
+          setAllModels([])
+          setModelProviders([])
+        } finally {
+          setIsLoadingModels(false)
+        }
+      }
+    }
+
+    fetchModels()
+  }, [settings.provider, settings.apiKey])
+
+  // 从模型列表中提取 Model Providers
+  const extractProvidersFromModels = (models: Array<{ id: string; provider: string }>) => {
+    const providers = new Set<string>()
+    for (const model of models) {
+      if (model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')) {
+        providers.add('OpenAI')
+      } else if (model.id.startsWith('claude')) {
+        providers.add('Anthropic')
+      } else if (model.id.startsWith('gemini')) {
+        providers.add('Google')
+      } else {
+        providers.add('OpenAI')
+      }
+    }
+    return Array.from(providers)
+  }
+
+  // 过滤选中的 Model Provider 的模型
+  const filteredModels = allModels.filter((model) => {
+    if (!settings.modelProvider) return true
+    if (settings.modelProvider === 'OpenAI') {
+      return model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')
+    } else if (settings.modelProvider === 'Anthropic') {
+      return model.id.startsWith('claude')
+    } else if (settings.modelProvider === 'Google') {
+      return model.id.startsWith('gemini')
+    }
+    return true
+  })
 
   // 处理 API 密钥描述的 markdown 渲染
   useEffect(() => {
@@ -165,7 +254,7 @@ export function SettingsSidebar({
                                 onSettingsChange({
                                   ...settings,
                                   provider: '302AI',
-                                  modelProvider: 'OpenAI',
+                                  modelProvider: undefined,
                                   model: undefined
                                 })
                               }}
@@ -201,9 +290,10 @@ export function SettingsSidebar({
                     <Button
                       variant='outline'
                       role='combobox'
+                      disabled={!settings.provider || isLoadingModels}
                       className='w-full justify-between border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'
                     >
-                      {settings.modelProvider || 'OpenAI'}
+                      {isLoadingModels ? '加载中...' : (settings.modelProvider || '请先选择 Service Provider')}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className='w-full p-0 rounded-md shadow-md border border-border/40' side='bottom' align='start'>
@@ -215,27 +305,36 @@ export function SettingsSidebar({
                       >
                         <CommandList className='max-h-[300px] overflow-y-auto'>
                           <CommandGroup>
-                            <CommandItem
-                              value='OpenAI'
-                              onSelect={() => {
-                                onSettingsChange({
-                                  ...settings,
-                                  modelProvider: 'OpenAI',
-                                  model: undefined
-                                })
-                              }}
-                              className='px-2.5 py-1.5 rounded-md hover:bg-muted/50 text-xs'
-                            >
-                              <Check
-                                className={cn(
-                                  'mr-1.5 h-3.5 w-3.5',
-                                  settings.modelProvider === 'OpenAI'
-                                    ? 'opacity-100'
-                                    : 'opacity-0'
-                                )}
-                              />
-                              OpenAI
-                            </CommandItem>
+                            {modelProviders.length > 0 ? (
+                              modelProviders.map((provider) => (
+                                <CommandItem
+                                  key={provider}
+                                  value={provider}
+                                  onSelect={() => {
+                                    onSettingsChange({
+                                      ...settings,
+                                      modelProvider: provider,
+                                      model: undefined
+                                    })
+                                  }}
+                                  className='px-2.5 py-1.5 rounded-md hover:bg-muted/50 text-xs'
+                                >
+                                  <Check
+                                    className={cn(
+                                      'mr-1.5 h-3.5 w-3.5',
+                                      settings.modelProvider === provider
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                  {provider}
+                                </CommandItem>
+                              ))
+                            ) : (
+                              <div className='py-6 text-center text-xs text-muted-foreground'>
+                                {isLoadingModels ? '加载中...' : '请先选择 Service Provider'}
+                              </div>
+                            )}
                           </CommandGroup>
                         </CommandList>
                       </div>
@@ -256,9 +355,10 @@ export function SettingsSidebar({
                     <Button
                       variant='outline'
                       role='combobox'
+                      disabled={!settings.modelProvider || isLoadingModels}
                       className='w-full justify-between border-border/40 bg-muted/30 hover:bg-muted/50 transition-colors rounded-md h-9 text-xs'
                     >
-                      {settings.model || t('settings.selectModelPlaceholder')}
+                      {isLoadingModels ? '加载中...' : (settings.model || (settings.modelProvider ? t('settings.selectModelPlaceholder') : '请先选择 Model Provider'))}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className='w-full p-0 rounded-md shadow-md border border-border/40' side='bottom' align='start'>
@@ -277,8 +377,8 @@ export function SettingsSidebar({
                             {t('settings.noModelFound')}
                           </CommandEmpty>
                           <CommandGroup>
-                            {Array.isArray(models) && models.length > 0 ? (
-                              models.map((model) => (
+                            {filteredModels.length > 0 ? (
+                              filteredModels.map((model) => (
                                 <CommandItem
                                   key={model.id}
                                   value={model.id}
@@ -300,7 +400,7 @@ export function SettingsSidebar({
                               ))
                             ) : (
                               <div className='py-6 text-center text-xs text-muted-foreground'>
-                                {t('settings.noModelFound')}
+                                {isLoadingModels ? '加载中...' : (settings.modelProvider ? t('settings.noModelFound') : '请先选择 Model Provider')}
                               </div>
                             )}
                           </CommandGroup>

@@ -118,7 +118,6 @@ class Logger {
 
   /**
    * 核心日志函数，处理消息格式化和输出
-   * 仅在开发环境或生产环境明确启用时记录日志
    * 
    * @private
    * @param {string} message - 要记录的消息
@@ -128,11 +127,6 @@ class Logger {
     const mergedOptions = { ...defaultOptions, ...options }
     const formattedMessage = this.formatMessage(message, mergedOptions)
     const colorize = LogColors[mergedOptions.level!]
-
-    // 仅在开发环境或明确启用生产环境日志时记录
-    if (!this.isDevelopment && !process.env.ENABLE_PRODUCTION_LOGGING) {
-      return
-    }
 
     switch (mergedOptions.level) {
       case LogLevel.DEBUG:

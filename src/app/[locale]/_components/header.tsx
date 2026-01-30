@@ -151,8 +151,8 @@ export function Header({
             >
               <p>{t('clearMessagesTooltip')}</p>
             </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+            </Tooltip>
+          </TooltipProvider>
 
         <ThemeSwitcher />
 
@@ -169,9 +169,9 @@ export function Header({
             >
               <p>{t('settingsTooltip')}</p>
             </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-    </header>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </header>
   )
 }

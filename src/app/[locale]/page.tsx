@@ -38,11 +38,18 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { ConversationList } from '@/components/playground/conversation-list'
 import { SettingsSidebar } from './_components/settings-sidebar'
-import { getModels, ModelInfo } from '@/actions/models'
-import { chatNonStream } from '@/actions/chat-non-stream'
 import { Header } from './_components/header'
 import { InputSection } from './_components/input-section'
 import { conversationStore } from '@/db/conversation-store'
+
+/**
+ * ModelInfo 类型定义
+ */
+interface ModelInfo {
+  id: string
+  object: string
+  provider: string
+}
 
 /**
  * AI 模型的默认设置
@@ -186,9 +193,27 @@ export default function Component() {
 
   useEffect(() => {
     if (settings.provider && settings.modelProvider) {
-      getModels(settings.provider, settings.modelProvider).then(setModels).catch(console.error)
+      fetch('/api/models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          provider: settings.provider,
+          apiKey: settings.apiKey,
+          action: 'getFiltered',
+          modelProvider: settings.modelProvider,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.models) {
+            setModels(data.models)
+          }
+        })
+        .catch(console.error)
     }
-  }, [settings.provider, settings.modelProvider])
+  }, [settings.provider, settings.modelProvider, settings.apiKey])
 
   // 会话相关处理函数
   const handleNewConversation = useCallback(async () => {
@@ -289,16 +314,29 @@ export default function Component() {
       // 非流式模式
       try {
         const messageId = uuidv4()
-        const result = await chatNonStream({
-          ...settings,
-          messages: _messages,
+        const response = await fetch('/api/chat-non-stream', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...settings,
+            messages: _messages,
+          }),
         })
-        
-        if (result) {
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          throw new Error(errorText || 'API request failed')
+        }
+
+        const result = await response.json()
+
+        if (result && result.choices && result.choices[0]) {
           await messageStore.addMessage({
             id: messageId,
             role: 'assistant',
-            content: result.content,
+            content: result.choices[0].message.content || '',
           })
         }
       } catch (error) {

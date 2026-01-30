@@ -273,29 +273,30 @@ export function MarkdownRenderer({ children }: MarkdownRendererProps) {
   }
 
   return (
-    <Markdown
-      remarkPlugins={[
-        remarkGfm,
-        remarkHighlight,
-        [remarkMath, { singleDollar: true, doubleBackslash: true }],
-      ]}
-      rehypePlugins={[
-        [
-          rehypeKatex,
-          {
-            ...katexOptions,
-            output: 'htmlAndMathml',
-            trust: true,
-            strict: false,
-            throwOnError: false,
-          },
-        ],
-      ]}
-      components={components}
-      className='space-y-3'
-    >
-      {children}
-    </Markdown>
+    <div className='space-y-3'>
+      <Markdown
+        remarkPlugins={[
+          remarkGfm,
+          remarkHighlight,
+          [remarkMath, { singleDollar: true, doubleBackslash: true }],
+        ]}
+        rehypePlugins={[
+          [
+            rehypeKatex,
+            {
+              ...katexOptions,
+              output: 'htmlAndMathml',
+              trust: true,
+              strict: false,
+              throwOnError: false,
+            },
+          ],
+        ]}
+        components={components}
+      >
+        {children}
+      </Markdown>
+    </div>
   )
 }
 

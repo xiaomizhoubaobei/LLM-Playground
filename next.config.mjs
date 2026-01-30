@@ -12,9 +12,10 @@ const nextConfig = {
       allowedOrigins: ['*'],
     },
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',  
-  },
+  // 移除 removeConsole 配置，让日志在生产模式下也能输出
+  // compiler: {
+  //   removeConsole: process.env.NODE_ENV === 'production',  
+  // },
   images: {
     remotePatterns: [
       {
@@ -27,7 +28,10 @@ const nextConfig = {
       }
     ],
   },
-
+  // 添加唯一的构建 ID 以避免缓存问题
+  generateBuildId: async () => {
+    return Date.now().toString();
+  },
 };
 
 export default withNextIntl(nextConfig);

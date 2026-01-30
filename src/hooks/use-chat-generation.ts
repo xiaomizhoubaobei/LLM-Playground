@@ -9,7 +9,6 @@
  * @remark 实现完整的聊天生成功能，包括流式更新、状态管理、错误处理和国际化支持
  */
 
-import { chat } from '@/actions/chat'
 import { PlaygroundMessage, LogProbs } from '@/stores/playground'
 import { logger } from '@/utils/logger'
 import { useLocale, useTranslations } from 'next-intl'
@@ -18,9 +17,18 @@ import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
+ * 流式数据类型
+ */
+type StreamChunk = {
+  type: string
+  textDelta?: string
+  logprobs?: LogProbs
+}
+
+/**
  * 管理支持流式传输的聊天消息生成的 React Hook
  * 处理消息生成状态、流式更新和错误处理
- * 
+ *
  * @function useChatGeneration
  * @returns {Object} 聊天生成接口
  * @property {Function} generate - 开始消息生成
@@ -40,6 +48,7 @@ export function useChatGeneration() {
 
   // 用于管理生成流程的引用
   const shouldStopRef = useRef(false)
+  const abortControllerRef = useRef<AbortController | null>(null)
   const contentRef = useRef('')
   const logprobsRef = useRef<LogProbs | undefined>(undefined)
   // 国际化 Hooks
@@ -53,11 +62,14 @@ export function useChatGeneration() {
   const stop = () => {
     logger.info('Stopping chat generation', { module: 'ChatGeneration' })
     shouldStopRef.current = true
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
   }
 
   /**
    * 生成新的聊天消息，支持流式更新
-   * 
+   *
    * @async
    * @param {PlaygroundMessage[]} messages - 用于上下文的先前消息
    * @param {any} settings - 生成设置和配置
@@ -68,7 +80,9 @@ export function useChatGeneration() {
     shouldStopRef.current = false
     contentRef.current = ''
     logprobsRef.current = undefined
-    logger.info('Starting chat generation', { 
+    abortControllerRef.current = new AbortController()
+
+    logger.info('Starting chat generation', {
       context: { messageId, messagesCount: messages.length },
       module: 'ChatGeneration'
     })
@@ -85,62 +99,114 @@ export function useChatGeneration() {
     })
 
     try {
-      logger.info('Generating chat', { context: { settings }, module: 'ChatGeneration' })
-      const { output } = await chat({
-        ...settings,
-        messages,
+      logger.info('Generating chat via API', { context: { settings }, module: 'ChatGeneration' })
+
+      // 调用 API 路由
+      const response = await fetch('/api/chat-stream', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...settings,
+          messages,
+        }),
+        signal: abortControllerRef.current.signal,
       })
 
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(errorText || 'API request failed')
+      }
+
       logger.debug('Processing chat stream', { module: 'ChatGeneration' })
+
       // 处理流式响应
-      for await (const delta of output) {
+      const reader = response.body?.getReader()
+      if (!reader) {
+        throw new Error('No response body')
+      }
+
+      const decoder = new TextDecoder()
+      let buffer = ''
+      let chunkCount = 0
+
+      while (true) {
         // 检查手动停止
         if (shouldStopRef.current) {
-          logger.info('Chat generation stopped by user', { 
+          logger.info('Chat generation stopped by user', {
             context: { messageId },
             module: 'ChatGeneration'
           })
+          if (abortControllerRef.current) {
+            abortControllerRef.current.abort()
+          }
           return {
             id: messageId,
             content: contentRef.current
           }
         }
 
-        // 累积内容并更新状态
-        if (delta?.type === 'text-delta') {
-          contentRef.current += delta.textDelta
-          setState((prev) => ({
-            ...prev,
-            generatingMessage: {
-              id: messageId,
-              role: 'assistant',
-              content: contentRef.current,
-              timestamp: Date.now(),
-            },
-          }))
-        } else if (delta?.type === 'logprobs') {
-          logprobsRef.current = delta.logprobs
-          setState((prev) => {
-            if (!prev.generatingMessage) return prev;
-            return {
-              ...prev,
-              generatingMessage: {
-                ...prev.generatingMessage,
-                logprobs: delta.logprobs,
-              },
-            };
-          });
+        const { done, value } = await reader.read()
+        if (done) {
+          logger.info('Stream completed', {
+            context: { messageId, totalChunks: chunkCount, finalContentLength: contentRef.current.length },
+            module: 'ChatGeneration'
+          })
+          break
         }
-        
+
+        chunkCount++
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() || ''
+
+        for (const line of lines) {
+          const trimmedLine = line.trim()
+          if (trimmedLine.startsWith('data: ')) {
+            const data = trimmedLine.slice(6)
+            if (data === '[DONE]') {
+              logger.info('Stream received DONE signal', {
+                context: { messageId, totalChunks: chunkCount },
+                module: 'ChatGeneration'
+              })
+              return { id: messageId, content: contentRef.current, logprobs: logprobsRef.current }
+            }
+
+            try {
+              const parsed = JSON.parse(data)
+              const delta = parsed.choices?.[0]?.delta
+
+              if (delta?.content) {
+                contentRef.current += delta.content
+                setState((prev) => ({
+                  ...prev,
+                  generatingMessage: {
+                    id: messageId,
+                    role: 'assistant',
+                    content: contentRef.current,
+                    timestamp: Date.now(),
+                  },
+                }))
+              }
+
+              if (parsed.choices?.[0]?.finish_reason) {
+                // 流结束
+              }
+            } catch (e) {
+              // 忽略解析错误
+            }
+          }
+        }
       }
 
-      logger.info('Chat generation completed successfully', { 
+      logger.info('Chat generation completed successfully', {
         context: { messageId },
         module: 'ChatGeneration'
       })
       return { id: messageId, content: contentRef.current, logprobs: logprobsRef.current }
     } catch (error: unknown) {
-      logger.error('Error in chat generation', error as Error, { 
+      logger.error('Error in chat generation', error as Error, {
         context: { messageId },
         module: 'ChatGeneration'
       })
@@ -154,15 +220,17 @@ export function useChatGeneration() {
             en: 'en',
             ja: 'jp',
           }[locale]
-          const errorMessage = parsedError.error[`message_${key}`] || parsedError.error.message
+          const errorMessage = parsedError.error?.[`message_${key}`] || parsedError.error?.message || error
           toast.error(errorMessage)
         } catch (parseError) {
-          logger.error('Error parsing error message', parseError as Error, { 
+          logger.error('Error parsing error message', parseError as Error, {
             context: { messageId, originalError: error },
             module: 'ChatGeneration'
           })
           toast.error(t('error.chatFailed'))
         }
+      } else if (error instanceof Error) {
+        toast.error(error.message || t('error.chatFailed'))
       } else {
         toast.error(t('error.chatFailed'))
       }
@@ -171,6 +239,10 @@ export function useChatGeneration() {
       // 重置状态和引用
       shouldStopRef.current = false
       contentRef.current = ''
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+        abortControllerRef.current = null
+      }
       setState({
         isRunning: false,
         generatingMessage: null,
