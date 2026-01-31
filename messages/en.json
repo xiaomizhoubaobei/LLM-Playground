@@ -57,8 +57,12 @@
     "settings": {
       "apiKey": "API key",
       "apiKeyDesc": "You can get your API key from [302AI](https://dash.302.ai/apis/list). The API key is used to access AI models, please keep it safe.",
+      "apiKeyDesc302AI": "You can get your API key from [302AI](https://dash.302.ai/apis/list). The API key is used to access AI models, please keep it safe.",
+      "apiKeyDescGitee": "Log in to the [模力方舟 console](https://ai.gitee.com/), go to Workbench -> Access Token to create an access token. The access token is used to access AI models, please keep it safe.",
       "apiKeyPlaceholder": "Enter API key",
-      "apiKeyRequired": "API key cannot be empty",
+      "apiKeyInvalid": "API key is invalid or not set, please check your API key",
+      "fetchModelsFailed": "Failed to fetch models",
+      "networkError": "Network error, please check your network connection and try again",      "apiKeyRequired": "API key cannot be empty",
       "basicConfig": "Basic configuration",
       "beginnerMode": "Novice mode",
       "beginnerModeDesc": "Simple UI interface with advanced features hidden, making it easy for beginners to get started. Supports basic conversation functionality.",

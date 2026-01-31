@@ -26,6 +26,11 @@ import { ThemeProvider } from 'next-themes'
 export const metadata: Metadata = {
   title: 'LLM Playground',
   description: '302AI\'s playground for LLM',
+  icons: {
+    icon: '/favicon.webp',
+    shortcut: '/favicon.webp',
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 /**

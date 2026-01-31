@@ -10,7 +10,6 @@
 import { env } from '@/env'
 import { normalizeUrl } from '@/utils/api'
 import { logger } from '@/utils/logger'
-import ky from 'ky'
 
 /**
  * 处理流式聊天 API 的 POST 请求
@@ -25,6 +24,7 @@ export async function POST(req: Request) {
     const {
       model,
       apiKey,
+      provider,
       messages,
       frequencyPenalty,
       presencePenalty,
@@ -33,8 +33,18 @@ export async function POST(req: Request) {
       maxTokens,
     } = await req.json()
 
-    // 优先使用传入的 apiKey，如果没有则使用环境变量
-    const effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+    // 根据 provider 选择 API URL 和密钥
+    let effectiveApiKey = ''
+    let baseUrl = ''
+
+    if (provider === '魔力方舟') {
+      effectiveApiKey = apiKey || env.AI_GITEE_API_KEY || ''
+      baseUrl = normalizeUrl('https://ai.gitee.com') + '/v1'
+    } else {
+      // 默认使用 302AI
+      effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+      baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
+    }
 
     if (!effectiveApiKey) {
       return new Response(
@@ -46,16 +56,28 @@ export async function POST(req: Request) {
       )
     }
 
-    const baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
+    // 过滤 messages，只保留 role 和 content
+    const filteredMessages = messages.map((msg: any) => {
+      if (typeof msg.content === 'string') {
+        return {
+          role: msg.role,
+          content: msg.content,
+        }
+      }
+      return {
+        role: msg.role,
+        content: msg.content,
+      }
+    })
 
     const requestBody: any = {
       model,
-      messages,
+      messages: filteredMessages,
       stream: true,
     }
 
+    // 魔力方舟支持的参数：frequency_penalty, temperature, top_p, max_tokens
     if (frequencyPenalty !== undefined) requestBody.frequency_penalty = frequencyPenalty
-    if (presencePenalty !== undefined) requestBody.presence_penalty = presencePenalty
     if (temperature !== undefined) requestBody.temperature = temperature
     if (topP !== undefined) requestBody.top_p = topP
     if (maxTokens !== undefined) requestBody.max_tokens = maxTokens
@@ -69,12 +91,16 @@ export async function POST(req: Request) {
       context: {
         model,
         messagesCount: messages.length,
+        originalMessages: JSON.stringify(messages, null, 2),
+        filteredMessages: JSON.stringify(filteredMessages, null, 2),
+        requestBody: JSON.stringify(requestBody, null, 2),
         frequencyPenalty,
         presencePenalty,
         temperature,
         topP,
         maxTokens,
         hasApiKey: !!effectiveApiKey,
+        baseUrl,
       },
       module: 'ChatStreamAPI'
     })
@@ -99,11 +125,17 @@ export async function POST(req: Request) {
     })
 
     if (!response.ok) {
+      const errorText = await response.text()
       logger.error('Stream chat API request failed', new Error(`API request failed: ${response.statusText}`), {
-        context: { status: response.status, statusText: response.statusText },
+        context: {
+          status: response.status,
+          statusText: response.statusText,
+          errorBody: errorText,
+          requestBody: JSON.stringify(requestBody, null, 2)
+        },
         module: 'ChatStreamAPI'
       })
-      throw new Error(`API request failed: ${response.statusText}`)
+      throw new Error(`API request failed: ${response.statusText} - ${errorText}`)
     }
 
     logger.info('Stream chat API request initiated successfully', {

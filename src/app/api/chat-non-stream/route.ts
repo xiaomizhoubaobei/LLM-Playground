@@ -24,6 +24,7 @@ export async function POST(req: Request) {
     const {
       model,
       apiKey,
+      provider,
       messages,
       frequencyPenalty,
       presencePenalty,
@@ -32,8 +33,18 @@ export async function POST(req: Request) {
       maxTokens,
     } = await req.json()
 
-    // 优先使用传入的 apiKey，如果没有则使用环境变量
-    const effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+    // 根据 provider 选择 API URL 和密钥
+    let effectiveApiKey = ''
+    let baseUrl = ''
+
+    if (provider === '魔力方舟') {
+      effectiveApiKey = apiKey || env.AI_GITEE_API_KEY || ''
+      baseUrl = normalizeUrl('https://ai.gitee.com') + '/v1'
+    } else {
+      // 默认使用 302AI
+      effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+      baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
+    }
 
     if (!effectiveApiKey) {
       return new Response(
@@ -45,15 +56,27 @@ export async function POST(req: Request) {
       )
     }
 
-    const baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
+    // 过滤 messages，只保留 role 和 content
+    const filteredMessages = messages.map((msg: any) => {
+      if (typeof msg.content === 'string') {
+        return {
+          role: msg.role,
+          content: msg.content,
+        }
+      }
+      return {
+        role: msg.role,
+        content: msg.content,
+      }
+    })
 
-    const requestBody: any = {
+const requestBody: any = {
       model,
-      messages,
+      messages: filteredMessages,
     }
 
+    // 魔力方舟支持的参数：frequency_penalty, temperature, top_p, max_tokens
     if (frequencyPenalty !== undefined) requestBody.frequency_penalty = frequencyPenalty
-    if (presencePenalty !== undefined) requestBody.presence_penalty = presencePenalty
     if (temperature !== undefined) requestBody.temperature = temperature
     if (topP !== undefined) requestBody.top_p = topP
     if (maxTokens !== undefined) requestBody.max_tokens = maxTokens
@@ -97,9 +120,14 @@ export async function POST(req: Request) {
 
     if (!response.ok) {
       const errorText = await response.text()
-      logger.error('Non-stream chat API request failed', new Error(errorText), { 
-        context: { status: response.status, statusText: response.statusText },
-        module: 'ChatNonStreamAPI' 
+      logger.error('Non-stream chat API request failed', new Error(errorText), {
+        context: {
+          status: response.status,
+          statusText: response.statusText,
+          errorBody: errorText,
+          requestBody: JSON.stringify(requestBody, null, 2)
+        },
+        module: 'ChatNonStreamAPI'
       })
       return new Response(
         JSON.stringify({ error: errorText || '请求处理失败，请稍后重试' }),

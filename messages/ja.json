@@ -57,8 +57,12 @@
     "settings": {
       "apiKey": "APIキー",
       "apiKeyDesc": "APIキーは [302AI](https://dash.302.ai/apis/list) から取得できます。APIキーはAIモデルへのアクセスに使用されます。大切に保管してください。",
+      "apiKeyDesc302AI": "APIキーは [302AI](https://dash.302.ai/apis/list) から取得できます。APIキーはAIモデルへのアクセスに使用されます。大切に保管してください。",
+      "apiKeyDescGitee": "[模力方舟コンソール](https://ai.gitee.com/) にログインし、ワークスペース -> アクセストークン でアクセストークンを作成します。アクセストークンはAIモデルへのアクセスに使用されます。大切に保管してください。",
       "apiKeyPlaceholder": "APIキーを入力してください",
-      "apiKeyRequired": "API キーを空にすることはできません",
+      "apiKeyInvalid": "API キーが無効または設定されていません。API キーを確認してください",
+      "fetchModelsFailed": "モデルの取得に失敗しました",
+      "networkError": "ネットワークエラーが発生しました。ネットワーク接続を確認して、もう一度試してください",      "apiKeyRequired": "API キーを空にすることはできません",
       "basicConfig": "基本構成",
       "beginnerMode": "初心者モード",
       "beginnerModeDesc": "高度な機能を非表示にしたシンプルなUIインターフェース。初心者が簡単に使い始めることができます。基本的な会話機能をサポートします。",

@@ -52,6 +52,7 @@ type StreamChunk = {
 async function* streamChatResponse(
   model: string,
   apiKey: string,
+  provider: string,
   messages: any[],
   frequencyPenalty?: number,
   presencePenalty?: number,
@@ -59,7 +60,13 @@ async function* streamChatResponse(
   topP?: number,
   maxTokens?: number
 ): AsyncGenerator<StreamChunk> {
-  const baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
+  // 根据 provider 选择 API URL
+  let baseUrl = ''
+  if (provider === '魔力方舟') {
+    baseUrl = normalizeUrl('https://ai.gitee.com') + '/v1'
+  } else {
+    baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
+  }
   
   const requestBody: any = {
     model,
@@ -159,6 +166,7 @@ async function* streamChatResponse(
 export async function chat({
   model,
   apiKey,
+  provider,
   messages,
   frequencyPenalty,
   presencePenalty,
@@ -168,6 +176,7 @@ export async function chat({
 }: {
   model: string
   apiKey: string
+  provider?: string
   messages: PlaygroundMessage[]
   frequencyPenalty?: number
   presencePenalty?: number
@@ -206,8 +215,13 @@ export async function chat({
     }
   })
 
-  // 优先使用传入的 apiKey，如果没有则使用环境变量
-  const effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+  // 根据 provider 选择 API 密钥
+  let effectiveApiKey = ''
+  if (provider === '魔力方舟') {
+    effectiveApiKey = apiKey || env.AI_GITEE_API_KEY || ''
+  } else {
+    effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+  }
 
   logger.info('Starting chat generation', {
     context: {
@@ -230,6 +244,7 @@ export async function chat({
     output: streamChatResponse(
       model,
       effectiveApiKey,
+      provider || '302AI',
       formattedMessages,
       frequencyPenalty,
       presencePenalty,

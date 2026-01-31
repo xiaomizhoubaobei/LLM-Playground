@@ -297,6 +297,13 @@ export default function Component() {
       _messages = [...messages, currentMessage]
     }
 
+    // 验证消息列表中至少有一条 user 消息
+    const hasUserMessage = _messages.some((msg) => msg.role === 'user')
+    if (!hasUserMessage) {
+      toast.error('请至少添加一条用户消息')
+      return
+    }
+
     // 根据流式模式选择不同的处理方式
     if (settings.streamMode !== false) {
       // 流式模式
