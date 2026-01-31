@@ -30,10 +30,20 @@ export const maxDuration = 3000
  * @since 2024-11-20
  */
 export async function POST(req: Request) {
-  const { messages, apiKey } = await req.json()
+  const { messages, apiKey, provider } = await req.json()
 
-  // 优先使用请求中的 apiKey，如果没有则使用环境变量
-  const effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+  // 根据 provider 选择 API URL 和密钥
+  let effectiveApiKey = ''
+  let apiUrl = ''
+
+  if (provider === '魔力方舟') {
+    effectiveApiKey = apiKey || env.AI_GITEE_API_KEY || ''
+    apiUrl = 'https://ai.gitee.com/v1/chat/completions'
+  } else {
+    // 默认使用 302AI
+    effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
+    apiUrl = 'https://api.302.ai/v1/chat/completions'
+  }
 
   if (!effectiveApiKey) {
     return new Response(
@@ -46,7 +56,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const response = await fetch('https://api.302.ai/v1/chat/completions', {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${effectiveApiKey}`,
@@ -54,7 +64,10 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         model: 'gpt-4o',
-        messages,
+        messages: messages.map((msg: any) => ({
+          role: msg.role,
+          content: msg.content,
+        })),
         stream: true,
       }),
     })

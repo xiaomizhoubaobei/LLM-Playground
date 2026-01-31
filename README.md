@@ -1,12 +1,12 @@
-# <p align="center">🤖 LLM Playground🚀✨</p>
+# <div style="text-align: center;">🤖 LLM Playground🚀✨</div>
 
-<p align="center">一个强大且互动的实验平台，用于实验大型语言模型，基于 Next.js 14 和现代 Web 技术构建。</p>
+<div style="text-align: center;">一个强大且互动的实验平台，用于实验大型语言模型，基于 Next.js 14 和现代 Web 技术构建。</div>
 
-<p align="center">本项目基于 <a href="https://github.com/302ai/302_llm_playground" target="_blank">302ai/302_llm_playground</a> 项目二创而来</p>
+<div style="text-align: center;">本项目基于 <a href="https://github.com/302ai/302_llm_playground" target="_blank">302ai/302_llm_playground</a> 项目二创而来</div>
 
-<p align="center"><a href="https://302.ai/apis/" target="blank"><img src="https://file.302.ai/gpt/imgs/github/20250102/72a57c4263944b73bf521830878ae39a.png" /></a></p >
+<div style="text-align: center;"><a href="https://302.ai/apis/" target="blank"><img src="https://file.302.ai/gpt/imgs/github/20250102/72a57c4263944b73bf521830878ae39a.png" alt="302.AI API" /></a></div >
 
-<p align="center"><a href="README.md">中文</a> | <a href="docs/README_en.md">English</a> | <a href="docs/README_ja.md">日本語</a> | <a href="docs/README_ru.md">Русский</a> | <a href="docs/README_fr.md">Français</a> | <a href="docs/README_de.md">Deutsch</a></p>
+<div style="text-align: center;"><a href="README.md">中文</a> | <a href="docs/README_en.md">English</a> | <a href="docs/README_ja.md">日本語</a> | <a href="docs/README_ru.md">Русский</a> | <a href="docs/README_fr.md">Français</a> | <a href="docs/README_de.md">Deutsch</a></div>
 
 ![界面预览](./images/302-LLM-游乐场.png) 
 

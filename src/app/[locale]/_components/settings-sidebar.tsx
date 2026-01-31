@@ -98,17 +98,20 @@ export function SettingsSidebar({
   // 当前路径名
   const pathname = '/'
   // 从 API 获取的所有模型列表
-  const [allModels, setAllModels] = useState<Array<{ id: string; provider: string }>>([])
+  const [allModels, setAllModels] = useState<Array<{ id: string; provider: string; modelProvider?: string }>>([])
   // 可用的 Model Providers 列表
   const [modelProviders, setModelProviders] = useState<string[]>(['OpenAI'])
   // 是否正在加载模型列表
   const [isLoadingModels, setIsLoadingModels] = useState(false)
+  // 模型加载错误信息
+  const [modelError, setModelError] = useState<string>('')
 
   // 当 Service Provider 改变时，获取所有模型列表
   useEffect(() => {
     const fetchModels = async () => {
       if (settings.provider) {
         setIsLoadingModels(true)
+        setModelError('')
         try {
           const response = await fetch('/api/models', {
             method: 'POST',
@@ -128,6 +131,7 @@ export function SettingsSidebar({
             const models = (data.models || []).map((model: any) => ({
               id: String(model.id),
               provider: String(model.provider),
+              modelProvider: model.modelProvider ? String(model.modelProvider) : undefined,
             }))
             setAllModels(models)
 
@@ -143,9 +147,20 @@ export function SettingsSidebar({
                 model: undefined,
               })
             }
+          } else {
+            // 处理 HTTP 错误
+            const errorData = await response.json().catch(() => ({}))
+            if (response.status === 401) {
+              setModelError(t('settings.apiKeyInvalid'))
+            } else {
+              setModelError(errorData.error || `${t('settings.fetchModelsFailed')}: ${response.statusText}`)
+            }
+            setAllModels([])
+            setModelProviders([])
           }
         } catch (error) {
           console.error('Failed to fetch models:', error)
+          setModelError(t('settings.networkError'))
           setAllModels([])
           setModelProviders([])
         } finally {
@@ -158,10 +173,16 @@ export function SettingsSidebar({
   }, [settings.provider, settings.apiKey])
 
   // 从模型列表中提取 Model Providers
-  const extractProvidersFromModels = (models: Array<{ id: string; provider: string }>) => {
+  const extractProvidersFromModels = (models: Array<{ id: string; provider: string; modelProvider?: string }>) => {
     const providers = new Set<string>()
     for (const model of models) {
-      if (model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')) {
+      // 如果 model 有 modelProvider 字段，使用它
+      if (model.modelProvider) {
+        providers.add(model.modelProvider)
+      } else if (model.provider === '魔力方舟') {
+        // 魔力方舟的模型也应该有一个 modelProvider
+        providers.add('魔力方舟')
+      } else if (model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')) {
         providers.add('OpenAI')
       } else if (model.id.startsWith('claude')) {
         providers.add('Anthropic')
@@ -177,7 +198,13 @@ export function SettingsSidebar({
   // 过滤选中的 Model Provider 的模型
   const filteredModels = allModels.filter((model) => {
     if (!settings.modelProvider) return true
-    if (settings.modelProvider === 'OpenAI') {
+    // 优先使用 modelProvider 字段进行过滤
+    if (model.modelProvider) {
+      return model.modelProvider === settings.modelProvider
+    } else if (settings.modelProvider === '魔力方舟') {
+      // 魔力方舟的模型根据 provider 字段过滤
+      return model.provider === '魔力方舟'
+    } else if (settings.modelProvider === 'OpenAI') {
       return model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')
     } else if (settings.modelProvider === 'Anthropic') {
       return model.id.startsWith('claude')
@@ -189,13 +216,19 @@ export function SettingsSidebar({
 
   // 处理 API 密钥描述的 markdown 渲染
   useEffect(() => {
-    const result = marked(t('settings.apiKeyDesc'))
+    let desc = t('settings.apiKeyDesc')
+    if (settings.provider === '魔力方舟') {
+      desc = t('settings.apiKeyDescGitee')
+    } else if (settings.provider === '302AI') {
+      desc = t('settings.apiKeyDesc302AI')
+    }
+    const result = marked(desc)
     if (result instanceof Promise) {
       result.then(setApiKeyDesc)
     } else {
       setApiKeyDesc(result)
     }
-  }, [t])
+  }, [t, settings.provider])
 
   return (
     <Sidebar side='right'>
@@ -270,6 +303,28 @@ export function SettingsSidebar({
                               />
                               302AI
                             </CommandItem>
+                            <CommandItem
+                              value='魔力方舟'
+                              onSelect={() => {
+                                onSettingsChange({
+                                  ...settings,
+                                  provider: '魔力方舟',
+                                  modelProvider: undefined,
+                                  model: undefined
+                                })
+                              }}
+                              className='px-2.5 py-1.5 rounded-md hover:bg-muted/50 text-xs'
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-1.5 h-3.5 w-3.5',
+                                  settings.provider === '魔力方舟'
+                                    ? 'opacity-100'
+                                    : 'opacity-0'
+                                )}
+                              />
+                              魔力方舟
+                            </CommandItem>
                           </CommandGroup>
                         </CommandList>
                       </div>
@@ -341,6 +396,11 @@ export function SettingsSidebar({
                     </Command>
                   </PopoverContent>
                 </Popover>
+                {modelError && (
+                  <div className='mt-2 px-2 py-1.5 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-xs'>
+                    {modelError}
+                  </div>
+                )}
               </div>
 
               <div>

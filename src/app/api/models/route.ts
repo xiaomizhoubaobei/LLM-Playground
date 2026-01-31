@@ -20,7 +20,10 @@ import { logger } from '@/utils/logger'
  */
 function filterModelsByProvider(models: any[], modelProvider: string) {
   return models.filter((model) => {
-    if (modelProvider === 'OpenAI') {
+    // 优先使用 modelProvider 字段进行过滤
+    if (model.modelProvider) {
+      return model.modelProvider === modelProvider
+    } else if (modelProvider === 'OpenAI') {
       return model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')
     } else if (modelProvider === 'Anthropic') {
       return model.id.startsWith('claude')
@@ -64,6 +67,7 @@ export async function POST(req: Request) {
         id: String(model.id),
         object: String(model.object || 'model'),
         provider: String(model.provider),
+        modelProvider: model.modelProvider ? String(model.modelProvider) : undefined,
       }))
       return Response.json({ models: serializedModels })
     } else if (action === 'getFiltered' && modelProvider) {
@@ -85,6 +89,7 @@ export async function POST(req: Request) {
         id: String(model.id),
         object: String(model.object || 'model'),
         provider: String(model.provider),
+        modelProvider: model.modelProvider ? String(model.modelProvider) : undefined,
       }))
       return Response.json({ models: serializedModels })
     } else {

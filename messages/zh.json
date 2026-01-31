@@ -57,8 +57,12 @@
     "settings": {
       "apiKey": "API 密钥",
       "apiKeyDesc": "可以前往 [302AI](https://dash.302.ai/apis/list) 获取 API 密钥。API 密钥用于访问 AI 模型，请妥善保管。",
+      "apiKeyDesc302AI": "可以前往 [302AI](https://dash.302.ai/apis/list) 获取 API 密钥。API 密钥用于访问 AI 模型，请妥善保管。",
+      "apiKeyDescGitee": "登录 [模力方舟控制台](https://ai.gitee.com/)，在 工作台 -> 访问令牌 中创建访问令牌。访问令牌用于访问 AI 模型，请妥善保管。",
       "apiKeyPlaceholder": "输入 API 密钥",
-      "apiKeyRequired": "API 密钥不能为空",
+      "apiKeyInvalid": "API 密钥无效或未设置，请检查 API 密钥",
+      "fetchModelsFailed": "获取模型列表失败",
+      "networkError": "网络错误，请检查网络连接后重试",      "apiKeyRequired": "API 密钥不能为空",
       "basicConfig": "基本配置",
       "beginnerMode": "新手模式",
       "beginnerModeDesc": "UI界面较为简单，隐藏高级功能，便于新手快速上手体验。支持基础的对话功能。",

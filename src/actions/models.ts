@@ -12,19 +12,20 @@
 'use server'
 
 import { logger } from '@/utils/logger'
-import { OPENAI_MODELS } from '@/constants/models'
 
 /**
  * 表示单个 AI 模型信息的结构
  * @interface ModelInfo
  * @property {string} id - 模型的唯一标识符
  * @property {string} object - 模型的类型/类别
- * @property {string} provider - 模型供应商
+ * @property {string} provider - 服务提供商
+ * @property {string} modelProvider - 模型提供商
  */
 export type ModelInfo = {
   id: string
   object: string
   provider: string
+  modelProvider?: string
 }
 
 /**
@@ -68,6 +69,36 @@ export const fetchAllModels = async (provider: string = '302AI', apiKey: string 
           id: String(model.id),
           object: String(model.object || 'model'),
           provider: String(provider),
+          modelProvider: model.owned_by ? String(model.owned_by) : undefined,
+        }))
+      }
+    } else if (provider === '魔力方舟') {
+      // 从魔力方舟 API 获取模型列表，默认只获取 text2text 类型
+      const apiUrl = 'https://ai.gitee.com/v1/models?type=text2text'
+      const effectiveApiKey = apiKey || process.env.AI_GITEE_API_KEY || ''
+
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${effectiveApiKey}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch models: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+
+      if (data && data.data && Array.isArray(data.data)) {
+        // 魔力方舟的模型使用 owned_by 字段作为 model provider
+        // 确保返回纯对象，避免 null prototype 或其他不可序列化的属性
+        models = data.data.map((model: any) => ({
+          id: String(model.id),
+          object: String(model.object || 'model'),
+          provider: String(provider), // Service Provider
+          modelProvider: String(model.owned_by || 'Unknown'), // Model Provider
         }))
       }
     } else {
@@ -82,16 +113,7 @@ export const fetchAllModels = async (provider: string = '302AI', apiKey: string 
     return models
   } catch (error) {
     logger.error('Failed to fetch all models', error as Error, { context: { provider }, module: 'Models' })
-    // 如果 API 调用失败，返回本地定义的模型列表作为后备
-    if (provider === '302AI') {
-      logger.info('Using fallback local models', { context: { provider }, module: 'Models' })
-      // 确保返回纯对象
-      return OPENAI_MODELS.map((modelId) => ({
-        id: String(modelId),
-        object: 'model',
-        provider: '302AI',
-      }))
-    }
+    // 如果 API 调用失败，返回空数组
     return []
   }
 }
@@ -109,9 +131,10 @@ export const extractModelProviders = async (models: ModelInfo[]) => {
   const providers = new Set<string>()
 
   for (const model of models) {
-    // 基于模型 ID 的前缀来确定 Provider
-    // 例如: gpt-4o, o1, claude-3, gemini-pro 等
-    if (model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')) {
+    // 优先使用 modelProvider 字段
+    if (model.modelProvider) {
+      providers.add(model.modelProvider)
+    } else if (model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')) {
       providers.add('OpenAI')
     } else if (model.id.startsWith('claude')) {
       providers.add('Anthropic')
@@ -151,25 +174,9 @@ export const getModels = async (
     if (allModels && allModels.length > 0) {
       models = filterModelsByProvider(allModels, modelProvider)
     } else {
-      // 否则根据服务提供商和模型提供商返回对应的模型列表
-      if (provider === '302AI') {
-        if (modelProvider === 'OpenAI') {
-          // OpenAI 模型列表
-          models = OPENAI_MODELS.map((modelId) => ({
-            id: String(modelId),
-            object: 'model',
-            provider: '302AI',
-          }))
-        } else {
-          // 其他模型提供商，后续扩展
-          logger.warn('Model provider not implemented yet', { context: { modelProvider }, module: 'Models' })
-          return []
-        }
-      } else {
-        // 其他服务提供商，后续扩展
-        logger.warn('Service provider not implemented yet', { context: { provider }, module: 'Models' })
-        return []
-      }
+      // 没有提供模型列表，返回空数组
+      logger.warn('No models provided', { context: { provider, modelProvider }, module: 'Models' })
+      return []
     }
 
     logger.info('Successfully fetched models', {
@@ -193,7 +200,10 @@ export const getModels = async (
  */
 function filterModelsByProvider(models: ModelInfo[], modelProvider: string): ModelInfo[] {
   return models.filter((model) => {
-    if (modelProvider === 'OpenAI') {
+    // 优先使用 modelProvider 字段进行过滤
+    if (model.modelProvider) {
+      return model.modelProvider === modelProvider
+    } else if (modelProvider === 'OpenAI') {
       return model.id.startsWith('gpt') || model.id.startsWith('o1') || model.id.startsWith('o3') || model.id.startsWith('o4')
     } else if (modelProvider === 'Anthropic') {
       return model.id.startsWith('claude')
