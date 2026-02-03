@@ -1,10 +1,27 @@
 /**
+ * @fileoverview 文本区域组件，提供多行文本输入功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 文本区域组件，提供多行文本输入功能，支持自定义样式和属性
+ *
+ * @remark 本模块提供了文本区域组件，支持多行文本输入功能。
+ *
+ *          主要功能包括：
+ *          - 多行文本输入
+ *          - 自定义样式
+ *          - 自适应高度
+ *          - 占位符显示
+ *
+ *          导出组件：
+ *          - Textarea: 文本区域组件
+ *
+ *          使用场景：
+ *          - 表单文本输入
+ *          - 评论输入
+ *          - 描述输入
+ *          - 长文本编辑
  */
 
 import * as React from 'react'

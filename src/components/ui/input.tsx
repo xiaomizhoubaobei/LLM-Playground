@@ -1,10 +1,27 @@
 /**
+ * @fileoverview 输入框组件，提供文本输入功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 输入框组件，提供文本输入功能，支持自定义样式和HTML属性
+ *
+ * @remark 本模块提供了输入框组件，支持文本输入功能。
+ *
+ *          主要功能包括：
+ *          - 文本输入
+ *          - 自定义样式和HTML属性
+ *          - 文件上传支持
+ *          - 占位符显示
+ *
+ *          导出组件：
+ *          - Input: 输入框组件
+ *
+ *          使用场景：
+ *          - 表单输入
+ *          - 搜索输入
+ *          - 数据输入
+ *          - 密码输入
  */
 
 import * as React from 'react'

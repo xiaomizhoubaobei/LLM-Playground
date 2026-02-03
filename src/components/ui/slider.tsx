@@ -1,10 +1,27 @@
 /**
+ * @fileoverview 滑块组件，基于Radix UI提供的基础滑块功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 滑块组件，基于Radix UI提供的基础滑块功能，用于数值选择和范围调整
+ *
+ * @remark 本模块提供了滑块组件，基于Radix UI提供的基础滑块功能。
+ *
+ *          主要功能包括：
+ *          - 可拖动滑块
+ *          - 数值选择
+ *          - 范围调整
+ *          - 自定义样式
+ *
+ *          导出组件：
+ *          - Slider: 滑块组件
+ *
+ *          使用场景：
+ *          - 数值调整
+ *          - 音量控制
+ *          - 进度设置
+ *          - 范围选择
  */
 
 'use client'

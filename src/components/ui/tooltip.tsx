@@ -1,10 +1,30 @@
 /**
+ * @fileoverview 工具提示组件套件，提供完整的工具提示功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供完整的工具提示功能，支持自定义定位和动画效果
+ *
+ * @remark 本模块提供了工具提示组件套件，支持自定义定位和动画效果。
+ *
+ *          主要功能包括：
+ *          - 自定义定位
+ *          - 动画效果
+ *          - 延迟显示
+ *          - 无障碍支持
+ *
+ *          导出组件：
+ *          - Tooltip: 工具提示根组件
+ *          - TooltipProvider: 工具提示提供者
+ *          - TooltipTrigger: 工具提示触发器
+ *          - TooltipContent: 工具提示内容
+ *
+ *          使用场景：
+ *          - 信息提示
+ *          - 帮助信息
+ *          - 快捷键提示
+ *          - 功能说明
  */
 
 'use client'

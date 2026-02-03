@@ -1,5 +1,0 @@
-branch:
-  - buttons:
-      - name: 手动生成wiki
-        description: 点击手动生成wiki
-        event: web_trigger_one

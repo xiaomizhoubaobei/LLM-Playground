@@ -1,10 +1,36 @@
 /**
+ * @fileoverview 底部抽屉组件套件，基于Radix UI提供的基础对话框功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 底部抽屉组件，基于Radix UI提供的基础对话框功能，支持从四个方向滑出
+ *
+ * @remark 本模块提供了底部抽屉组件套件，支持从四个方向滑出。
+ *
+ *          主要功能包括：
+ *          - 四个方向的滑出动画
+ *          - 遮罩层和动画效果
+ *          - 响应式设计
+ *          - 键盘导航
+ *
+ *          导出组件：
+ *          - Sheet: 底部抽屉根组件
+ *          - SheetTrigger: 触发器组件
+ *          - SheetClose: 关闭组件
+ *          - SheetPortal: 传送门组件
+ *          - SheetOverlay: 遮罩层组件
+ *          - SheetContent: 内容组件
+ *          - SheetHeader: 头部组件
+ *          - SheetFooter: 底部组件
+ *          - SheetTitle: 标题组件
+ *          - SheetDescription: 描述组件
+ *
+ *          使用场景：
+ *          - 移动端菜单
+ *          - 侧边栏抽屉
+ *          - 设置面板
+ *          - 详情面板
  */
 
 'use client'

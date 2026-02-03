@@ -1,10 +1,37 @@
 /**
+ * @fileoverview 高级Markdown渲染器组件，支持数学方程、Mermaid图表、代码高亮
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 高级Markdown渲染器组件，支持数学方程、Mermaid图表、代码高亮和GitHub风格的Markdown
+ *
+ * @remark 本模块提供了高级Markdown渲染器组件，支持多种格式和功能。
+ *
+ *          主要功能包括：
+ *          - GitHub风格Markdown渲染
+ *          - 数学方程渲染（KaTeX）
+ *          - Mermaid图表渲染
+ *          - 代码语法高亮（Shiki）
+ *          - 复制按钮功能
+ *          - 语法高亮支持
+ *
+ *          导出组件：
+ *          - MarkdownRenderer: 主Markdown渲染器
+ *          - default: 默认导出
+ *
+ *          支持功能：
+ *          - 行内和块级数学公式
+ *          - 流程图、序列图、状态图等
+ *          - 多语言代码高亮
+ *          - 复制代码和公式
+ *          - 自定义样式
+ *
+ *          使用场景：
+ *          - 聊天消息渲染
+ *          - 文档展示
+ *          - 代码展示
+ *          - 数学公式渲染
  */
 
 'use client'

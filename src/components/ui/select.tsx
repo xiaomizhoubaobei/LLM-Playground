@@ -1,10 +1,36 @@
 /**
+ * @fileoverview 下拉选择组件套件，基于Radix UI提供的基础选择功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 下拉选择组件，基于Radix UI提供的基础选择功能，包含完整的下拉选择套件
+ *
+ * @remark 本模块提供了下拉选择组件套件，基于Radix UI提供的基础选择功能。
+ *
+ *          主要功能包括：
+ *          - 下拉选择
+ *          - 选项分组
+ *          - 单选和多选
+ *          - 键盘导航
+ *
+ *          导出组件：
+ *          - Select: 下拉选择根组件
+ *          - SelectTrigger: 触发器组件
+ *          - SelectValue: 值组件
+ *          - SelectContent: 内容组件
+ *          - SelectItem: 选项组件
+ *          - SelectLabel: 标签组件
+ *          - SelectSeparator: 分隔符组件
+ *          - SelectGroup: 分组组件
+ *          - SelectScrollUpButton: 向上滚动按钮
+ *          - SelectScrollDownButton: 向下滚动按钮
+ *
+ *          使用场景：
+ *          - 表单选择
+ *          - 设置选择
+ *          - 选项选择
+ *          - 数据筛选
  */
 
 'use client'

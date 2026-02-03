@@ -1,10 +1,27 @@
 /**
+ * @fileoverview 帮助图标工具提示组件，显示带有帮助图标的可点击提示信息
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 帮助图标工具提示组件，显示带有帮助图标的可点击提示信息
+ *
+ * @remark 本模块提供了帮助图标工具提示组件，显示带有帮助图标的可点击提示信息。
+ *
+ *          主要功能包括：
+ *          - 帮助图标显示
+ *          - 工具提示显示
+ *          - 自定义样式
+ *          - 无障碍支持
+ *
+ *          导出组件：
+ *          - TooltipHelpIcon: 工具提示帮助图标组件
+ *
+ *          使用场景：
+ *          - 帮助信息提示
+ *          - 功能说明
+ *          - 工具提示
+ *          - 辅助信息
  */
 
 import { HelpCircle } from 'lucide-react'
@@ -14,18 +31,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tool
  * 工具提示帮助图标组件的属性接口
  */
 interface TooltipHelpIconProps {
-  /** 提示内容，可以是字符串或React节点 */
   content: React.ReactNode
-  /** 额外的CSS类名 */
   className?: string
 }
 
 /**
  * 工具提示帮助图标组件
  * 显示一个可点击的帮助图标，悬停时显示提示内容
- * 
- * @param {TooltipHelpIconProps} props - 组件属性
- * @returns {JSX.Element} 渲染的帮助图标组件
  */
 export function TooltipHelpIcon({ content, className = 'h-4 w-4 text-gray-400 hover:text-gray-500' }: TooltipHelpIconProps) {
   return (

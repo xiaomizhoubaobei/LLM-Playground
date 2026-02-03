@@ -1,10 +1,34 @@
 /**
+ * @fileoverview 徽章组件，用于显示状态指示器、标签或计数信息
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供状态指示、分类标签、计数显示等小型信息展示组件
+ *
+ * @remark 本模块提供了徽章组件，用于显示小型状态指示器、标签或计数信息。
+ *
+ *          主要功能包括：
+ *          - 提供状态指示（成功、警告、错误等）
+ *          - 分类标签显示
+ *          - 计数显示
+ *          - 支持多种样式变体
+ *
+ *          导出组件：
+ *          - Badge: 徽章组件
+ *          - badgeVariants: 徽章变体配置
+ *
+ *          样式变体：
+ *          - default: 默认样式
+ *          - secondary: 次要样式
+ *          - destructive: 危险样式
+ *          - outline: 描边样式
+ *
+ *          使用场景：
+ *          - 显示状态标签
+ *          - 分类标记
+ *          - 计数徽章
+ *          - 特征标签
  */
 
 import * as React from "react"
@@ -15,9 +39,6 @@ import { cn } from "@/utils/tailwindcss"
 /**
  * 徽章组件的变体配置
  * 定义不同样式变体的CSS类名和默认值
- * 
- * @const badgeVariants
- * @type {VariantProps}
  */
 const badgeVariants = cva(
   "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -42,8 +63,6 @@ const badgeVariants = cva(
 /**
  * 徽章组件的属性接口
  * 继承HTML div属性和变体属性
- * 
- * @interface BadgeProps
  */
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -52,10 +71,6 @@ export interface BadgeProps
 /**
  * 徽章组件
  * 用于显示小型状态指示器、标签或计数信息
- * 
- * @component Badge
- * @param {BadgeProps} props - 组件属性
- * @returns {JSX.Element} 返回徽章组件
  */
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (

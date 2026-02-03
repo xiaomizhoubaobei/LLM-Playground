@@ -1,12 +1,37 @@
 /**
  * @fileoverview React Hook，用于检测移动端视口和响应式设计
- * 提供实时检测移动设备视口的功能，支持响应式布局
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 基于CSS媒体查询和窗口大小事件实现移动端检测，防止水合不匹配
+ *
+ * @remark 本模块提供了检测移动端视口的 React Hook，用于响应式设计和移动端适配。
+ *
+ *          主要功能包括：
+ *          - 基于 CSS 媒体查询的移动端检测
+ *          - 实时响应窗口大小变化
+ *          - 防止水合不匹配问题
+ *          - 支持响应式布局切换
+ *
+ *          导出函数：
+ *          - useIsMobile: 检测当前视口是否为移动端
+ *
+ *          配置参数：
+ *          - MOBILE_BREAKPOINT: 移动端断点宽度（默认 768px）
+ *
+ *          返回值：
+ *          - boolean: 视口宽度小于断点时返回 true
+ *
+ *          使用场景：
+ *          - 响应式布局切换
+ *          - 移动端适配优化
+ *          - 条件渲染移动端/桌面端组件
+ *
+ *          注意事项：
+ *          - 初始化状态为 undefined，防止服务端渲染与客户端不一致
+ *          - 使用 matchMedia API 进行高效的媒体查询监听
+ *          - 组件卸载时自动清理事件监听器
  */
 
 import * as React from "react"
@@ -14,18 +39,12 @@ import * as React from "react"
 /**
  * 定义移动端和桌面端视图边界的断点宽度（像素）
  * 视口宽度低于此值被视为移动端
- * 
- * @constant MOBILE_BREAKPOINT
- * @type {number}
  */
 const MOBILE_BREAKPOINT = 768
 
 /**
  * 检测当前视口是否为移动端大小的 React Hook
  * 使用CSS媒体查询和窗口大小事件进行实时检测
- * 
- * @function useIsMobile
- * @returns {boolean} 如果视口宽度小于 MOBILE_BREAKPOINT 则返回 true
  */
 export function useIsMobile() {
   // 初始化状态为 undefined，防止水合不匹配

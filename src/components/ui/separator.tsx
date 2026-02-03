@@ -1,10 +1,25 @@
 /**
+ * @fileoverview 分隔符组件，基于Radix UI提供的基础分隔符功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 分隔符组件，基于Radix UI提供的基础分隔符功能，用于视觉上分隔内容区域
+ *
+ * @remark 本模块提供了分隔符组件，基于Radix UI提供的基础分隔符功能。
+ *
+ *          主要功能包括：
+ *          - 水平分隔线
+ *          - 垂直分隔线
+ *          - 自定义样式
+ *
+ *          导出组件：
+ *          - Separator: 分隔符组件
+ *
+ *          使用场景：
+ *          - 内容分隔
+ *          - 视觉分组
+ *          - 布局分割
  */
 
 'use client'

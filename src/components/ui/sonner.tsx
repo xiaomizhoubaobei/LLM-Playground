@@ -1,10 +1,27 @@
 /**
+ * @fileoverview 通知组件，基于Sonner库提供的热力通知功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 通知组件，基于Sonner库提供的热力通知功能，支持主题切换和自定义样式
+ *
+ * @remark 本模块提供了通知组件，基于Sonner库提供的热力通知功能。
+ *
+ *          主要功能包括：
+ *          - 主题感知
+ *          - 自动消失
+ *          - 动画效果
+ *          - 自定义样式
+ *
+ *          导出组件：
+ *          - Toaster: 烤面包机组件
+ *
+ *          使用场景：
+ *          - 成功通知
+ *          - 错误提示
+ *          - 警告信息
+ *          - 系统消息
  */
 
 'use client'

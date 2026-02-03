@@ -1,10 +1,50 @@
 /**
+ * @fileoverview 侧边栏组件套件，提供完整的侧边栏功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 侧边栏组件套件，提供完整的侧边栏功能，包括可折叠、响应式布局和多种子组件
+ *
+ * @remark 本模块提供了侧边栏组件套件，支持可折叠、响应式布局和多种子组件。
+ *
+ *          主要功能包括：
+ *          - 可折叠侧边栏
+ *          - 响应式布局
+ *          - 键盘快捷键（Ctrl/Cmd + B）
+ *          - Cookie 状态持久化
+ *          - 工具提示支持
+ *
+ *          导出组件：
+ *          - SidebarProvider: 侧边栏提供者
+ *          - Sidebar: 侧边栏根组件
+ *          - SidebarTrigger: 触发器组件
+ *          - SidebarRail: 侧边栏轨道
+ *          - SidebarInset: 侧边栏内嵌
+ *          - SidebarHeader: 头部组件
+ *          - SidebarFooter: 底部组件
+ *          - SidebarContent: 内容组件
+ *          - SidebarGroup: 分组组件
+ *          - SidebarGroupLabel: 分组标签
+ *          - SidebarGroupAction: 分组操作
+ *          - SidebarGroupContent: 分组内容
+ *          - SidebarMenu: 菜单组件
+ *          - SidebarMenuItem: 菜单项
+ *          - SidebarMenuButton: 菜单按钮
+ *          - SidebarMenuAction: 菜单操作
+ *          - SidebarMenuBadge: 菜单徽章
+ *          - SidebarMenuSkeleton: 菜单骨架屏
+ *          - SidebarMenuSub: 子菜单
+ *          - SidebarMenuSubButton: 子菜单按钮
+ *          - SidebarInput: 输入框
+ *          - SidebarSeparator: 分隔符
+ *          - useSidebar: 侧边栏Hook
+ *
+ *          使用场景：
+ *          - 导航菜单
+ *          - 设置面板
+ *          - 文件浏览器
+ *          - 内容管理
  */
 
 'use client'

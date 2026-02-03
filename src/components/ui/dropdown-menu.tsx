@@ -1,10 +1,40 @@
 /**
+ * @fileoverview 下拉菜单组件套件，基于Radix UI提供的基础下拉菜单功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 下拉菜单组件套件，基于Radix UI提供的基础下拉菜单功能，包含完整的菜单组件集合
+ *
+ * @remark 本模块提供了下拉菜单组件套件，基于Radix UI提供的基础下拉菜单功能。
+ *
+ *          主要功能包括：
+ *          - 下拉菜单显示
+ *          - 嵌套子菜单支持
+ *          - 单选和复选菜单项
+ *          - 键盘导航支持
+ *
+ *          导出组件：
+ *          - DropdownMenu: 下拉菜单根组件
+ *          - DropdownMenuTrigger: 触发器组件
+ *          - DropdownMenuContent: 内容组件
+ *          - DropdownMenuItem: 菜单项组件
+ *          - DropdownMenuCheckboxItem: 复选框菜单项
+ *          - DropdownMenuRadioItem: 单选菜单项
+ *          - DropdownMenuLabel: 标签组件
+ *          - DropdownMenuSeparator: 分隔符组件
+ *          - DropdownMenuShortcut: 快捷键组件
+ *          - DropdownMenuGroup: 分组组件
+ *          - DropdownMenuSub: 子菜单组件
+ *          - DropdownMenuSubTrigger: 子菜单触发器
+ *          - DropdownMenuSubContent: 子菜单内容
+ *          - DropdownMenuRadioGroup: 单选组组件
+ *
+ *          使用场景：
+ *          - 操作菜单
+ *          - 用户菜单
+ *          - 设置菜单
+ *          - 选项菜单
  */
 
 'use client'

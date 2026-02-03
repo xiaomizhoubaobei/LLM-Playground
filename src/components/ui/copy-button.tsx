@@ -1,10 +1,31 @@
 /**
+ * @fileoverview 复制按钮组件，提供文本复制到剪贴板的交互功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供文本复制到剪贴板的交互功能，带有视觉反馈动画
+ *
+ * @remark 本模块提供了复制按钮组件，支持文本复制到剪贴板并带有视觉反馈动画。
+ *
+ *          主要功能包括：
+ *          - 文本复制到剪贴板
+ *          - 复制成功后的视觉反馈
+ *          - 勾选图标切换动画
+ *          - 自定义复制消息
+ *
+ *          导出组件：
+ *          - CopyButton: 复制按钮组件
+ *
+ *          组件属性：
+ *          - content: 要复制的文本内容
+ *          - copyMessage: 复制成功后显示的消息（可选）
+ *
+ *          使用场景：
+ *          - 代码块复制
+ *          - 文本内容复制
+ *          - URL 复制
+ *          - API 响应复制
  */
 
 'use client'
@@ -17,10 +38,6 @@ import { cn } from '@/utils/tailwindcss'
 
 /**
  * CopyButton 组件的属性接口定义
- * 
- * @interface CopyButtonProps
- * @property {string} content - 要复制到剪贴板的文本内容
- * @property {string} [copyMessage] - 复制成功后显示的可选消息
  */
 type CopyButtonProps = {
   content: string
@@ -30,27 +47,6 @@ type CopyButtonProps = {
 /**
  * 复制到剪贴板的按钮组件，具有视觉反馈功能
  * 复制后短暂显示勾选图标
- * 
- * @component CopyButton
- * @param {CopyButtonProps} props - 组件属性
- * @param {string} props.content - 要复制到剪贴板的文本内容
- * @param {string} [props.copyMessage] - 复制成功后显示的可选消息
- * @returns {JSX.Element} 返回一个带有复制功能的按钮组件
- * @example
- * ```tsx
- * <CopyButton
- *   content="要复制的文本"
- *   copyMessage="已复制到剪贴板！"
- * />
- * ```
- */
-/**
- * CopyButton 组件的主函数
- * 实现复制到剪贴板功能，带有视觉反馈动画
- * 
- * @function CopyButton
- * @param {CopyButtonProps} { content, copyMessage } - 解构的组件属性
- * @returns {JSX.Element} 返回渲染的按钮组件
  */
 export function CopyButton({ content, copyMessage }: CopyButtonProps) {
   // 使用自定义 hook 处理复制逻辑和状态管理

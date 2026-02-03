@@ -1,10 +1,27 @@
 /**
+ * @fileoverview 带工具提示的按钮组件，结合了按钮功能和工具提示显示
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 带工具提示的按钮组件，结合了按钮功能和工具提示显示
+ *
+ * @remark 本模块提供了带工具提示的按钮组件，结合了按钮功能和工具提示显示。
+ *
+ *          主要功能包括：
+ *          - 按钮功能
+ *          - 工具提示显示
+ *          - 自定义延迟
+ *          - 自定义样式
+ *
+ *          导出组件：
+ *          - TooltipButton: 工具提示按钮组件
+ *
+ *          使用场景：
+ *          - 操作按钮说明
+ *          - 功能提示
+ *          - 快捷键提示
+ *          - 帮助信息
  */
 
 import { ButtonProps } from "@/components/ui/button"
@@ -21,24 +38,16 @@ import {
  * 工具提示按钮组件的属性接口，继承自ButtonProps
  */
 interface TooltipButtonProps extends ButtonProps {
-  /** 工具提示内容 */
   tooltipContent: ReactNode
-  /** 工具提示侧边偏移量 */
   tooltipSideOffset?: number
-  /** 工具提示延迟时间 */
   tooltipDelayDuration?: number
-  /** 工具提示的自定义CSS类名 */
   tooltipClassName?: string
-  /** 按钮子元素 */
   children: ReactNode
 }
 
 /**
  * 工具提示按钮组件
  * 结合了按钮功能和工具提示显示，支持自定义样式和行为
- * 
- * @param {TooltipButtonProps} props - 组件属性
- * @returns {JSX.Element} 渲染的工具提示按钮组件
  */
 export function TooltipButton({
   tooltipContent,

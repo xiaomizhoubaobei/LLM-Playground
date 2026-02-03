@@ -1,12 +1,44 @@
 /**
  * @fileoverview 全局样式文件，定义应用程序的基础样式和主题变量
- * 包含 Tailwind CSS 基础样式、主题色彩系统和 KaTeX 数学公式样式
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供完整的样式系统，包括明暗主题、侧边栏样式和数学公式渲染优化
+ *
+ * @remark 本模块提供全局样式和主题系统，包含 Tailwind CSS 基础样式、主题色彩系统和 KaTeX 数学公式样式。
+ *
+ *          主要功能包括：
+ *          - Tailwind CSS 基础样式导入
+ *          - 明暗主题色彩系统定义
+ *          - 自定义工具类和辅助样式
+ *          - 组件层样式（滚动条、卡片、按钮、输入框）
+ *          - KaTeX 数学公式样式优化
+ *
+ *          主题特性：
+ *          - 支持明暗主题切换
+ *          - 侧边栏主题变量
+ *          - 图表色彩系统
+ *          - 渐变背景和玻璃态效果
+ *
+ *          工具类：
+ *          - text-balance: 文本平衡
+ *          - gradient-bg: 渐变背景
+ *          - glass-effect: 玻璃态效果
+ *          - shadow-modern: 现代化阴影
+ *          - gradient-border: 渐变边框
+ *          - 动画效果（fadeIn、slideUp、scaleIn）
+ *
+ *          组件样式：
+ *          - custom-scrollbar: 自定义滚动条
+ *          - card-base: 卡片基础样式
+ *          - button-base: 按钮基础样式
+ *          - input-base: 输入框基础样式
+ *
+ *          KaTeX 优化：
+ *          - 数学公式渲染质量优化
+ *          - 显示模式布局处理
+ *          - 分数线和数学字体样式
  */
 
 @tailwind base;

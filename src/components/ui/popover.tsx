@@ -1,10 +1,30 @@
 /**
+ * @fileoverview 弹出框组件，基于Radix UI提供的基础弹出框功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 弹出框组件，基于Radix UI提供的基础弹出框功能，支持自定义定位和动画效果
+ *
+ * @remark 本模块提供了弹出框组件，基于Radix UI提供的基础弹出框功能。
+ *
+ *          主要功能包括：
+ *          - 自定义定位
+ *          - 动画效果
+ *          - 响应式对齐
+ *          - 键盘导航
+ *
+ *          导出组件：
+ *          - Popover: 弹出框根组件
+ *          - PopoverTrigger: 触发器组件
+ *          - PopoverContent: 内容组件
+ *          - PopoverAnchor: 锚点组件
+ *
+ *          使用场景：
+ *          - 信息提示
+ *          - 快速操作
+ *          - 菜单显示
+ *          - 工具面板
  */
 
 'use client'

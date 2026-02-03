@@ -73,7 +73,7 @@ export function useChatGeneration() {
    * 设置停止标志，在流式传输过程中会被检查
    */
   const stop = () => {
-    logger.info('Stopping chat generation', { module: 'ChatGeneration' })
+    logger.info('停止聊天生成', { module: 'ChatGeneration' })
     shouldStopRef.current = true
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
@@ -91,7 +91,7 @@ export function useChatGeneration() {
     logprobsRef.current = undefined
     abortControllerRef.current = new AbortController()
 
-    logger.info('Starting chat generation', {
+    logger.info('开始聊天生成', {
       context: { messageId, messagesCount: messages.length },
       module: 'ChatGeneration'
     })
@@ -108,7 +108,7 @@ export function useChatGeneration() {
     })
 
     try {
-      logger.info('Generating chat via API', { context: { settings }, module: 'ChatGeneration' })
+      logger.info('通过 API 生成聊天', { context: { settings }, module: 'ChatGeneration' })
 
       // 调用 API 路由
       const response = await fetch('/api/chat-stream', {
@@ -125,10 +125,10 @@ export function useChatGeneration() {
 
       if (!response.ok) {
         const errorText = await response.text()
-        throw new Error(errorText || 'API request failed')
+        throw new Error(errorText || 'API 请求失败')
       }
 
-      logger.debug('Processing chat stream', { module: 'ChatGeneration' })
+      logger.debug('处理聊天流', { module: 'ChatGeneration' })
 
       // 处理流式响应
       const reader = response.body?.getReader()
@@ -143,7 +143,7 @@ export function useChatGeneration() {
       while (true) {
         // 检查手动停止
         if (shouldStopRef.current) {
-          logger.info('Chat generation stopped by user', {
+          logger.info('聊天生成交到用户停止', {
             context: { messageId },
             module: 'ChatGeneration'
           })
@@ -158,7 +158,7 @@ export function useChatGeneration() {
 
         const { done, value } = await reader.read()
         if (done) {
-          logger.info('Stream completed', {
+          logger.info('流已完成', {
             context: { messageId, totalChunks: chunkCount, finalContentLength: contentRef.current.length },
             module: 'ChatGeneration'
           })
@@ -175,7 +175,7 @@ export function useChatGeneration() {
           if (trimmedLine.startsWith('data: ')) {
             const data = trimmedLine.slice(6)
             if (data === '[DONE]') {
-              logger.info('Stream received DONE signal', {
+              logger.info('流收到 DONE 信号', {
                 context: { messageId, totalChunks: chunkCount },
                 module: 'ChatGeneration'
               })
@@ -209,13 +209,13 @@ export function useChatGeneration() {
         }
       }
 
-      logger.info('Chat generation completed successfully', {
+      logger.info('聊天生成成功完成', {
         context: { messageId },
         module: 'ChatGeneration'
       })
       return { id: messageId, content: contentRef.current, logprobs: logprobsRef.current }
     } catch (error: unknown) {
-      logger.error('Error in chat generation', error as Error, {
+      logger.error('聊天生成错误', error as Error, {
         context: { messageId },
         module: 'ChatGeneration'
       })
@@ -232,7 +232,7 @@ export function useChatGeneration() {
           const errorMessage = parsedError.error?.[`message_${key}`] || parsedError.error?.message || error
           toast.error(errorMessage)
         } catch (parseError) {
-          logger.error('Error parsing error message', parseError as Error, {
+          logger.error('解析错误消息时出错', parseError as Error, {
             context: { messageId, originalError: error },
             module: 'ChatGeneration'
           })

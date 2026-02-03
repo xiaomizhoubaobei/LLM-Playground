@@ -1,10 +1,36 @@
 /**
+ * @fileoverview 命令面板组件套件，提供命令面板、搜索输入框、命令分组等UI组件
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供命令面板、搜索输入框、命令分组等UI组件，支持键盘导航和触摸滚动
+ *
+ * @remark 本模块提供了命令面板组件套件，支持键盘导航和触摸滚动。
+ *
+ *          主要功能包括：
+ *          - 命令面板基础容器
+ *          - 搜索输入框功能
+ *          - 命令分组和列表
+ *          - 键盘快捷键支持
+ *          - 触摸滚动优化
+ *
+ *          导出组件：
+ *          - Command: 命令菜单根组件
+ *          - CommandDialog: 命令对话框
+ *          - CommandInput: 命令输入框
+ *          - CommandList: 命令列表
+ *          - CommandEmpty: 空状态组件
+ *          - CommandGroup: 命令分组
+ *          - CommandItem: 命令项
+ *          - CommandSeparator: 分隔符
+ *          - CommandShortcut: 快捷键
+ *
+ *          使用场景：
+ *          - 命令面板（CMD+K）
+ *          - 搜索功能
+ *          - 快速操作菜单
+ *          - 设置导航
  */
 
 'use client'
@@ -20,11 +46,6 @@ import { cn } from '@/utils/tailwindcss'
 /**
  * 命令菜单根组件
  * 提供命令面板的基础容器和样式
- * 
- * @component Command
- * @param {Object} props - 组件属性
- * @param {string} [className] - 额外的CSS类名
- * @returns {JSX.Element} 返回命令菜单根组件
  */
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -44,11 +65,6 @@ Command.displayName = CommandPrimitive.displayName
 /**
  * 命令对话框组件
  * 在弹窗中显示命令菜单，提供模态交互体验
- * 
- * @component CommandDialog
- * @param {DialogProps} props - 对话框属性
- * @param {React.ReactNode} children - 子组件内容
- * @returns {JSX.Element} 返回命令对话框组件
  */
 const CommandDialog = ({ children, ...props }: DialogProps) => {
   return (
@@ -65,11 +81,6 @@ const CommandDialog = ({ children, ...props }: DialogProps) => {
 /**
  * 命令输入框组件
  * 提供搜索输入功能，带有搜索图标
- * 
- * @component CommandInput
- * @param {Object} props - 组件属性
- * @param {string} [className] - 额外的CSS类名
- * @returns {JSX.Element} 返回命令输入框组件
  */
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
@@ -93,11 +104,6 @@ CommandInput.displayName = CommandPrimitive.Input.displayName
 /**
  * 命令列表组件
  * 显示命令选项列表，支持自定义滚动和触摸操作
- * 
- * @component CommandList
- * @param {Object} props - 组件属性
- * @param {string} [className] - 额外的CSS类名
- * @returns {JSX.Element} 返回命令列表组件
  */
 const CommandList = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.List>,
@@ -153,10 +159,6 @@ CommandList.displayName = CommandPrimitive.List.displayName
 /**
  * 命令空状态组件
  * 当没有匹配的命令时显示的提示内容
- * 
- * @component CommandEmpty
- * @param {Object} props - 组件属性
- * @returns {JSX.Element} 返回空状态组件
  */
 const CommandEmpty = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Empty>,
@@ -174,11 +176,6 @@ CommandEmpty.displayName = CommandPrimitive.Empty.displayName
 /**
  * 命令分组组件
  * 用于将相关命令组织在一起，带有分组标题
- * 
- * @component CommandGroup
- * @param {Object} props - 组件属性
- * @param {string} [className] - 额外的CSS类名
- * @returns {JSX.Element} 返回命令分组组件
  */
 const CommandGroup = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Group>,
@@ -199,11 +196,6 @@ CommandGroup.displayName = CommandPrimitive.Group.displayName
 /**
  * 命令分隔符组件
  * 用于在命令组之间创建视觉分隔
- * 
- * @component CommandSeparator
- * @param {Object} props - 组件属性
- * @param {string} [className] - 额外的CSS类名
- * @returns {JSX.Element} 返回分隔符组件
  */
 const CommandSeparator = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Separator>,
@@ -220,11 +212,6 @@ CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 /**
  * 命令项组件
  * 表示单个可选择的命令选项
- * 
- * @component CommandItem
- * @param {Object} props - 组件属性
- * @param {string} [className] - 额外的CSS类名
- * @returns {JSX.Element} 返回命令项组件
  */
 const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
@@ -245,11 +232,6 @@ CommandItem.displayName = CommandPrimitive.Item.displayName
 /**
  * 命令快捷键组件
  * 用于显示命令的键盘快捷键提示
- * 
- * @component CommandShortcut
- * @param {Object} props - 组件属性
- * @param {string} [className] - 额外的CSS类名
- * @returns {JSX.Element} 返回快捷键组件
  */
 const CommandShortcut = ({
   className,

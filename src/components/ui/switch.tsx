@@ -1,10 +1,27 @@
 /**
+ * @fileoverview 开关组件，基于Radix UI提供的基础开关功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 开关组件，基于Radix UI提供的基础开关功能，用于切换两种状态
+ *
+ * @remark 本模块提供了开关组件，基于Radix UI提供的基础开关功能。
+ *
+ *          主要功能包括：
+ *          - 两种状态切换
+ *          - 自定义样式
+ *          - 动画效果
+ *          - 无障碍支持
+ *
+ *          导出组件：
+ *          - Switch: 开关组件
+ *
+ *          使用场景：
+ *          - 设置开关
+ *          - 功能启用/禁用
+ *          - 状态切换
+ *          - 选项切换
  */
 
 'use client'
