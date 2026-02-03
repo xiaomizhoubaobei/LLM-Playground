@@ -1,10 +1,34 @@
 /**
+ * @fileoverview 文件预览组件，支持图片和文件的预览、删除和灯箱查看功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 文件预览组件，支持图片和文件的预览、删除和灯箱查看功能
+ *
+ * @remark 本模块提供了文件预览组件，支持图片和文件的预览、删除和灯箱查看功能。
+ *
+ *          主要功能包括：
+ *          - 图片预览和灯箱查看
+ *          - 文件预览和工具提示
+ *          - 文件删除功能
+ *          - 图片缩略图显示
+ *          - 文件大小显示
+ *          - 文件名显示
+ *
+ *          导出组件：
+ *          - FilePreview: 文件预览组件
+ *
+ *          使用场景：
+ *          - 聊天消息中的文件附件
+ *          - 图片灯箱查看
+ *          - 文件管理
+ *          - 多文件上传预览
+ *
+ *          依赖关系：
+ *          - yet-another-react-lightbox: 图片灯箱组件
+ *          - lucide-react: 图标库
+ *          - next/image: Next.js 图片组件
  */
 
 import { cn } from '@/utils/tailwindcss'
@@ -21,18 +45,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/
  * 文件预览组件的属性接口
  */
 interface FilePreviewProps {
-  /** 文件列表，包含URL、类型、名称和大小 */
   files: {
     url: string
     type: 'image' | 'file'
     name: string
     size: number
   }[]
-  /** 是否允许删除文件 */
   canDelete?: boolean
-  /** 删除文件的回调函数 */
   onDelete?: (index: number) => void
-  /** 额外的CSS类名 */
   className?: string
 }
 

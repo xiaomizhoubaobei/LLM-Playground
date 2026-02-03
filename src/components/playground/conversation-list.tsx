@@ -1,11 +1,29 @@
 /**
  * @fileoverview 会话列表组件，显示和管理历史对话
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供会话列表的显示、切换、删除和重命名功能
+ *
+ * @remark 本模块提供了会话列表组件，用于显示和管理历史对话。
+ *
+ *          主要功能包括：
+ *          - 会话列表显示
+ *          - 会话切换功能
+ *          - 会话删除功能
+ *          - 会话重命名功能
+ *          - 会话创建功能
+ *          - 时间格式化显示
+ *
+ *          导出组件：
+ *          - ConversationList: 会话列表主组件
+ *          - ConversationItem: 单个会话项组件
+ *
+ *          使用场景：
+ *          - 历史对话管理
+ *          - 会话快速切换
+ *          - 对话历史浏览
  */
 
 'use client'

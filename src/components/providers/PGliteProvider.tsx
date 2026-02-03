@@ -1,35 +1,41 @@
 /**
+ * @fileoverview PGlite数据库提供者组件，为应用程序提供客户端PostgreSQL数据库功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark PGlite数据库提供者组件，为应用程序提供客户端PostgreSQL数据库功能
+ *
+ * @remark 本模块提供了 PGlite 数据库提供者组件，为应用程序提供客户端 PostgreSQL 数据库功能。
+ *
+ *          主要功能包括：
+ *          - 客户端 PostgreSQL 数据库
+ *          - 实时数据同步（live queries）
+ *          - 消息表结构管理
+ *          - React Context 集成
+ *
+ *          导出组件：
+ *          - PGliteProvider: PGlite 数据库提供者组件
+ *
+ *          数据库配置：
+ *          - 数据库名称：playground
+ *          - 消息表字段：id, role, content, annotations
+ *
+ *          使用场景：
+ *          - 客户端数据存储
+ *          - 离线数据管理
+ *          - 本地缓存
+ *          - 实时数据同步
  */
 
 "use client"
 
 import { useEffect } from "react"
-import { PGlite } from "@electric-sql/pglite"
-import { live } from "@electric-sql/pglite/live"
 import { PGliteProvider as PGliteProviderBase } from "@electric-sql/pglite-react"
-
-// 创建PGlite数据库实例，配置消息表结构
-const db = PGlite.create({
-  database: 'playground',
-  schema: {
-    messages: {
-      columns: ['id', 'role', 'content', 'annotations'],
-    },
-  },
-})
 
 /**
  * PGlite数据库提供者组件
  * 为应用程序包装并提供PGlite数据库上下文
- * 
- * @param {Object} props - 组件属性
- * @param {React.ReactNode} props.children - 子组件
  */
 export function PGliteProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {

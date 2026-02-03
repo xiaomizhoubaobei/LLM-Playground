@@ -1,10 +1,40 @@
 /**
+ * @fileoverview 可拖拽和编辑的消息组件，支持拖拽排序、编辑、复制和重新生成消息功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 可拖拽和编辑的消息组件，支持拖拽排序、编辑、复制和重新生成消息功能
+ *
+ * @remark 本模块提供了可拖拽和编辑的消息组件，支持拖拽排序、编辑、复制和重新生成消息功能。
+ *
+ *          主要功能包括：
+ *          - 拖拽排序
+ *          - 消息编辑
+ *          - 消息复制
+ *          - 消息删除
+ *          - 消息重新生成
+ *          - 文件上传
+ *          - 文件预览
+ *          - 角色切换
+ *          - 令牌概率显示
+ *          - Markdown 编辑和预览
+ *
+ *          导出组件：
+ *          - SortableMessage: 可排序消息组件
+ *          - LoadingIndicator: 加载指示器组件
+ *
+ *          使用场景：
+ *          - 聊天消息管理
+ *          - 消息顺序调整
+ *          - 消息编辑
+ *          - 多模态消息支持
+ *
+ *          依赖关系：
+ *          - @dnd-kit/sortable: 拖拽排序功能
+ *          - @/components/ui/*: UI 组件
+ *          - @/hooks/use-file-upload: 文件上传 Hook
+ *          - @/components/playground/*: 其他 Playground 组件
  */
 
 import { Button } from '@/components/ui/button'
@@ -52,12 +82,6 @@ import { TokenProbabilities } from './token-probabilities'
 
 /**
  * SortableMessage组件的属性接口
- * @interface SortableMessageProps
- * @property {PlaygroundMessage} message - 要显示和管理的消息
- * @property {boolean} [isRunning] - 消息是否正在生成/重新生成
- * @property {Function} handleEdit - 编辑消息的回调函数
- * @property {Function} handleDelete - 删除消息的回调函数
- * @property {Function} [handleRegenerate] - 可选的重新生成消息的回调函数
  */
 interface SortableMessageProps {
   message: PlaygroundMessage
@@ -69,7 +93,6 @@ interface SortableMessageProps {
 
 /**
  * 消息生成期间显示的加载指示器组件
- * @component
  */
 const LoadingIndicator = () => {
   const t = useTranslations('playground')
@@ -84,10 +107,6 @@ const LoadingIndicator = () => {
 /**
  * 具有丰富交互功能的可拖拽和编辑的消息组件
  * 支持拖拽排序、内联编辑、复制到剪贴板和消息重新生成
- * 
- * @component
- * @param {SortableMessageProps} props - 组件属性
- * @returns {JSX.Element} 渲染的消息组件
  */
 export const SortableMessage = memo(
   function SortableMessage({

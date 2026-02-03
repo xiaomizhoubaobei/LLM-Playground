@@ -1,10 +1,37 @@
 /**
+ * @fileoverview Markdown编辑器组件，具有预览和编辑模式，支持实时编辑、Markdown预览和KaTeX数学公式
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark Markdown编辑器组件，具有预览和编辑模式，支持实时编辑、Markdown预览和KaTeX数学公式
+ *
+ * @remark 本模块提供了 Markdown 编辑器组件，具有预览和编辑模式。
+ *
+ *          主要功能包括：
+ *          - Markdown 实时编辑
+ *          - Markdown 预览渲染
+ *          - KaTeX 数学公式支持
+ *          - 防抖内容更新
+ *          - 编辑模式切换
+ *          - 纯文本粘贴
+ *          - 自定义键盘处理
+ *
+ *          导出组件：
+ *          - MarkdownEditor: Markdown 编辑器主组件
+ *          - EditableContent: 可编辑内容区域组件
+ *          - EmptyContent: 空内容占位组件
+ *
+ *          使用场景：
+ *          - 聊天消息编辑
+ *          - Markdown 文档预览
+ *          - 富文本编辑
+ *          - 数学公式显示
+ *
+ *          依赖关系：
+ *          - @/components/ui/markdown-renderer: Markdown 渲染器
+ *          - usehooks-ts: 防抖和事件回调 Hooks
+ *          - katex: KaTeX 数学公式库
  */
 
 import { cn } from '@/utils/tailwindcss'
@@ -17,11 +44,6 @@ import { MarkdownRenderer } from '../ui/markdown-renderer'
 
 /**
  * 主MarkdownEditor组件的属性
- * 
- * @interface MarkdownEditorProps
- * @property {string} content - 当前markdown内容
- * @property {boolean} [isEditing] - 编辑器是否处于编辑模式
- * @property {(content: string) => void} onChange - 内容变更回调函数
  */
 interface MarkdownEditorProps {
   content: string
@@ -32,8 +54,6 @@ interface MarkdownEditorProps {
 /**
  * 内容为空时显示的组件
  * 显示带有图标的占位消息
- * 
- * @component
  */
 const EmptyContent = () => {
   const t = useTranslations('playground')
@@ -47,11 +67,6 @@ const EmptyContent = () => {
 
 /**
  * 可编辑内容区域的属性
- * 
- * @interface EditableProps
- * @property {string} content - 当前文本内容
- * @property {(content: string) => void} onChange - 内容变更回调函数
- * @property {string} [className] - 额外的CSS类名
  */
 interface EditableProps {
   content: string
@@ -62,9 +77,6 @@ interface EditableProps {
 /**
  * 具有粘贴和键盘处理功能的可编辑内容区域组件
  * 提供带有自定义事件处理的contentEditable div
- * 
- * @component
- * @param {EditableProps} props - 组件属性
  */
 const EditableContent = memo(function EditableContent({
   content,
@@ -146,23 +158,6 @@ const EditableContent = memo(function EditableContent({
 /**
  * 具有编辑和预览模式的主markdown编辑器组件
  * 具有防抖内容更新和同步状态功能
- * 
- * @component
- * @example
- * ```tsx
- * // 基本用法
- * <MarkdownEditor
- *   content={markdownText}
- *   onChange={setMarkdownText}
- * />
- * 
- * // 启用编辑模式
- * <MarkdownEditor
- *   content={markdownText}
- *   isEditing={true}
- *   onChange={setMarkdownText}
- * />
- * ```
  */
 export const MarkdownEditor = memo(function MarkdownEditor({
   content,

@@ -1,10 +1,32 @@
 /**
+ * @fileoverview 令牌概率显示组件，展示语言模型输出的令牌概率分布和备选令牌
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 令牌概率显示组件，展示语言模型输出的令牌概率分布和备选令牌
+ *
+ * @remark 本模块提供了令牌概率显示组件，展示语言模型输出的令牌概率分布和备选令牌。
+ *
+ *          主要功能包括：
+ *          - 令牌概率显示
+ *          - 备选令牌列表
+ *          - 概率条形图
+ *          - 颜色编码显示
+ *          - 弹出框详情查看
+ *
+ *          导出组件：
+ *          - TokenProbabilities: 令牌概率主组件
+ *          - TokenPopover: 令牌弹出框组件
+ *
+ *          使用场景：
+ *          - 模型输出分析
+ *          - 令牌概率可视化
+ *          - 模型调试和优化
+ *
+ *          依赖关系：
+ *          - @/components/ui/popover: 弹出框组件
+ *          - next-intl: 国际化支持
  */
 
 import {
@@ -31,9 +53,7 @@ const TOKEN_COLORS = [
  * 顶级概率令牌接口
  */
 interface TopLogprob {
-  /** 令牌文本 */
   token: string
-  /** 对数概率值 */
   logprob: number
 }
 
@@ -41,11 +61,8 @@ interface TopLogprob {
  * 令牌概率接口
  */
 interface TokenLogprob {
-  /** 令牌文本 */
   token: string
-  /** 对数概率值 */
   logprob: number
-  /** 顶级概率令牌列表 */
   topLogprobs: TopLogprob[]
 }
 
@@ -53,7 +70,6 @@ interface TokenLogprob {
  * 令牌概率组件属性接口
  */
 interface TokenProbabilitiesProps {
-  /** 令牌概率列表 */
   logprobs: TokenLogprob[]
 }
 

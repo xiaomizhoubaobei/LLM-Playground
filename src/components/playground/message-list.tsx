@@ -1,10 +1,35 @@
 /**
+ * @fileoverview 消息列表组件，处理聊天消息的显示、排序和管理，包括拖拽功能、自动滚动和消息重新生成
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 消息列表组件，处理聊天消息的显示、排序和管理，包括拖拽功能、自动滚动和消息重新生成
+ *
+ * @remark 本模块提供了消息列表组件，处理聊天消息的显示、排序和管理。
+ *
+ *          主要功能包括：
+ *          - 消息列表显示
+ *          - 拖拽排序功能
+ *          - 自动滚动管理
+ *          - 消息重新生成
+ *          - 消息编辑和删除
+ *          - 骨架屏加载状态
+ *          - 消息生成状态管理
+ *
+ *          导出组件：
+ *          - MessageList: 消息列表主组件
+ *
+ *          使用场景：
+ *          - 聊天对话显示
+ *          - 消息顺序调整
+ *          - 消息重新生成
+ *          - 实时消息更新
+ *
+ *          依赖关系：
+ *          - @dnd-kit/core: 拖拽功能
+ *          - @/components/playground/sortable-message: 可排序消息组件
+ *          - @/hooks/use-chat-generation: 聊天生成 Hook
  */
 
 import { messageStore } from '@/db/message-store'
@@ -34,13 +59,6 @@ const MemoizedSortableMessage = memo(SortableMessage)
 
 /**
  * MessageList组件的属性接口
- * @interface MessageListProps
- * @property {PlaygroundMessage[]} messages - 要显示的消息数组
- * @property {PlaygroundMessage | null} generatingMessage - 当前正在生成的消息（如果有）
- * @property {boolean} isRunning - 消息生成是否正在进行
- * @property {Function} onDragEnd - 拖拽操作结束时的处理函数
- * @property {Function} onEdit - 编辑消息的处理函数
- * @property {Function} onDelete - 删除消息的处理函数
  */
 interface MessageListProps {
   messages: PlaygroundMessage[]
@@ -54,10 +72,6 @@ interface MessageListProps {
 
 /**
  * 显示聊天消息列表的记忆化组件，具有拖拽排序、自动滚动和消息重新生成功能
- *
- * @component
- * @param {MessageListProps} props - 组件属性
- * @returns {JSX.Element} 渲染的消息列表
  */
 export const MessageList = memo(function MessageList({
   messages,
@@ -163,7 +177,6 @@ export const MessageList = memo(function MessageList({
 
   /**
    * 重新生成指定索引处的消息
-   * @param {string} id - 要重新生成的消息ID
    */
   const handleRegenerate = useCallback(
     async (id: string) => {

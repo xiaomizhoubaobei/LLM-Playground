@@ -1,11 +1,27 @@
 /**
  * @fileoverview 消息列表骨架屏组件，在消息加载时显示
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
+ * @date 2026-02-03
+ * @since 2026-02-03
  * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供消息加载时的骨架屏效果，改善用户体验
+ *
+ * @remark 本模块提供了消息列表骨架屏组件，在消息加载时显示。
+ *
+ *          主要功能包括：
+ *          - 消息加载状态显示
+ *          - 骨架屏动画效果
+ *          - 可配置显示数量
+ *          - 可配置头像显示
+ *
+ *          导出组件：
+ *          - MessageSkeleton: 消息骨架屏组件
+ *          - SingleMessageSkeleton: 单条消息骨架屏组件
+ *
+ *          使用场景：
+ *          - 消息加载中状态
+ *          - 初始加载占位
+ *          - 改善用户体验
  */
 
 import React from 'react'
@@ -15,17 +31,8 @@ import { cn } from '@/utils/tailwindcss'
  * 消息骨架屏组件的属性
  */
 interface MessageSkeletonProps {
-  /**
-   * 是否显示头像
-   */
   showAvatar?: boolean
-  /**
-   * 骨架屏数量
-   */
   count?: number
-  /**
-   * 额外的CSS类名
-   */
   className?: string
 }
 
@@ -64,10 +71,6 @@ function SingleMessageSkeleton({ showAvatar = true }: { showAvatar?: boolean }) 
 
 /**
  * 消息列表骨架屏组件
- *
- * @function MessageSkeleton
- * @param {MessageSkeletonProps} props - 组件属性
- * @returns {JSX.Element} 渲染的骨架屏组件
  */
 export function MessageSkeleton({
   showAvatar = true,
