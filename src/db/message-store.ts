@@ -1,12 +1,43 @@
 /**
  * @fileoverview 消息存储实现，用于管理 playground 消息
  * 提供基于 IndexedDB 存储的消息 CRUD 操作功能
- * @author zpl
- * @created 2024-11-20
- * @modified 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @author 祁筱欣
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 实现观察者模式进行状态更新，处理并发操作，支持会话管理
+ * @remark 本模块实现了消息存储管理功能，用于处理聊天消息的持久化存储和状态管理。
+ *          主要功能包括：
+ *          - 基于 IndexedDB 的消息持久化存储
+ *          - 消息 CRUD 操作（创建、读取、更新、删除）
+ *          - 实现观察者模式进行状态更新通知
+ *          - 支持消息拖拽重排序
+ *          - 并发编辑操作处理（使用 Promise 队列）
+ *          - 批量删除消息功能
+ *          - 会话消息管理
+ *
+ *          使用场景：
+ *          - 管理聊天对话中的消息
+ *          - 支持用户编辑和删除消息
+ *          - 通过拖拽调整消息顺序
+ *          - 从特定位置重新生成对话
+ *          - 持久化存储聊天内容
+ *          - 处理并发编辑操作
+ *
+ *          工作流程：
+ *          1. init() 方法从 IndexedDB 加载消息数据
+ *          2. 通过 subscribe() 订阅消息状态变化
+ *          3. 所有 CRUD 操作自动通知订阅者
+ *          4. 编辑操作使用 Promise 队列防止并发冲突
+ *          5. 重排序时更新时间戳保持顺序
+ *          6. 删除消息时自动更新会话消息计数
+ *
+ *          依赖关系：
+ *          - 依赖 @/stores/playground 获取 PlaygroundMessage 类型
+ *          - 依赖 @/db/index 获取 db 实例
+ *          - 依赖 ./conversation-store 管理会话
+ *          - 依赖 @/utils/logger 进行日志记录
+ *          - 使用 @dnd-kit/sortable 实现拖拽排序
  */
 
 import { PlaygroundMessage } from '@/stores/playground'
@@ -17,8 +48,6 @@ import { logger } from '@/utils/logger'
 
 /**
  * 消息状态变化的回调类型
- * @callback Listener
- * @param {PlaygroundMessage[]} messages - 更新后的消息数组
  */
 type Listener = (messages: PlaygroundMessage[]) => void
 
@@ -27,8 +56,6 @@ type Listener = (messages: PlaygroundMessage[]) => void
  * 实现观察者模式进行状态更新，处理并发操作
  *
  * @class
- * @since 2024-11-20
- * @modified 2025-12-24
  */
 class MessageStore {
   private listeners: Set<Listener> = new Set()
@@ -39,12 +66,8 @@ class MessageStore {
 
   /**
    * 订阅消息状态变化的监听器
-   * @param {Listener} listener - 状态变化时调用的回调函数
-   * @returns {Function} 取消订阅的函数
-   * @since 2024-11-20
    */
-  subscribe(listener: Listener) {
-    this.listeners.add(listener)
+    subscribe(listener: Listener) {    this.listeners.add(listener)
     listener(this.messages)
     return () => {
       this.listeners.delete(listener)
@@ -97,22 +120,16 @@ class MessageStore {
   /**
    * 切换到指定会话并加载消息
    * @async
-   * @param {number} conversationId - 要切换到的会话 ID
-   * @since 2025-12-24
    */
-  async switchConversation(conversationId: number) {
-    this.currentConversationId = conversationId
+    async switchConversation(conversationId: number) {    this.currentConversationId = conversationId
     await this.loadMessages()
   }
 
   /**
    * 向存储中添加新消息
    * @async
-   * @param {Omit<PlaygroundMessage, 'timestamp' | 'conversationId'>} message - 要添加的消息
-   * @since 2024-11-20
    */
-  async addMessage(message: Omit<PlaygroundMessage, 'timestamp' | 'conversationId'>) {
-    if (!this.currentConversationId) {
+    async addMessage(message: Omit<PlaygroundMessage, 'timestamp' | 'conversationId'>) {    if (!this.currentConversationId) {
       logger.warn('No current conversation, cannot add message', { module: 'MessageStore' })
       return
     }
@@ -144,12 +161,8 @@ class MessageStore {
    * 更新现有消息
    * 使用基于 Promise 的队列处理并发编辑
    * @async
-   * @param {string} id - 要编辑的消息 ID
-   * @param {PlaygroundMessage | string} update - 更新的消息或内容
-   * @since 2024-11-20
    */
-  async editMessage(id: string, update: PlaygroundMessage | string) {
-    const currentOperation = this.editOperations.get(id)
+    async editMessage(id: string, update: PlaygroundMessage | string) {    const currentOperation = this.editOperations.get(id)
     if (currentOperation) {
       await currentOperation
     }
@@ -184,11 +197,8 @@ class MessageStore {
    * 根据 ID 删除消息
    * 在删除前等待任何待处理的编辑操作
    * @async
-   * @param {string} id - 要删除的消息 ID
-   * @since 2024-11-20
    */
-  async deleteMessage(id: string) {
-    logger.debug('Deleting message', {
+    async deleteMessage(id: string) {    logger.debug('Deleting message', {
       context: { messageId: id },
       module: 'MessageStore'
     })
@@ -217,12 +227,8 @@ class MessageStore {
    * 使用拖放功能重新排序消息
    * 更新时间戳以在 IndexedDB 中保持顺序
    * @async
-   * @param {string} activeId - 被移动的消息 ID
-   * @param {string} overId - 目标位置的消息 ID
-   * @since 2024-11-20
    */
-  async reorderMessages(activeId: string, overId: string) {
-    if (this.isSavingReorder) return
+    async reorderMessages(activeId: string, overId: string) {    if (this.isSavingReorder) return
 
     logger.debug('Reordering messages', {
       context: { activeId, overId },
@@ -273,11 +279,8 @@ class MessageStore {
   /**
    * 从指定消息开始删除所有后续消息
    * @async
-   * @param {string} id - 要删除的第一个消息的 ID
-   * @since 2024-11-20
    */
-  async deleteMessagesFrom(id: string) {
-    for (const operation of this.editOperations.values()) {
+    async deleteMessagesFrom(id: string) {    for (const operation of this.editOperations.values()) {
       await operation
     }
 
@@ -332,11 +335,8 @@ class MessageStore {
    * 从存储中检索所有消息
    * 如果有缓存消息则返回缓存，否则从 IndexedDB 加载
    * @async
-   * @returns {Promise<PlaygroundMessage[]>} 所有消息的数组
-   * @since 2024-11-20
    */
-  async getAllMessages(): Promise<PlaygroundMessage[]> {
-    if (this.messages.length > 0) {
+    async getAllMessages(): Promise<PlaygroundMessage[]> {    if (this.messages.length > 0) {
       return [...this.messages]
     }
 
@@ -349,7 +349,5 @@ class MessageStore {
  * MessageStore 的单例实例
  * 所有消息操作使用此实例
  * @constant
- * @type {MessageStore}
- * @since 2024-11-20
  */
 export const messageStore = new MessageStore()
