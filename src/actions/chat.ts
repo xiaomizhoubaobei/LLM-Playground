@@ -1,11 +1,49 @@
 /**
  * @fileoverview 处理使用 AI 模型生成聊天消息的服务器操作
- * 支持流式响应和各种模型配置
- * @author zpl
- * @date 2024-11-20
- * @modified 2025-12-26
+ * @author 祁筱欣
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 处理聊天消息生成和流式响应
+ * @remark 本模块提供了流式聊天消息生成的服务器端操作。
+ *          通过调用 AI 模型 API，根据对话历史和模型参数生成流式聊天响应。
+ *
+ *          主要功能包括：
+ *          - 支持流式聊天响应（Server-Sent Events）
+ *          - 支持多种模型参数配置（temperature、topP、frequencyPenalty 等）
+ *          - 支持包含文件（如图像）的多模态消息
+ *          - 支持多种 API 提供商（302AI、魔力方舟）
+ *          - 消息格式化和流式响应解析
+ *          - 统一的错误处理和日志记录
+ *
+ *          导出类型：
+ *          - StreamChunk: 流式数据类型
+ *
+ *          导出函数：
+ *          - chat: 生成流式聊天响应
+ *
+ *          请求参数（chat）：
+ *          - model: AI 模型标识符
+ *          - apiKey: 模型访问的 API 密钥
+ *          - provider: API 提供商（默认 '302AI'）
+ *          - messages: 对话历史（PlaygroundMessage[]）
+ *          - frequencyPenalty: 频繁使用 token 的惩罚（可选）
+ *          - presencePenalty: token 存在的惩罚（可选）
+ *          - temperature: 响应生成中的随机性（可选）
+ *          - topP: 核采样参数（可选）
+ *          - maxTokens: 模型响应的最大 token 数（可选）
+ *
+ *          响应格式：
+ *          - output: AsyncIterable<StreamChunk> 可流式响应的值
+ *
+ *          依赖关系：
+ *          - @/env: 环境变量配置
+ *          - @/stores/playground: PlaygroundMessage 和 LogProbs 类型
+ *          - @/utils/api: normalizeUrl 工具函数
+ *          - @/utils/logger: 日志记录工具
+ *          - ky: HTTP 客户端库
+ *
+ *          注意：Claude 3.5 模型会自动设置 max_tokens 为 8192
  */
 
 'use server'
@@ -19,16 +57,12 @@ import ky from 'ky'
 /**
  * 模型响应允许的最大 token 数量
  * 当前设置为兼容 Claude 3.5 模型
- * @constant
- * @type {number}
  */
 const MAX_TOKENS = 8192
 
 /**
  * 聊天错误类
  * 用于处理聊天生成过程中的错误
- * @class
- * @extends {Error}
  */
 class ChatError extends Error {
   constructor(message: string, options?: { cause: any }) {
@@ -149,19 +183,6 @@ async function* streamChatResponse(
 /**
  * 使用 AI 模型生成聊天响应的服务器操作
  * 支持流式响应和各种模型参数以微调输出
- *
- * @async
- * @function chat
- * @param {Object} params - 聊天生成参数
- * @param {string} params.model - AI 模型标识符
- * @param {string} params.apiKey - 模型访问的 API 密钥
- * @param {PlaygroundMessage[]} params.messages - 对话历史
- * @param {number} [params.frequencyPenalty] - 频繁使用 token 的惩罚
- * @param {number} [params.presencePenalty] - token 存在的惩罚
- * @param {number} [params.temperature] - 响应生成中的随机性
- * @param {number} [params.topP] - 核采样参数
- * @param {number} [params.maxTokens] - 模型响应的最大 token 数
- * @returns {Promise<{output: AsyncIterable<StreamChunk>}>} 可流式响应的值
  */
 export async function chat({
   model,

@@ -33,8 +33,6 @@ import { env } from '@/env'
 
 /**
  * 允许流式响应的最长时间（3000秒）
- * @constant
- * @since 2024-11-20
  */
 export const maxDuration = 3000
 

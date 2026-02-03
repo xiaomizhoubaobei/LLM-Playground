@@ -1,12 +1,46 @@
 /**
  * @fileoverview 获取可用 AI 模型的服务器操作
- * 提供检索和验证模型信息的功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @modified 2025-12-26
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 处理 AI 模型信息的获取和管理
+ * @remark 本模块提供获取和管理 AI 模型信息的服务器端操作。
+ *          支持从多个服务提供商（如 302AI、魔力方舟）获取模型列表，
+ *          并能根据模型提供商（如 OpenAI、Anthropic、Google）进行过滤。
+ *
+ *          主要功能包括：
+ *          - 从指定服务提供商获取完整模型列表
+ *          - 从模型列表中提取唯一的模型提供商
+ *          - 根据服务提供商和模型提供商过滤模型列表
+ *          - 模型 ID 前缀自动识别（gpt、claude、gemini 等）
+ *          - 统一的错误处理和日志记录
+ *
+ *          导出类型：
+ *          - ModelInfo: 单个 AI 模型信息结构
+ *
+ *          导出函数：
+ *          - fetchAllModels: 获取指定服务提供商的所有模型列表
+ *          - extractModelProviders: 从模型列表中提取唯一的模型提供商
+ *          - getModels: 根据服务提供商和模型提供商获取过滤后的模型列表
+ *
+ *          请求参数（fetchAllModels）：
+ *          - provider: 服务提供商（默认 '302AI'）
+ *          - apiKey: API 密钥（可选，使用环境变量作为默认值）
+ *
+ *          请求参数（getModels）：
+ *          - provider: 服务提供商（默认 '302AI'）
+ *          - modelProvider: 模型提供商（默认 'OpenAI'）
+ *          - allModels: 所有模型的列表（可选）
+ *
+ *          响应格式：
+ *          - 成功：ModelInfo[] 模型信息数组
+ *          - 失败：空数组或抛出错误
+ *
+ *          依赖关系：
+ *          - @/utils/logger: 日志记录工具
+ *
+ *          注意：魔力方舟 API 默认只获取 text2text 类型的模型
  */
 
 'use server'
@@ -15,11 +49,6 @@ import { logger } from '@/utils/logger'
 
 /**
  * 表示单个 AI 模型信息的结构
- * @interface ModelInfo
- * @property {string} id - 模型的唯一标识符
- * @property {string} object - 模型的类型/类别
- * @property {string} provider - 服务提供商
- * @property {string} modelProvider - 模型提供商
  */
 export type ModelInfo = {
   id: string
@@ -31,12 +60,6 @@ export type ModelInfo = {
 /**
  * 获取指定 Service Provider 的所有模型列表
  * 通过调用 Service Provider 的 API 获取完整的模型列表
- * 
- * @async
- * @function fetchAllModels
- * @param {string} provider - 服务提供商，默认为 '302AI'
- * @param {string} apiKey - API 密钥
- * @returns {Promise<ModelInfo[]>} 所有模型信息的数组
  */
 export const fetchAllModels = async (provider: string = '302AI', apiKey: string = '') => {
   logger.info('Fetching all models from service provider', { context: { provider }, module: 'Models' })
@@ -121,11 +144,6 @@ export const fetchAllModels = async (provider: string = '302AI', apiKey: string 
 /**
  * 从模型列表中提取所有唯一的 Model Providers
  * 基于模型 ID 的前缀或命名约定来确定 Provider
- * 
- * @async
- * @function extractModelProviders
- * @param {ModelInfo[]} models - 模型列表
- * @returns {Promise<string[]>} Model Provider 列表
  */
 export const extractModelProviders = async (models: ModelInfo[]) => {
   const providers = new Set<string>()
@@ -152,13 +170,6 @@ export const extractModelProviders = async (models: ModelInfo[]) => {
 /**
  * 获取可用 AI 模型列表的服务器操作
  * 根据服务提供商和模型提供商返回对应的模型列表
- * 
- * @async
- * @function getModels
- * @param {string} [provider] - 服务提供商，默认为 '302AI'
- * @param {string} [modelProvider] - 模型提供商，默认为 'OpenAI'
- * @param {ModelInfo[]} [allModels] - 所有模型的列表（可选）
- * @returns {Promise<ModelInfo[]>} 可用模型信息的数组
  */
 export const getModels = async (
   provider: string = '302AI',
@@ -192,11 +203,6 @@ export const getModels = async (
 
 /**
  * 根据模型提供商过滤模型列表
- * 
- * @function filterModelsByProvider
- * @param {ModelInfo[]} models - 所有模型列表
- * @param {string} modelProvider - 模型提供商
- * @returns {ModelInfo[]} 过滤后的模型列表
  */
 function filterModelsByProvider(models: ModelInfo[], modelProvider: string): ModelInfo[] {
   return models.filter((model) => {
