@@ -2,11 +2,36 @@
  * @fileoverview React Hook，用于处理文件上传功能
  * 支持图片和文件上传，包含压缩、错误处理和状态管理
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供完整的文件上传功能，支持多文件上传、图片压缩和错误处理
+ * @remark 本模块提供了文件上传功能的 Hook，用于处理文件上传操作和状态管理。
+ *          主要功能包括：
+ *          - 支持多文件并行上传
+ *          - 图片自动压缩功能
+ *          - 完整的上传状态管理（进行中/完成/错误）
+ *          - 错误处理和错误信息展示
+ *          - 支持 playground 前缀的文件路径
+ *
+ *          使用场景：
+ *          - 上传聊天中的图片文件
+ *          - 上传文档资料
+ *          - 批量上传多个文件
+ *          - 任何需要将文件上传到服务器的场景
+ *
+ *          工作流程：
+ *          1. 调用 upload 函数传入文件数组
+ *          2. 使用 Promise.all 并行处理多个文件
+ *          3. 为每个文件构建 FormData，包含文件和配置参数
+ *          4. 调用 AI 302 API 上传文件
+ *          5. 图片文件会自动触发压缩（need_compress=true）
+ *          6. 返回包含 URL、类型、名称和大小的文件信息数组
+ *          7. 出错时捕获异常并设置错误状态
+ *
+ *          依赖关系：
+ *          - 依赖 @/env 获取上传 API URL 配置
+ *          - 使用 ky 库进行 HTTP 请求
  */
 
 import { env } from '@/env'
@@ -15,12 +40,6 @@ import { useState } from 'react'
 
 /**
  * 上传文件接口定义
- * 
- * @interface UploadedFile
- * @property {string} url - 文件访问URL
- * @property {'image' | 'file'} type - 文件类型
- * @property {string} name - 文件名
- * @property {number} size - 文件大小
  */
 export interface UploadedFile {
   url: string
@@ -31,12 +50,6 @@ export interface UploadedFile {
 
 /**
  * 上传响应接口定义
- * 
- * @interface UploadResponse
- * @property {number} code - 响应状态码
- * @property {string} msg - 响应消息
- * @property {Object} data - 响应数据
- * @property {string} data.url - 上传文件的URL
  */
 interface UploadResponse {
   code: number
@@ -51,10 +64,6 @@ interface UploadResponse {
  * 提供文件上传功能，包含状态管理和错误处理
  * 
  * @function useFileUpload
- * @returns {Object} 文件上传接口
- * @property {Function} upload - 上传文件函数
- * @property {boolean} isUploading - 上传状态
- * @property {string | null} error - 错误信息
  */
 export function useFileUpload() {
   // 上传状态和错误状态
@@ -63,12 +72,10 @@ export function useFileUpload() {
 
   /**
    * 上传文件到服务器
-   * 
-   * @param {File[]} files - 要上传的文件数组
-   * @returns {Promise<UploadedFile[]>} 上传完成后的文件信息数组
+   *
+   * @async
    */
-  const upload = async (files: File[]): Promise<UploadedFile[]> => {
-    setIsUploading(true)
+    const upload = async (files: File[]): Promise<UploadedFile[]> => {    setIsUploading(true)
     setError(null)
 
     try {

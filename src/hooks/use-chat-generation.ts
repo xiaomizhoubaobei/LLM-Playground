@@ -2,11 +2,38 @@
  * @fileoverview React Hook，用于管理支持流式传输的聊天消息生成
  * 提供实时消息生成、取消和错误处理功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 实现完整的聊天生成功能，包括流式更新、状态管理、错误处理和国际化支持
+ * @remark 本模块提供了支持流式传输的聊天消息生成 Hook，用于处理 AI 聊天对话的实时生成。
+ *          主要功能包括：
+ *          - 支持流式消息生成，实时更新 UI
+ *          - 提供消息生成状态管理（进行中/停止）
+ *          - 完整的错误处理和用户友好的错误提示
+ *          - 支持手动停止正在进行的生成
+ *          - 国际化错误消息支持
+ *          - 生成消息的唯一 ID 管理
+ *
+ *          使用场景：
+ *          - 在聊天界面中实时显示 AI 回复
+ *          - 处理用户中断生成操作
+ *          - 管理聊天会话的上下文和状态
+ *          - 显示本地化的错误提示信息
+ *
+ *          工作流程：
+ *          1. generate 函数被调用，传入历史消息和设置
+ *          2. 创建新消息 ID，初始化 AbortController
+ *          3. 调用 /api/chat-stream API 路由
+ *          4. 解析流式响应，实时更新消息内容
+ *          5. 用户可通过 stop 函数随时停止生成
+ *          6. 完成或出错时清理状态和引用
+ *
+ *          依赖关系：
+ *          - 依赖 @/stores/playground 获取 PlaygroundMessage 类型
+ *          - 依赖 @/utils/logger 进行日志记录
+ *          - 依赖 next-intl 进行国际化处理
+ *          - 使用 sonner 显示 toast 通知
  */
 
 import { PlaygroundMessage, LogProbs } from '@/stores/playground'
@@ -17,24 +44,10 @@ import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
- * 流式数据类型
- */
-type StreamChunk = {
-  type: string
-  textDelta?: string
-  logprobs?: LogProbs
-}
-
-/**
  * 管理支持流式传输的聊天消息生成的 React Hook
  * 处理消息生成状态、流式更新和错误处理
  *
  * @function useChatGeneration
- * @returns {Object} 聊天生成接口
- * @property {Function} generate - 开始消息生成
- * @property {Function} stop - 停止正在进行的生成
- * @property {boolean} isRunning - 生成是否正在进行
- * @property {PlaygroundMessage | null} generatingMessage - 当前正在生成的消息
  */
 export function useChatGeneration() {
   // 跟踪生成状态和当前消息
@@ -71,12 +84,8 @@ export function useChatGeneration() {
    * 生成新的聊天消息，支持流式更新
    *
    * @async
-   * @param {PlaygroundMessage[]} messages - 用于上下文的先前消息
-   * @param {any} settings - 生成设置和配置
-   * @returns {Promise<{id: string, content: string} | null>} 生成的消息，错误时返回 null
    */
-  const generate = async (messages: PlaygroundMessage[], settings: any) => {
-    const messageId = uuidv4()
+    const generate = async (messages: PlaygroundMessage[], settings: any) => {    const messageId = uuidv4()
     shouldStopRef.current = false
     contentRef.current = ''
     logprobsRef.current = undefined

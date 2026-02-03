@@ -2,11 +2,38 @@
  * @fileoverview React Hook，用于管理具有持久化功能的 Playground 消息
  * 提供CRUD操作、拖拽排序和状态管理功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 实现消息的增删改查、拖拽重排序、持久化存储和状态管理
+ * @remark 本模块提供了消息管理功能的 Hook，用于处理聊天消息的持久化存储和交互操作。
+ *          主要功能包括：
+ *          - 消息的增删改查（CRUD）操作
+ *          - 消息拖拽重排序功能
+ *          - 基于 PGlite 的持久化存储
+ *          - 自动初始化默认系统消息
+ *          - 批量删除消息功能
+ *          - 实时订阅消息存储更新
+ *
+ *          使用场景：
+ *          - 管理聊天对话历史记录
+ *          - 支持用户编辑和删除消息
+ *          - 通过拖拽调整消息顺序
+ *          - 从特定位置重新生成对话
+ *          - 持久化存储聊天内容
+ *
+ *          工作流程：
+ *          1. Hook 初始化时加载消息存储
+ *          2. 如果没有消息且提供默认系统消息，则自动添加
+ *          3. 订阅消息存储的更新事件
+ *          4. 提供 handleEdit、handleDelete 等操作函数
+ *          5. 所有操作自动同步到持久化存储
+ *          6. 组件卸载时自动清理订阅
+ *
+ *          依赖关系：
+ *          - 依赖 @/db/message-store 进行消息持久化
+ *          - 依赖 @/stores/playground 获取 PlaygroundMessage 类型
+ *          - 使用 @dnd-kit/core 实现拖拽功能
  */
 
 import { messageStore } from '@/db/message-store'
@@ -20,16 +47,6 @@ import { v4 as uuidv4 } from 'uuid'
  * 处理消息持久化、状态管理和用户交互
  * 
  * @function useMessages
- * @param {string} [defaultSystemMessage] - 可选的用于初始化的系统消息
- * @returns {Object} 消息管理接口
- * @property {PlaygroundMessage[]} messages - 当前消息列表
- * @property {boolean} loading - 加载状态指示器
- * @property {Function} setMessages - 消息状态设置器（占位符）
- * @property {Function} handleEdit - 消息编辑处理器
- * @property {Function} handleDelete - 消息删除处理器
- * @property {Function} handleDragEnd - 拖拽处理器
- * @property {Function} addMessage - 消息添加处理器
- * @property {Function} removeMessagesFrom - 批量消息移除处理器
  */
 export function useMessages(defaultSystemMessage?: string) {
   // 跟踪消息列表和加载状态
@@ -59,50 +76,34 @@ export function useMessages(defaultSystemMessage?: string) {
 
   /**
    * 处理消息编辑
-   * 
-   * @param {string} id - 要编辑的消息ID
-   * @param {PlaygroundMessage | string} update - 更新的消息或内容
    */
-  const handleEdit = useCallback((id: string, update: PlaygroundMessage | string) => {
-    messageStore.editMessage(id, update)
+    const handleEdit = useCallback((id: string, update: PlaygroundMessage | string) => {    messageStore.editMessage(id, update)
   }, [])
 
   /**
    * 处理消息删除
-   * 
-   * @param {string} id - 要删除的消息ID
    */
-  const handleDelete = useCallback((id: string) => {
-    messageStore.deleteMessage(id)
+    const handleDelete = useCallback((id: string) => {    messageStore.deleteMessage(id)
   }, [])
 
   /**
    * 处理消息的拖拽重排序
-   * 
-   * @param {DragEndEvent} event - 来自 dnd-kit 的拖拽结束事件
    */
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event
+    const handleDragEnd = useCallback((event: DragEndEvent) => {    const { active, over } = event
     if (!over || active.id === over.id) return
     messageStore.reorderMessages(active.id as string, over.id as string)
   }, [])
 
   /**
    * 向存储添加新消息
-   * 
-   * @param {PlaygroundMessage} message - 要添加的消息
    */
-  const addMessage = useCallback((message: PlaygroundMessage) => {
-    messageStore.addMessage(message)
+    const addMessage = useCallback((message: PlaygroundMessage) => {    messageStore.addMessage(message)
   }, [])
 
   /**
    * 从指定消息开始删除所有消息
-   * 
-   * @param {string} id - 要删除的第一个消息ID
    */
-  const removeMessagesFrom = useCallback((id: string) => {
-    messageStore.deleteMessagesFrom(id)
+    const removeMessagesFrom = useCallback((id: string) => {    messageStore.deleteMessagesFrom(id)
   }, [])
 
   return {

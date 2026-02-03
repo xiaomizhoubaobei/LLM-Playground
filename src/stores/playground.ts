@@ -2,11 +2,21 @@
  * @fileoverview 使用 Jotai atoms 管理的 Playground 状态
  * 管理聊天设置、消息和UI偏好，支持持久化存储
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供完整的状态管理系统，包括设置、消息、UI模式和验证功能
+ * @remark 本模块使用 Jotai atoms 管理 Playground 应用的状态，提供持久化存储和响应式状态管理。
+ *          主要功能包括：
+ *          - 聊天设置管理（API 密钥、模型选择、温度、最大 Token 等）
+ *          - 消息列表和对话历史管理
+ *          - UI 偏好设置（主题、侧边栏、Markdown 预览等）
+ *          - 令牌概率显示设置
+ *
+ *          使用场景：
+ *          - Playground 应用的全局状态管理
+ *          - 用户设置的持久化存储
+ *          - 组件间状态共享和同步
  */
 
 import { atomWithStorage } from 'jotai/utils';
@@ -27,19 +37,6 @@ export type LogProbs = Array<{
 /**
  * 管理 Playground 设置的持久化存储 Atom
  * 使用 localStorage 在会话间保持设置
- * 
- * @constant playgroundSettiongsAtom
- * @type {Atom<PlaygroundSettings>}
- * @property {string} model - 选中的AI模型标识符
- * @property {string} provider - 选中的AI模型供应商（服务提供商）
- * @property {string} modelProvider - 选中的AI模型提供商
- * @property {boolean} streamMode - 是否使用流式响应
- * @property {number} temperature - 模型温度设置 (0-1)
- * @property {number} topP - Top-p 采样参数 (0-1)
- * @property {number} frequencyPenalty - 频繁令牌使用的惩罚 (0-2)
- * @property {number} presencePenalty - 令牌存在的惩罚 (0-2)
- * @property {string} apiKey - 模型访问的API密钥
- * @property {number} maxTokens - 模型的最大令牌数
  */
 export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
   model: 'gpt-4o',
@@ -57,19 +54,6 @@ export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
 /**
  * Playground 中聊天消息的类型定义
  * 表示用户输入和AI响应
- *
- * @interface PlaygroundMessage
- * @property {string} id - 唯一消息标识符
- * @property {'system' | 'user' | 'assistant'} role - 消息发送者角色
- * @property {string} content - 消息内容
- * @property {number} [timestamp] - 可选的消息时间戳
- * @property {number} [conversationId] - 可选的会话ID
- * @property {Object[]} [files] - 可选的文件或图片
- * @property {string} files[].url - 文件或图片URL
- * @property {'image' | 'file'} files[].type - 文件或图片类型
- * @property {string} files[].name - 文件或图片名称
- * @property {number} files[].size - 文件或图片大小
- * @property {LogProbs} [logprobs] - 可选的logprobs
  */
 export type PlaygroundMessage = {
   id: string
@@ -89,28 +73,18 @@ export type PlaygroundMessage = {
 /**
  * UI 模式设置的类型定义
  * 控制界面的复杂程度
- * 
- * @typedef UiMode
- * @type {'beginner' | 'expert'}
  */
 export type UiMode = 'beginner' | 'expert'
 
 /**
  * 管理 UI 模式偏好的持久化存储 Atom
  * 新用户默认为 'beginner' 模式
- * 
- * @constant uiModeAtom
- * @type {import('jotai').Atom<UiMode>}
  */
 export const uiModeAtom = atomWithStorage<UiMode>('ui-mode', 'beginner')
 
 /**
  * 发送前验证消息内容
  * 确保消息不为空或仅包含空白字符
- * 
- * @function validateMessage
- * @param {string} content - 要验证的消息内容
- * @returns {boolean} 如果消息有效返回 true，否则返回 false
  */
 export const validateMessage = (content: string) => {
   if (!content.trim()) return false
@@ -120,9 +94,6 @@ export const validateMessage = (content: string) => {
 /**
  * 从 localStorage 同步获取 Playground 设置
  * 用于不适合异步 atom 访问的场景
- * 
- * @function getSettingsSync
- * @returns {PlaygroundSettings} 当前的 Playground 设置
  */
 export const getSettingsSync = () => {
   return JSON.parse(localStorage.getItem('playground-settings') || '{}')

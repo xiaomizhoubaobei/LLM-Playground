@@ -2,11 +2,34 @@
  * @fileoverview React Hook，用于复制文本到剪贴板并提供反馈
  * 提供复制功能，包含成功/错误提示和临时复制状态管理
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 实现剪贴板复制功能，支持视觉反馈和国际化错误提示
+ * @remark 本模块提供了剪贴板复制功能的 Hook，用于处理文本复制操作和用户反馈。
+ *          主要功能包括：
+ *          - 使用 navigator.clipboard API 实现文本复制
+ *          - 提供复制成功/失败的 toast 通知
+ *          - 管理临时复制状态（2秒后自动重置）
+ *          - 支持自定义成功消息
+ *          - 国际化错误消息支持
+ *
+ *          使用场景：
+ *          - 复制聊天消息内容
+ *          - 复制代码片段
+ *          - 复制 API 响应结果
+ *          - 任何需要复制文本到剪贴板的场景
+ *
+ *          工作流程：
+ *          1. 调用 handleCopy 函数触发复制操作
+ *          2. 使用 navigator.clipboard.writeText 写入剪贴板
+ *          3. 成功时显示成功 toast 并设置 isCopied 状态
+ *          4. 失败时显示错误 toast
+ *          5. 2秒后自动重置 isCopied 状态
+ *
+ *          依赖关系：
+ *          - 依赖 next-intl 进行国际化处理
+ *          - 使用 sonner 显示 toast 通知
  */
 
 import { useTranslations } from 'next-intl'
@@ -15,10 +38,6 @@ import { toast } from 'sonner'
 
 /**
  * useCopyToClipboard Hook 的属性接口
- * 
- * @interface UseCopyToClipboardProps
- * @property {string} text - 要复制到剪贴板的文本
- * @property {string} [copyMessage='Copied to clipboard!'] - 复制成功后显示的消息
  */
 type UseCopyToClipboardProps = {
   text: string
@@ -30,10 +49,6 @@ type UseCopyToClipboardProps = {
  * 管理复制状态并显示成功/失败的通知消息
  * 
  * @function useCopyToClipboard
- * @param {UseCopyToClipboardProps} props - 配置选项
- * @returns {Object} 包含复制状态和处理函数的对象
- * @property {boolean} isCopied - 文本是否最近被复制
- * @property {() => void} handleCopy - 触发复制操作的函数
  */
 export function useCopyToClipboard({
   text,
