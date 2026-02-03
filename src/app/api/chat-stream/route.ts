@@ -1,10 +1,39 @@
 /**
  * @fileoverview 流式聊天 API 路由处理
- * 提供流式聊天响应的 API 端点
  * @author 祁筱欣
- * @date 2025-12-30
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 处理流式聊天请求
+ * @remark 本模块提供了流式聊天 API 路由处理，用于处理实时流式聊天请求。
+ *          主要功能包括：
+ *          - 支持流式聊天响应（Server-Sent Events）
+ *          - 支持多种 API 提供商（302AI、魔力方舟）
+ *          - 消息内容过滤和标准化
+ *          - 支持多种模型参数（temperature、top_p、max_tokens、frequency_penalty）
+ *          - 统一的错误处理和日志记录
+ *
+ *          API 端点：POST /api/chat-stream
+ *
+ *          请求参数：
+ *          - model: 模型名称
+ *          - apiKey: API 密钥（可选，使用环境变量作为默认值）
+ *          - provider: API 提供商（302AI 或 魔力方舟）
+ *          - messages: 消息数组 [{ role, content }]
+ *          - frequencyPenalty: 频率惩罚（可选）
+ *          - presencePenalty: 存在惩罚（可选，当前未使用）
+ *          - temperature: 温度参数（可选）
+ *          - topP: 采样概率（可选）
+ *          - maxTokens: 最大令牌数（可选）
+ *
+ *          响应格式：
+ *          - 成功：流式响应（text/event-stream）
+ *          - 失败：{ error: "错误信息" }
+ *
+ *          依赖关系：
+ *          - @/env: 环境变量配置
+ *          - @/utils/api: normalizeUrl 函数用于 URL 标准化
+ *          - @/utils/logger: 日志记录工具
  */
 
 import { env } from '@/env'
@@ -16,8 +45,8 @@ import { logger } from '@/utils/logger'
  *
  * @function POST
  * @async
- * @param {Request} req - HTTP 请求对象
- * @returns {Promise<Response>} 流式响应对象
+ * @param req - HTTP 请求对象
+ * @returns 流式响应对象
  */
 export async function POST(req: Request) {
   try {

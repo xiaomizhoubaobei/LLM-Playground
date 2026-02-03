@@ -1,20 +1,39 @@
 /**
  * @fileoverview 聊天 API 路由处理
- * 提供基于 OpenAI 兼容 API 的聊天流式响应功能
- * @author zpl
- * @created 2024-11-20
- * @modified 2025-12-26
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @author 祁筱欣
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 处理聊天请求，返回流式响应
+ * @remark 本模块提供了聊天 API 路由处理，用于处理基于 OpenAI 兼容 API 的聊天流式响应。
+ *          主要功能包括：
+ *          - 支持流式聊天响应（Server-Sent Events）
+ *          - 支持多种 API 提供商（302AI、魔力方舟）
+ *          - 消息内容过滤和标准化
+ *          - 统一的错误处理
+ *
+ *          API 端点：POST /api/chat
+ *
+ *          请求参数：
+ *          - messages: 消息数组 [{ role, content }]
+ *          - apiKey: API 密钥（可选，使用环境变量作为默认值）
+ *          - provider: API 提供商（302AI 或 魔力方舟）
+ *
+ *          响应格式：
+ *          - 成功：流式响应（text/event-stream）
+ *          - 失败：{ error: "错误信息" }
+ *
+ *          依赖关系：
+ *          - @/env: 环境变量配置
+ *
+ *          注意：此模块设置 maxDuration 为 3000 秒，以支持长时间流式响应
  */
 
 import { env } from '@/env'
 
 /**
- * 允许流式响应的最长时间（30秒）
+ * 允许流式响应的最长时间（3000秒）
  * @constant
- * @type {number}
  * @since 2024-11-20
  */
 export const maxDuration = 3000
@@ -22,11 +41,11 @@ export const maxDuration = 3000
 /**
  * 处理聊天 API 的 POST 请求
  * 接收消息数组，返回流式 AI 响应
- * 
+ *
  * @function POST
  * @async
- * @param {Request} req - HTTP 请求对象，包含消息数组
- * @returns {Promise<Response>} 流式响应对象
+ * @param req - HTTP 请求对象，包含消息数组
+ * @returns 流式响应对象
  * @since 2024-11-20
  */
 export async function POST(req: Request) {

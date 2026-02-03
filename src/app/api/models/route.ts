@@ -1,10 +1,33 @@
 /**
  * @fileoverview 模型列表 API 路由处理
- * 提供获取模型列表的 API 端点
  * @author 祁筱欣
- * @date 2025-12-30
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 处理模型列表的获取请求
+ * @remark 本模块提供了模型列表 API 路由处理，用于获取和过滤 AI 模型列表。
+ *          主要功能包括：
+ *          - 获取所有可用模型列表（fetchAll）
+ *          - 根据模型提供商过滤模型列表（getFiltered）
+ *          - 支持多种模型提供商（OpenAI、Anthropic、Google 等）
+ *          - 根据模型 ID 前缀自动识别模型提供商
+ *          - 统一的错误处理和日志记录
+ *
+ *          API 端点：POST /api/models
+ *
+ *          请求参数：
+ *          - provider: API 提供商
+ *          - apiKey: API 密钥
+ *          - action: 操作类型（fetchAll 或 getFiltered）
+ *          - modelProvider: 模型提供商（OpenAI、Anthropic、Google 等，仅 getFiltered 需要）
+ *
+ *          响应格式：
+ *          - 成功：{ models: [{ id, object, provider, modelProvider }] }
+ *          - 失败：{ error: "错误信息" }
+ *
+ *          依赖关系：
+ *          - @/actions/models: fetchAllModels 函数用于获取模型列表
+ *          - @/utils/logger: 日志记录工具
  */
 
 import { fetchAllModels } from '@/actions/models'
@@ -14,9 +37,9 @@ import { logger } from '@/utils/logger'
  * 根据模型提供商过滤模型列表
  *
  * @function filterModelsByProvider
- * @param {Array} models - 所有模型列表
- * @param {string} modelProvider - 模型提供商
- * @returns {Array} 过滤后的模型列表
+ * @param models - 所有模型列表
+ * @param modelProvider - 模型提供商
+ * @returns 过滤后的模型列表
  */
 function filterModelsByProvider(models: any[], modelProvider: string) {
   return models.filter((model) => {
@@ -40,8 +63,8 @@ function filterModelsByProvider(models: any[], modelProvider: string) {
  *
  * @function POST
  * @async
- * @param {Request} req - HTTP 请求对象
- * @returns {Promise<Response>} 响应对象
+ * @param req - HTTP 请求对象
+ * @returns 响应对象
  */
 export async function POST(req: Request) {
   try {
