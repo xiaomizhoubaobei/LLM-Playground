@@ -20,8 +20,7 @@
 
 /**
  * 从错误对象中提取可读的错误信息
- * @param {unknown} error - 错误对象
- * @returns {string} 可读的错误信息
+ * @param error - 错误对象
  */
 export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
@@ -49,8 +48,7 @@ export function getErrorMessage(error: unknown): string {
 
 /**
  * 判断是否为网络错误
- * @param {unknown} error - 错误对象
- * @returns {boolean} 是否为网络错误
+ * @param error - 错误对象
  */
 export function isNetworkError(error: unknown): boolean {
   const message = getErrorMessage(error).toLowerCase()
@@ -64,8 +62,7 @@ export function isNetworkError(error: unknown): boolean {
 
 /**
  * 判断是否为认证错误
- * @param {unknown} error - 错误对象
- * @returns {boolean} 是否为认证错误
+ * @param error - 错误对象
  */
 export function isAuthError(error: unknown): boolean {
   const message = getErrorMessage(error).toLowerCase()
@@ -79,8 +76,7 @@ export function isAuthError(error: unknown): boolean {
 
 /**
  * 判断是否为速率限制错误
- * @param {unknown} error - 错误对象
- * @returns {boolean} 是否为速率限制错误
+ * @param error - 错误对象
  */
 export function isRateLimitError(error: unknown): boolean {
   const message = getErrorMessage(error).toLowerCase()
@@ -93,9 +89,8 @@ export function isRateLimitError(error: unknown): boolean {
 
 /**
  * 获取用户友好的错误提示
- * @param {unknown} error - 错误对象
- * @param {string} defaultMessage - 默认错误信息
- * @returns {string} 用户友好的错误提示
+ * @param error - 错误对象
+ * @param defaultMessage - 默认错误信息
  */
 export function getUserFriendlyErrorMessage(
   error: unknown,

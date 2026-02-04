@@ -175,7 +175,7 @@ async function* streamChatResponse(
       }
     }
   } catch (error) {
-    logger.error('Chat API request failed', error as Error, { module: 'Chat' })
+    logger.error('聊天 API 请求失败', error as Error, { module: 'Chat' })
     throw new ChatError('Chat API request failed', { cause: error })
   }
 }
@@ -244,7 +244,7 @@ export async function chat({
     effectiveApiKey = apiKey || env.AI_302_API_KEY || ''
   }
 
-  logger.info('Starting chat generation', {
+  logger.info('开始聊天生成', {
     context: {
       model,
       messagesCount: messages.length,

@@ -32,12 +32,10 @@ type ClientOnlyProps = React.PropsWithChildren<
 /**
  * 仅在客户端渲染子元素的包装组件
  * 适用于依赖浏览器API或需要防止水合不匹配的组件
- * 
+ *
  * @component
- * @param {ClientOnlyProps} props - 组件属性
- * @param {React.ReactNode} props.children - 要渲染的子元素
- * @param {React.HTMLAttributes<HTMLDivElement>} props.delegated - 额外的HTML div属性
- * 
+ * @param props - 组件属性
+ *
  * @example
  * ```tsx
  * // 包装依赖浏览器的组件

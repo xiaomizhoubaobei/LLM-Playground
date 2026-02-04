@@ -143,7 +143,7 @@ export async function chatNonStream({
     }
   })
 
-  logger.info('Starting non-stream chat generation', {
+  logger.info('开始非流式聊天生成', {
     context: {
       model,
       messagesCount: messages.length,
@@ -188,10 +188,10 @@ export async function chatNonStream({
       timeout: false,
     }).json<ChatCompletionResponse>()
 
-    logger.info('Non-stream chat completed successfully', { 
-      context: { 
+    logger.info('非流式聊天成功完成', {
+      context: {
         responseId: response.id,
-        usage: response.usage 
+        usage: response.usage
       },
       module: 'ChatNonStream'
     })
@@ -203,7 +203,7 @@ export async function chatNonStream({
       usage: response.usage,
     }
   } catch (error) {
-    logger.error('Non-stream chat API request failed', error as Error, { module: 'ChatNonStream' })
+    logger.error('非流式聊天 API 请求失败', error as Error, { module: 'ChatNonStream' })
     throw new ChatError('Non-stream chat API request failed', { cause: error })
   }
 }

@@ -1,12 +1,28 @@
 /**
- * @fileoverview 提供与 AI 模型交互聊天界面的主要游乐场页面组件
- * 功能包括消息管理、模型选择、设置配置和国际支持
+ * @fileoverview LLM 游乐场主页面组件，提供与 AI 模型交互的聊天界面
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 应用程序的主要聊天交互界面，提供完整的 AI 对话功能
+ * @remark 本模块是应用程序的主要聊天交互界面组件，提供完整的 AI 对话功能。
+ *          主要功能包括：
+ *          - 消息管理：支持添加、编辑、删除消息和拖拽排序
+ *          - 模型选择：支持多种 AI 模型和 API 提供商（302AI、魔力方舟）
+ *          - 设置配置：温度、Top-P、频率惩罚等模型参数调整
+ *          - 流式/非流式聊天：支持实时流式输出和一次性完整响应
+ *          - 会话管理：创建、切换、删除多个对话会话
+ *          - 文件上传：支持上传文件作为消息附件
+ *          - 导出功能：将聊天记录导出为 Markdown 文件
+ *          - 国际化支持：中文、英文、日文多语言切换
+ *          - 响应式布局：可调整大小的底部输入面板和侧边栏
+ *
+ *          依赖关系：
+ *          - @/components/playground: 会话列表、消息列表等子组件
+ *          - @/db: 会话存储和消息存储管理
+ *          - @/hooks: 聊天生成、消息管理、文件上传等自定义 Hook
+ *          - @/stores/playground: 状态管理（Jotai）
+ *          - next-intl: 国际化支持
  */
 
 'use client'
@@ -43,18 +59,8 @@ import { InputSection } from './_components/input-section'
 import { conversationStore } from '@/db/conversation-store'
 
 /**
- * ModelInfo 类型定义
- */
-interface ModelInfo {
-  id: string
-  object: string
-  provider: string
-}
-
-/**
  * AI 模型的默认设置
  * @constant
- * @type {Object}
  */
 const DEFAULT_SETTINGS = {
   temperature: 0.7,
@@ -74,7 +80,6 @@ const DEFAULT_SETTINGS = {
  * - 响应式布局和可调整大小的面板
  *
  * @component Component
- * @returns {JSX.Element} 渲染的游乐场界面
  */
 export default function Component() {
   const t = useTranslations('playground')
@@ -102,7 +107,7 @@ export default function Component() {
 
   /**
    * 向聊天历史添加新消息
-   * @param {PlaygroundMessage} message - 要添加的消息
+   * @param message - 要添加的消息
    */
   const handleAddMessage = async (message: PlaygroundMessage) => {
     if (!message.content?.trim()) {
@@ -160,7 +165,7 @@ export default function Component() {
 
   /**
    * 处理调整底部面板大小的鼠标拖动事件
-   * @param {React.MouseEvent} e - 鼠标事件
+   * @param e - 鼠标事件
    */
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -187,33 +192,6 @@ export default function Component() {
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
   }
-
-  // 模型选择状态
-  const [models, setModels] = useState<ModelInfo[]>([])
-
-  useEffect(() => {
-    if (settings.provider && settings.modelProvider) {
-      fetch('/api/models', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          provider: settings.provider,
-          apiKey: settings.apiKey,
-          action: 'getFiltered',
-          modelProvider: settings.modelProvider,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.models) {
-            setModels(data.models)
-          }
-        })
-        .catch(console.error)
-    }
-  }, [settings.provider, settings.modelProvider, settings.apiKey])
 
   // 会话相关处理函数
   const handleNewConversation = useCallback(async () => {
@@ -355,7 +333,7 @@ export default function Component() {
 
   /**
    * 处理消息提交的键盘事件
-   * @param {React.KeyboardEvent} e - 键盘事件
+   * @param e - 键盘事件
    */
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -401,7 +379,7 @@ export default function Component() {
 
   /**
    * 更新新消息内容
-   * @param {React.ChangeEvent<HTMLTextAreaElement>} e - 变更事件
+   * @param e - 变更事件
    */
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
@@ -548,7 +526,6 @@ export default function Component() {
           <SettingsSidebar
             settings={settings}
             uiMode={uiMode}
-            models={models}
             onSettingsChange={setSettings}
             onUiModeChange={(value) => setUiMode(value ? 'expert' : 'beginner')}
             onResetSettings={handleResetSettings}

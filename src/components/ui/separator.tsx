@@ -32,11 +32,8 @@ import { cn } from '@/utils/tailwindcss'
 /**
  * 分隔符组件
  * 提供水平或垂直的分隔线，用于视觉上分隔内容区域
- * 
- * @param {Object} props - 组件属性
- * @param {string} [props.className] - 额外的CSS类名
- * @param {'horizontal'|'vertical'} [props.orientation='horizontal'] - 分隔符方向
- * @param {boolean} [props.decorative=true] - 是否为纯装饰性分隔符
+ *
+ * @param props - 组件属性
  */
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,

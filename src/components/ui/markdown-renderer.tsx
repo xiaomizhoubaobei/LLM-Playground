@@ -275,7 +275,7 @@ function remarkHighlight() {
  * 主Markdown渲染器组件
  * 配置和组合各种Markdown插件和渲染器
  * @component
- * @param {MarkdownRendererProps} props - 组件属性
+ * @param props - 组件属性
  */
 export function MarkdownRenderer({ children }: MarkdownRendererProps) {
   const components: Components = {
@@ -463,8 +463,7 @@ const CodeBlock = ({
 
 /**
  * 从子元素中提取所有字符串内容的工具函数
- * @param {any} element - 要处理的React元素
- * @returns {string} 连接的字符串内容
+ * @param element - 要处理的React元素
  */
 function childrenTakeAllStringContents(element: any): string {
   if (typeof element === 'string') {
@@ -552,8 +551,8 @@ const COMPONENTS = {
 
 /**
  * 为元素添加className的高阶组件
- * @param {keyof JSX.IntrinsicElements} Tag - HTML元素标签
- * @param {string} classes - 要应用的CSS类
+ * @param Tag - HTML元素标签
+ * @param classes - 要应用的CSS类
  */
 function withClass(Tag: keyof JSX.IntrinsicElements, classes: string) {
   const Component = ({ ...props }: any) => (

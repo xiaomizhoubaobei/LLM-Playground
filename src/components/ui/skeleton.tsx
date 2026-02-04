@@ -28,9 +28,8 @@ import { cn } from '@/utils/tailwindcss'
 /**
  * 骨架屏组件
  * 在内容加载时显示带脉冲动画的占位符
- * 
- * @param {React.HTMLAttributes<HTMLDivElement>} props - HTML div元素属性
- * @returns {JSX.Element} 渲染的骨架屏组件
+ *
+ * @param props - HTML div元素属性
  */
 function Skeleton({
   className,

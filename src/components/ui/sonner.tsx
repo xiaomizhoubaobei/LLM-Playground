@@ -37,9 +37,8 @@ type ToasterProps = React.ComponentProps<typeof Sonner>
 /**
  * 烤面包机组件
  * 提供主题感知的通知功能，支持自定义样式和配置
- * 
- * @param {ToasterProps} props - 组件属性
- * @returns {JSX.Element} 渲染的通知组件
+ *
+ * @param props - 组件属性
  */
 const Toaster = ({ ...props }: ToasterProps) => {
   // 获取当前主题，默认为系统主题

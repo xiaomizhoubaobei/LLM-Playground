@@ -1,11 +1,33 @@
 /**
  * @fileoverview 头部组件，提供导航栏和操作按钮
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
- * @license AGPL-3.0 licens
- * @remark 处理应用程序顶部导航栏，包括返回按钮、导出和清空消息功能
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
+ * @license AGPL-3.0 license
+ * @remark 本模块是应用程序的头部导航栏组件，提供完整的导航和操作功能。
+ *          主要功能包括：
+ *          - 会话列表切换：显示/隐藏会话列表侧边栏
+ *          - 新建对话：创建新的对话会话
+ *          - 导出功能：将当前对话导出为 Markdown 文件
+ *          - 清空消息：清空当前会话的所有消息
+ *          - 主题切换：支持明暗主题切换
+ *          - 键盘快捷键：显示可用的键盘快捷键
+ *          - 设置触发：打开设置侧边栏
+ *          - 响应式设计：适配不同屏幕尺寸
+ *
+ *          工作流程：
+ *          1. 渲染左侧导航区域（会话列表、新对话、应用标题）
+ *          2. 渲染右侧操作区域（导出、清空、主题、快捷键、设置）
+ *          3. 所有操作通过回调函数通知父组件
+ *          4. 提供提示信息增强用户体验
+ *
+ *          依赖关系：
+ *          - @/components/playground/setting-trigger: 设置触发器组件
+ *          - @/components/theme-switcher: 主题切换组件
+ *          - @/components/keyboard-shortcuts: 键盘快捷键组件
+ *          - @/components/ui: UI 组件库（Button、Tooltip 等）
+ *          - next-intl: 国际化支持
  */
 
 'use client'
@@ -40,8 +62,7 @@ interface HeaderProps {
  * 头部组件，提供导航栏和操作按钮
  *
  * @function Header
- * @param {HeaderProps} props - 组件属性
- * @returns {JSX.Element} 渲染的头部组件
+ * @param props - 组件属性
  */
 export function Header({
   onExport,

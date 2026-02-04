@@ -62,7 +62,7 @@ export type ModelInfo = {
  * 通过调用 Service Provider 的 API 获取完整的模型列表
  */
 export const fetchAllModels = async (provider: string = '302AI', apiKey: string = '') => {
-  logger.info('Fetching all models from service provider', { context: { provider }, module: 'Models' })
+  logger.info('从服务提供商获取所有模型', { context: { provider }, module: 'Models' })
 
   try {
     let models: ModelInfo[] = []
@@ -125,17 +125,17 @@ export const fetchAllModels = async (provider: string = '302AI', apiKey: string 
         }))
       }
     } else {
-      logger.warn('Service provider not implemented yet', { context: { provider }, module: 'Models' })
+      logger.warn('服务提供商尚未实现', { context: { provider }, module: 'Models' })
       return []
     }
 
-    logger.info('Successfully fetched all models', {
+    logger.info('成功获取所有模型', {
       context: { provider, modelCount: models.length },
       module: 'Models'
     })
     return models
   } catch (error) {
-    logger.error('Failed to fetch all models', error as Error, { context: { provider }, module: 'Models' })
+    logger.error('获取所有模型失败', error as Error, { context: { provider }, module: 'Models' })
     // 如果 API 调用失败，返回空数组
     return []
   }
@@ -176,7 +176,7 @@ export const getModels = async (
   modelProvider: string = 'OpenAI',
   allModels?: ModelInfo[]
 ) => {
-  logger.info('Fetching available models', { context: { provider, modelProvider }, module: 'Models' })
+  logger.info('获取可用模型', { context: { provider, modelProvider }, module: 'Models' })
 
   try {
     let models: ModelInfo[] = []
@@ -186,17 +186,17 @@ export const getModels = async (
       models = filterModelsByProvider(allModels, modelProvider)
     } else {
       // 没有提供模型列表，返回空数组
-      logger.warn('No models provided', { context: { provider, modelProvider }, module: 'Models' })
+      logger.warn('未提供模型', { context: { provider, modelProvider }, module: 'Models' })
       return []
     }
 
-    logger.info('Successfully fetched models', {
+    logger.info('成功获取模型', {
       context: { provider, modelProvider, modelCount: models.length },
       module: 'Models'
     })
     return models
   } catch (error) {
-    logger.error('Failed to fetch models', error as Error, { context: { provider, modelProvider }, module: 'Models' })
+    logger.error('获取模型失败', error as Error, { context: { provider, modelProvider }, module: 'Models' })
     throw error
   }
 }

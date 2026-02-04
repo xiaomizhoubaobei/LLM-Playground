@@ -1,11 +1,35 @@
 /**
  * @fileoverview 设置侧边栏组件，提供 AI 模型配置和应用程序设置
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 处理应用程序的设置界面，包括模型选择、参数调整和语言切换
+ * @remark 本模块是应用程序的设置侧边栏组件，提供完整的 AI 模型配置和应用程序设置界面。
+ *          主要功能包括：
+ *          - 服务提供商选择：支持 302AI 和魔力方舟
+ *          - 模型提供商过滤：支持 OpenAI、Anthropic、Google 等模型提供商
+ *          - 模型选择：从可用模型列表中选择特定模型
+ *          - 流式模式切换：启用/禁用流式响应
+ *          - 模型参数调整：温度、Top-P、频率惩罚、存在惩罚、最大令牌数
+ *          - API 密钥配置：设置和验证 API 密钥
+ *          - 用户界面模式：新手模式和专家模式切换
+ *          - 语言切换：支持中文、英文、日文
+ *          - 设置重置：恢复默认设置
+ *
+ *          工作流程：
+ *          1. 当 Service Provider 改变时，自动获取所有可用模型列表
+ *          2. 从模型列表中提取 Model Providers 供用户选择
+ *          3. 根据选择的 Model Provider 过滤显示模型
+ *          4. 用户选择模型后，更新设置状态
+ *          5. 所有设置变更通过回调函数通知父组件
+ *
+ *          依赖关系：
+ *          - @/components/ui: UI 组件库（Button、Input、Slider、Switch 等）
+ *          - @/components/mode-switcher: 模式切换组件
+ *          - @/constants/values: 全局常量配置
+ *          - next-intl: 国际化支持
+ *          - marked: Markdown 渲染
  */
 
 'use client'
@@ -47,7 +71,6 @@ import { useParams } from 'next/navigation'
  * @property {number} settings.maxTokens - 最大令牌数
  * @property {string} settings.apiKey - API 密钥
  * @property {'expert'|'beginner'} uiMode - 用户界面模式
- * @property {Array<{id: string, provider: string}>} models - 可用模型列表
  * @property {Function} onSettingsChange - 设置变更回调函数
  * @property {Function} onUiModeChange - UI 模式变更回调函数
  * @property {Function} onResetSettings - 重置设置回调函数
@@ -66,7 +89,6 @@ interface SettingsSidebarProps {
     apiKey: string
   }
   uiMode: 'expert' | 'beginner'
-  models: Array<{ id: string; provider: string }>
   onSettingsChange: (settings: any) => void
   onUiModeChange: (value: boolean) => void
   onResetSettings: () => void
@@ -74,15 +96,13 @@ interface SettingsSidebarProps {
 
 /**
  * 设置侧边栏组件，提供 AI 模型配置和应用程序设置界面
- * 
+ *
  * @function SettingsSidebar
- * @param {SettingsSidebarProps} props - 组件属性
- * @returns {JSX.Element} 渲染的设置侧边栏组件
+ * @param props - 组件属性
  */
 export function SettingsSidebar({
   settings,
   uiMode,
-  models,
   onSettingsChange,
   onUiModeChange,
   onResetSettings,
@@ -658,7 +678,7 @@ export function SettingsSidebar({
             <ModeSwitcher
               className='w-full'
               value={uiMode === 'expert'}
-              onChange={onUiModeChange}
+              onChangeAction={onUiModeChange}
               beginnerText={t('settings.beginnerMode')}
               expertText={t('settings.expertMode')}
             />

@@ -46,11 +46,8 @@ const PopoverAnchor = PopoverPrimitive.Anchor
 /**
  * 弹出框内容组件
  * 提供弹出框的主要内容区域，支持自定义对齐和偏移
- * 
- * @param {Object} props - 组件属性
- * @param {string} [props.className] - 额外的CSS类名
- * @param {'start'|'center'|'end'} [props.align='center'] - 内容对齐方式
- * @param {number} [props.sideOffset=4] - 侧边偏移量
+ *
+ * @param props - 组件属性
  */
 const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,

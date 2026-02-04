@@ -1,11 +1,35 @@
 /**
  * @fileoverview 输入区域组件，提供消息输入、角色选择和文件上传功能
  * @author 祁筱欣
- * @date 2025-12-24
- * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @date 2026-02-03
+ * @since 2026-02-03
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 处理用户消息输入界面，包括文本输入、文件上传和操作按钮
+ * @remark 本模块是应用程序的输入区域组件，提供完整的用户消息输入功能。
+ *          主要功能包括：
+ *          - 文本输入：支持多行文本输入，自动调整高度
+ *          - 角色选择：专家模式下支持选择消息角色（system、user、assistant）
+ *          - 文件上传：支持上传图片文件作为消息附件
+ *          - 文件预览：支持预览已上传的文件列表，可删除文件
+ *          - 面板调整：支持拖拽调整输入区域高度
+ *          - 展开/折叠：支持展开和折叠输入区域
+ *          - 操作按钮：提供运行、停止、添加消息等操作按钮
+ *          - 键盘快捷键：支持 Enter 发送消息，Shift+Enter 换行
+ *          - 提示工具：提供各种操作的提示信息
+ *
+ *          工作流程：
+ *          1. 用户在文本框中输入消息内容
+ *          2. 专家模式下可选择消息角色
+ *          3. 可选择上传文件作为附件
+ *          4. 点击运行按钮或按 Enter 发送消息
+ *          5. 可通过拖拽调整输入区域高度
+ *          6. 所有操作通过回调函数通知父组件
+ *
+ *          依赖关系：
+ *          - @/components/playground/file-preview: 文件预览组件
+ *          - @/components/ui: UI 组件库（Button、Popover、Select、Textarea 等）
+ *          - @/stores/playground: PlaygroundMessage 类型定义
+ *          - next-intl: 国际化支持
  */
 
 'use client'
@@ -72,10 +96,9 @@ interface InputSectionProps {
 
 /**
  * 输入区域组件，提供消息输入、角色选择和文件上传功能
- * 
+ *
  * @function InputSection
- * @param {InputSectionProps} props - 组件属性
- * @returns {JSX.Element} 渲染的输入区域组件
+ * @param props - 组件属性
  */
 export function InputSection({
   height,

@@ -23,12 +23,10 @@ import { routing } from './routing'
 
 /**
  * 配置传入请求的国际化设置
- * 
+ *
  * @function getRequestConfig
  * @async
- * @param {Object} params - 配置参数
- * @param {Promise<string>} params.requestLocale - 来自客户端的请求语言环境
- * @returns {Promise<{locale: string, messages: Object}>} 语言环境配置和消息
+ * @param params - 配置参数
  */
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale

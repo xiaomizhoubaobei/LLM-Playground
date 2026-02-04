@@ -100,7 +100,6 @@ const SidebarContext = React.createContext<SidebarContext | null>(null)
 
 /**
  * 使用侧边栏上下文的Hook
- * @returns {SidebarContext} 侧边栏上下文对象
  * @throws {Error} 如果在SidebarProvider外部使用
  */
 function useSidebar() {

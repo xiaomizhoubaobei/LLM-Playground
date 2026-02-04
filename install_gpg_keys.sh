@@ -52,7 +52,7 @@ echo "==> 解析用户信息并设置 Git 提交者信息..."
 USER_INFO=$(gpg --list-packets "$PRIVATE_KEY_FILE" 2>/dev/null | grep ":user ID packet:" | head -1 | sed 's/.*:user ID packet: "\(.*\)"/\1/')
 if [ -n "$USER_INFO" ]; then
     # 格式通常是 "Name <email@example.com>"
-    GIT_COMMITTER_NAME=$(echo "$USER_INFO" | sed 's/<[^>]*>.*$//' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    GIT_COMMITTER_NAME=祁筱欣
     GIT_COMMITTER_EMAIL=$(echo "$USER_INFO" | grep -o '<[^>]*>' | sed 's/[<>]//g')
     
     if [ -n "$GIT_COMMITTER_NAME" ] && [ -n "$GIT_COMMITTER_EMAIL" ]; then
