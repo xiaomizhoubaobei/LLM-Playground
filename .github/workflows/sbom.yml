@@ -31,14 +31,14 @@ jobs:
     name: 生成 SBOM
     steps:
     - name: 加固运行器（审计所有出站调用）
-      uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+      uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
       with:
         egress-policy: audit
     - name: 检出代码
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
     - name: 使用 Syft 生成 SBOM
-      uses: anchore/sbom-action@a930d0ac434e3182448fe678398ba5713717112a # v0.21.0
+      uses: anchore/sbom-action@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
       with:
         format: spdx-json
         output-file: sbom.spdx.json
@@ -58,7 +58,7 @@ jobs:
           sbom.spdx.json
 
     - name: 上传 SBOM 构件
-      uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: sbom
         path: |
@@ -68,7 +68,7 @@ jobs:
         retention-days: 30
 
     - name: 上传 SBOM 到 GitHub 依赖关系图
-      uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       if: github.event_name != 'pull_request'
       with:
         name: dependency-snapshot

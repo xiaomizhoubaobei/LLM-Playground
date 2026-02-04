@@ -10,17 +10,18 @@ on:
     workflow_dispatch:
 
 permissions:
-    contents: read
-    packages: write
-    id-token: write
-    attestations: write
+  contents: read
+  packages: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
 jobs:
     build-and-push:
         runs-on: ubuntu-latest
         steps:
             - name: 加固运行器（审计所有出站调用）
-              uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+              uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
               with:
                   egress-policy: audit
 
@@ -38,20 +39,20 @@ jobs:
               uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
             - name: 登录 DockerHub
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
               with:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
             - name: 登录 GitHub 容器注册表
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
             - name: 登录阿里云容器注册表
-              uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
               with:
                   registry: crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com
                   username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
@@ -132,14 +133,14 @@ jobs:
                   done <<< "${{ steps.meta.outputs.tags }}"
 
             - name: 证明 DockerHub 镜像
-              uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
+              uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
               with:
                 subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
             - name: 证明 GHCR 镜像
-              uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
+              uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
               with:
                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
                 subject-digest: ${{ steps.build.outputs.digest }}
