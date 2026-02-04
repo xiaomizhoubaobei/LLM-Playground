@@ -33,6 +33,10 @@ $:
                 script:
                     - curl -fsSL https://qoder.com/install | bash
                     - echo "Qoder CLI安装完成"
+              - name: 安装Gemini CLI
+                script:
+                    - npm install -g @google/gemini-cli
+                    - echo "Gemini CLI安装完成"
               - name: 安装sudo更新APT源
                 script:
                     - sudo apt-get update

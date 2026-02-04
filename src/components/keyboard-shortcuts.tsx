@@ -1,11 +1,28 @@
 /**
  * @fileoverview 键盘快捷键帮助组件
  * @author 祁筱欣
- * @date 2025-12-24
+ * @date 2026-02-04
  * @since 2025-12-24
  * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 显示所有可用的键盘快捷键，帮助用户快速了解和使用应用
+ * @remark 本模块实现了键盘快捷键帮助对话框，展示应用程序中所有可用的快捷键组合，帮助用户提高操作效率。
+ *          组件支持按类别分组显示快捷键，并提供快捷键提示徽章功能。
+ *
+ *          工作流程：
+ *          1. 使用 Dialog 组件创建模态对话框
+ *          2. 按类别（消息操作、对话管理、界面操作）组织快捷键
+ *          3. 每个快捷键显示图标、描述和按键组合
+ *          4. ShortcutBadge 组件用于在界面其他位置显示快捷键提示
+ *
+ *          快捷键分类：
+ *          - 消息操作：发送、编辑消息
+ *          - 对话管理：新建对话、切换列表、导出、清空
+ *          - 界面操作：显示帮助、打开设置、关闭弹窗
+ *
+ *          依赖关系：
+ *          - 依赖 @/components/ui/* 中的 UI 组件
+ *          - 使用 lucide-react 图标库
+ *          - 使用 @/utils/tailwindcss 工具函数
  */
 
 'use client'
@@ -107,11 +124,8 @@ const SHORTCUTS = [
 
 /**
  * 键盘快捷键帮助组件
- *
- * @function KeyboardShortcuts
- * @returns {JSX.Element} 渲染的快捷键帮助组件
  */
-export function KeyboardShortcuts() {
+export function KeyboardShortcuts(): JSX.Element {
   return (
     <Dialog>
       <DialogTrigger asChild>

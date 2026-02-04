@@ -1,11 +1,23 @@
 /**
- * @fileoverview 主题切换组件，支持在明暗主题之间切换
+ * @fileoverview 主题切换组件
  * @author 祁筱欣
- * @date 2025-12-24
+ * @date 2026-02-04
  * @since 2025-12-24
  * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 提供明暗主题切换功能，支持系统主题自动检测
+ * @remark 本模块实现了明暗主题切换功能，支持用户在浅色主题、深色主题和跟随系统主题之间切换。
+ *          组件使用下拉菜单形式提供主题选项，并带有平滑的图标过渡动画。
+ *
+ *          工作流程：
+ *          1. 使用 next-themes 的 useTheme hook 获取当前主题和设置方法
+ *          2. 通过 mounted 状态避免服务端渲染时的主题不匹配问题
+ *          3. 提供三个主题选项：浅色、深色、跟随系统
+ *          4. 图标根据当前主题状态进行旋转和缩放过渡动画
+ *
+ *          依赖关系：
+ *          - 依赖 next-themes 实现主题管理和持久化
+ *          - 使用 lucide-react 图标库
+ *          - 依赖 @/components/ui/* 中的 UI 组件
  */
 
 'use client'
@@ -26,7 +38,7 @@ import {
  * 支持切换到浅色主题、深色主题或跟随系统主题
  */
 export function ThemeSwitcher() {
-  const { theme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   // 避免服务端渲染时的主题不匹配

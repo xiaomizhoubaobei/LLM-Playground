@@ -1,10 +1,31 @@
 /**
+ * @fileoverview 动画模式切换器组件
  * @author 祁筱欣
- * @date 2025-12-24
+ * @date 2026-02-04
  * @since 2025-12-24
- * @contact qixiaoxin @stu.sqxy.edu.cn
+ * @contact qixiaoxin@stu.sqxy.edu.cn
  * @license AGPL-3.0 license
- * @remark 动画模式切换器组件，支持在初学者和专家模式之间切换，具有平滑过渡、自定义图标和可配置动画效果
+ * @remark 本模块实现了一个具有平滑过渡动画的模式切换器组件，支持在初学者和专家模式之间切换。
+ *          组件提供自定义图标、可配置动画效果和无障碍支持。
+ *
+ *          工作流程：
+ *          1. 接收当前模式状态（value）和变更回调（onChange）
+ *          2. 使用 framer-motion 的 motion 组件实现平滑动画
+ *          3. 根据模式状态动态计算滑块位置、颜色和图标旋转
+ *          4. 支持键盘操作（Enter/Space）和鼠标点击
+ *          5. 提供 ARIA 属性确保无障碍访问
+ *
+ *          特性：
+ *          - 弹簧动画配置（stiffness、damping）
+ *          - 可自定义动画持续时间（切换、旋转、颜色）
+ *          - 支持自定义图标和文本标签
+ *          - 禁用状态支持
+ *          - 响应式计算滑块移动距离
+ *
+ *          依赖关系：
+ *          - 依赖 framer-motion 实现动画效果
+ *          - 使用 lucide-react 图标库
+ *          - 使用 @/utils/tailwindcss 工具函数
  */
 
 'use client'
@@ -16,10 +37,10 @@ import * as React from 'react'
 
 /**
  * ModeSwitcher组件的属性类型
- * 
+ *
  * @interface ModeSwitcherProps
  * @property {boolean} [value] - 当前模式状态（true为专家模式，false为初学者模式）
- * @property {(value: boolean) => void} [onChange] - 模式变更时的回调函数
+ * @property {(value: boolean) => void} [onChangeAction] - 模式变更时的回调函数
  * @property {string} [className] - 额外的CSS类名
  * @property {boolean} [disabled] - 是否禁用切换器
  * @property {React.ReactNode} [beginnerIcon] - 初学者模式的自定义图标
@@ -36,7 +57,7 @@ import * as React from 'react'
  */
 type ModeSwitcherProps = {
   value?: boolean
-  onChange?: (value: boolean) => void
+  onChangeAction?: (value: boolean) => void
   className?: string
   disabled?: boolean
   beginnerIcon?: React.ReactNode
@@ -60,7 +81,7 @@ type ModeSwitcherProps = {
  * */
 export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({
   value,
-  onChange,
+  onChangeAction,
   className,
   disabled = false,
   beginnerIcon,
@@ -86,9 +107,9 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({
   // Handle mode toggle with disabled state check
   const handleToggle = React.useCallback(() => {
     if (!disabled) {
-      onChange?.(!isExpertMode)
+      onChangeAction?.(!isExpertMode)
     }
-  }, [disabled, isExpertMode, onChange])
+  }, [disabled, isExpertMode, onChangeAction])
 
   // Calculate translation distance based on container width
   React.useEffect(() => {
