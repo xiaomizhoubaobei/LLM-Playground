@@ -111,12 +111,12 @@ export async function POST(req: Request) {
     if (topP !== undefined) requestBody.top_p = topP
     if (maxTokens !== undefined) requestBody.max_tokens = maxTokens
 
-    logger.info('Starting stream chat API request', {
+    logger.info('开始流式聊天 API 请求', {
       context: { model, messagesCount: messages.length },
       module: 'ChatStreamAPI'
     })
 
-    logger.debug('Request details', {
+    logger.debug('请求详情', {
       context: {
         model,
         messagesCount: messages.length,
@@ -144,7 +144,7 @@ export async function POST(req: Request) {
       body: JSON.stringify(requestBody),
     })
 
-    logger.debug('API response received', {
+    logger.debug('收到 API 响应', {
       context: {
         status: response.status,
         statusText: response.statusText,
@@ -155,7 +155,7 @@ export async function POST(req: Request) {
 
     if (!response.ok) {
       const errorText = await response.text()
-      logger.error('Stream chat API request failed', new Error(`API request failed: ${response.statusText}`), {
+      logger.error('流式聊天 API 请求失败', new Error(`API request failed: ${response.statusText}`), {
         context: {
           status: response.status,
           statusText: response.statusText,
@@ -167,7 +167,7 @@ export async function POST(req: Request) {
       throw new Error(`API request failed: ${response.statusText} - ${errorText}`)
     }
 
-    logger.info('Stream chat API request initiated successfully', {
+    logger.info('流式聊天 API 请求成功启动', {
       context: { model, messagesCount: messages.length },
       module: 'ChatStreamAPI'
     })
@@ -181,7 +181,7 @@ export async function POST(req: Request) {
       },
     })
   } catch (error) {
-    logger.error('Stream chat API error:', error as Error, { module: 'ChatStreamAPI' })
+    logger.error('流式聊天 API 错误:', error as Error, { module: 'ChatStreamAPI' })
     return new Response(
       JSON.stringify({ error: '请求处理失败，请稍后重试' }),
       {

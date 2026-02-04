@@ -70,17 +70,17 @@ export async function POST(req: Request) {
   try {
     const { provider, apiKey, action, modelProvider } = await req.json()
 
-    logger.info('Models API request received', {
+    logger.info('收到模型 API 请求', {
       context: { provider, action, modelProvider },
       module: 'ModelsAPI'
     })
 
     if (action === 'fetchAll') {
       // 获取所有模型列表
-      logger.debug('Fetching all models', { context: { provider }, module: 'ModelsAPI' })
+      logger.debug('正在获取所有模型', { context: { provider }, module: 'ModelsAPI' })
       const models = await fetchAllModels(provider, apiKey)
       
-      logger.info('All models fetched successfully', {
+      logger.info('所有模型获取成功', {
         context: { provider, modelCount: models.length },
         module: 'ModelsAPI'
       })
@@ -95,7 +95,7 @@ export async function POST(req: Request) {
       return Response.json({ models: serializedModels })
     } else if (action === 'getFiltered' && modelProvider) {
       // 获取所有模型列表并过滤
-      logger.debug('Fetching filtered models', {
+      logger.debug('正在获取过滤后的模型', {
         context: { provider, modelProvider },
         module: 'ModelsAPI'
       })
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
       const allModels = await fetchAllModels(provider, apiKey)
       const filteredModels = filterModelsByProvider(allModels, modelProvider)
       
-      logger.info('Filtered models fetched successfully', {
+      logger.info('过滤后的模型获取成功', {
         context: { provider, modelProvider, modelCount: filteredModels.length },
         module: 'ModelsAPI'
       })
@@ -116,14 +116,14 @@ export async function POST(req: Request) {
       }))
       return Response.json({ models: serializedModels })
     } else {
-      logger.warn('Invalid action in models API', {
+      logger.warn('模型 API 中的无效操作', {
         context: { action, modelProvider },
         module: 'ModelsAPI'
       })
       return Response.json({ error: 'Invalid action' }, { status: 400 })
     }
   } catch (error) {
-    logger.error('Models API error:', error as Error, { module: 'ModelsAPI' })
+    logger.error('模型 API 错误:', error as Error, { module: 'ModelsAPI' })
     return Response.json(
       { error: '获取模型列表失败，请稍后重试' },
       { status: 500 }

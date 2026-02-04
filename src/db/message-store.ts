@@ -130,14 +130,14 @@ class MessageStore {
    * @async
    */
     async addMessage(message: Omit<PlaygroundMessage, 'timestamp' | 'conversationId'>) {    if (!this.currentConversationId) {
-      logger.warn('No current conversation, cannot add message', { module: 'MessageStore' })
+      logger.warn('没有当前会话，无法添加消息', { module: 'MessageStore' })
       return
     }
 
     const timestamp = Date.now()
     const newMessage = { ...message, timestamp, conversationId: this.currentConversationId }
 
-    logger.debug('Adding new message', {
+    logger.debug('正在添加新消息', {
       context: { messageId: message.id, role: message.role, conversationId: this.currentConversationId },
       module: 'MessageStore'
     })
@@ -151,7 +151,7 @@ class MessageStore {
     // 更新会话的消息计数
     await conversationStore.updateMessageCount(this.currentConversationId, 1)
 
-    logger.info('Message added successfully', {
+    logger.info('消息添加成功', {
       context: { messageId: message.id },
       module: 'MessageStore'
     })
@@ -198,7 +198,7 @@ class MessageStore {
    * 在删除前等待任何待处理的编辑操作
    * @async
    */
-    async deleteMessage(id: string) {    logger.debug('Deleting message', {
+    async deleteMessage(id: string) {    logger.debug('正在删除消息', {
       context: { messageId: id },
       module: 'MessageStore'
     })
@@ -217,7 +217,7 @@ class MessageStore {
       await conversationStore.updateMessageCount(this.currentConversationId, -1)
     }
 
-    logger.info('Message deleted successfully', {
+    logger.info('消息删除成功', {
       context: { messageId: id },
       module: 'MessageStore'
     })
@@ -230,7 +230,7 @@ class MessageStore {
    */
     async reorderMessages(activeId: string, overId: string) {    if (this.isSavingReorder) return
 
-    logger.debug('Reordering messages', {
+    logger.debug('正在重新排序消息', {
       context: { activeId, overId },
       module: 'MessageStore'
     })
@@ -261,12 +261,12 @@ class MessageStore {
       this.messages = updatedMessages
       this.notify()
 
-      logger.info('Messages reordered successfully', {
+      logger.info('消息重新排序成功', {
         context: { activeId, overId },
         module: 'MessageStore'
       })
     } catch (error) {
-      logger.error('Error reordering messages', error as Error, {
+      logger.error('重新排序消息时出错', error as Error, {
         context: { activeId, overId },
         module: 'MessageStore'
       })
@@ -306,7 +306,7 @@ class MessageStore {
    * @since 2024-11-20
    */
   async clear() {
-    logger.info('Clearing all messages', { module: 'MessageStore' })
+    logger.info('正在清除所有消息', { module: 'MessageStore' })
 
     for (const operation of this.editOperations.values()) {
       await operation
@@ -328,7 +328,7 @@ class MessageStore {
     // 更新会话的消息计数
     await conversationStore.updateMessageCount(this.currentConversationId, -deletedCount)
 
-    logger.info('All messages cleared successfully', { module: 'MessageStore' })
+    logger.info('所有消息清除成功', { module: 'MessageStore' })
   }
 
   /**

@@ -111,12 +111,12 @@ const requestBody: any = {
     if (topP !== undefined) requestBody.top_p = topP
     if (maxTokens !== undefined) requestBody.max_tokens = maxTokens
 
-    logger.info('Starting non-stream chat API request', {
+    logger.info('开始非流式聊天 API 请求', {
       context: { model, messagesCount: messages.length },
       module: 'ChatNonStreamAPI'
     })
 
-    logger.debug('Request details', {
+    logger.debug('请求详情', {
       context: {
         model,
         messagesCount: messages.length,
@@ -139,7 +139,7 @@ const requestBody: any = {
       body: JSON.stringify(requestBody),
     })
 
-    logger.debug('API response received', {
+    logger.debug('收到 API 响应', {
       context: {
         status: response.status,
         statusText: response.statusText,
@@ -150,7 +150,7 @@ const requestBody: any = {
 
     if (!response.ok) {
       const errorText = await response.text()
-      logger.error('Non-stream chat API request failed', new Error(errorText), {
+      logger.error('非流式聊天 API 请求失败', new Error(errorText), {
         context: {
           status: response.status,
           statusText: response.statusText,
@@ -169,7 +169,7 @@ const requestBody: any = {
     }
 
     const data = await response.json()
-    logger.info('Non-stream chat API request completed successfully', {
+    logger.info('非流式聊天 API 请求成功完成', {
       context: {
         model,
         messagesCount: messages.length,
@@ -179,7 +179,7 @@ const requestBody: any = {
     })
     return Response.json(data)
   } catch (error) {
-    logger.error('Non-stream chat API error:', error as Error, { module: 'ChatNonStreamAPI' })
+    logger.error('非流式聊天 API 错误:', error as Error, { module: 'ChatNonStreamAPI' })
     return new Response(
       JSON.stringify({ error: '请求处理失败，请稍后重试' }),
       {

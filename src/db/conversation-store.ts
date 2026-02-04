@@ -109,7 +109,7 @@ class ConversationStore {
       messageCount: 0
     }
 
-    logger.debug('Creating new conversation', {
+    logger.debug('正在创建新会话', {
       context: { title: newConversation.title },
       module: 'ConversationStore'
     })
@@ -121,7 +121,7 @@ class ConversationStore {
     this.currentConversationId = id
     this.notify()
 
-    logger.info('Conversation created successfully', {
+    logger.info('会话创建成功', {
       context: { conversationId: id },
       module: 'ConversationStore'
     })
@@ -150,7 +150,7 @@ class ConversationStore {
 
     this.notify()
 
-    logger.info('Conversation updated successfully', {
+    logger.info('会话更新成功', {
       context: { conversationId: id, updates },
       module: 'ConversationStore'
     })
@@ -160,7 +160,7 @@ class ConversationStore {
    * 删除会话及其所有消息
    * @async
    */
-    async deleteConversation(id: number) {    logger.debug('Deleting conversation', {
+    async deleteConversation(id: number) {    logger.debug('正在删除会话', {
       context: { conversationId: id },
       module: 'ConversationStore'
     })
@@ -184,7 +184,7 @@ class ConversationStore {
 
     this.notify()
 
-    logger.info('Conversation deleted successfully', {
+    logger.info('会话删除成功', {
       context: { conversationId: id },
       module: 'ConversationStore'
     })
@@ -196,7 +196,7 @@ class ConversationStore {
    */
     async switchConversation(id: number) {    const conversation = await db.conversations.get(id)
     if (!conversation) {
-      logger.warn('Conversation not found', {
+      logger.warn('未找到会话', {
         context: { conversationId: id },
         module: 'ConversationStore'
       })
@@ -208,7 +208,7 @@ class ConversationStore {
     // 更新会话的最后访问时间
     await this.updateConversation(id, {})
 
-    logger.info('Switched to conversation', {
+    logger.info('已切换到会话', {
       context: { conversationId: id },
       module: 'ConversationStore'
     })
