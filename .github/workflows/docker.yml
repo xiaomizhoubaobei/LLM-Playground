@@ -78,7 +78,7 @@ jobs:
                   echo "TYPESCRIPT_VERSION=$TYPESCRIPT_VERSION" >> $GITHUB_OUTPUT
                   echo "Node: $NODE_VERSION, Next.js: $NEXTJS_VERSION, Yarn: $YARN_VERSION, TypeScript: $TYPESCRIPT_VERSION"
 
-            - name: Docker 元数据
+            - name: Docker 元数据（主流容器注册表）
               id: meta
               uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
               with:
@@ -86,7 +86,6 @@ jobs:
                   ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
                   ghcr.io/${{ github.repository }}/302_llm_playground
                   crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
-                  swr.cn-east-3.myhuaweicloud.com/xmzzuzhi/302_llm_playground
                 # 关闭所有默认生成器
                 flavor: |
                   latest=false
@@ -94,7 +93,7 @@ jobs:
                 tags: |
                   type=raw,value=${{ steps.version.outputs.VERSION }}
 
-            - name: 构建并推送
+            - name: 构建并推送（主流容器注册表，支持 OCI）
               id: build
               uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
               with:
@@ -122,6 +121,33 @@ jobs:
                 cache-to: type=gha,mode=max
                 provenance: true
 
+            - name: 构建并推送（华为云 SWR，不支持 OCI）
+              id: build-huawei
+              uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+              with:
+                context: .
+                platforms: linux/amd64,linux/arm64
+                push: true
+                tags: swr.cn-east-3.myhuaweicloud.com/xmzzuzhi/302_llm_playground:${{ steps.version.outputs.VERSION }}
+                labels: |
+                  org.opencontainers.image.source=https://github.com/xiaomizhoubaobei/LLM-Playground
+                  org.opencontainers.image.description=LLM Playground - 一个用于测试和实验大语言模型的交互式平台
+                  org.opencontainers.image.licenses=AGPL-3.0
+                  org.opencontainers.image.title=LLM Playground
+                  org.opencontainers.image.maintainer=祁筱欣
+                  org.opencontainers.image.version=${{ steps.version.outputs.VERSION }}
+                  org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
+                  org.opencontainers.image.revision=${{ github.sha }}
+                  org.opencontainers.image.vendor=xiaomizhoubaobei
+                  org.opencontainers.image.authors=qixiaoxin@stu.sqxy.edu.cn
+                  build.url=https://github.com/xiaomizhoubaobei/LLM-Playground/actions/runs/${{ github.run_id }}
+                  dependencies.node=${{ steps.deps.outputs.NODE_VERSION }}
+                  org.opencontainers.image.nextjs=${{ steps.deps.outputs.NEXTJS_VERSION }}
+                  org.opencontainers.image.yarn=${{ steps.deps.outputs.YARN_VERSION }}
+                  org.opencontainers.image.typescript=${{ steps.deps.outputs.TYPESCRIPT_VERSION }}
+                cache-from: type=gha
+                cache-to: type=gha,mode=max
+
             - name: 安装 cosign
               uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
 
@@ -136,14 +162,12 @@ jobs:
                           echo "跳过阿里云 ACR 镜像: $tag"
                           continue
                       fi
-                      # 跳过华为云 SWR 镜像（不支持签名）
-                      if [[ "$tag" == *"swr.cn-"* ]]; then
-                          echo "跳过华为云 SWR 镜像: $tag"
-                          continue
-                      fi
                       echo "正在签名 $tag"
                       cosign sign --yes "$tag"
                   done <<< "${{ steps.meta.outputs.tags }}"
+
+            # 注意：华为云 SWR 不支持 OCI 规范，已单独构建（不使用 provenance）
+# DockerHub、GHCR 和阿里云 ACR 镜像支持完整的安全功能（签名、证明等）
 
             - name: 证明 DockerHub 镜像
               uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
@@ -158,7 +182,5 @@ jobs:
                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
-
-            # 注意：华为云 SWR 不支持 SLSA Provenance 证明，已跳过
 
             
