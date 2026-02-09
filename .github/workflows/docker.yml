@@ -159,11 +159,6 @@ jobs:
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
-            - name: 证明华为云 SWR 镜像
-              uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
-              with:
-                subject-name: swr.cn-east-3.myhuaweicloud.com/xmzzuzhi/302_llm_playground
-                subject-digest: ${{ steps.build.outputs.digest }}
-                push-to-registry: true
+            # 注意：华为云 SWR 不支持 SLSA Provenance 证明，已跳过
 
             
