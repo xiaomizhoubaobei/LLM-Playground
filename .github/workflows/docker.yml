@@ -58,6 +58,13 @@ jobs:
                   username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
                   password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
 
+            - name: 登录华为云容器镜像服务（SWR）
+              uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+              with:
+                  registry: swr.cn-east-3.myhuaweicloud.com
+                  username: ${{ secrets.HUAWEI_SWR_USERNAME }}
+                  password: ${{ secrets.HUAWEI_SWR_PASSWORD }}
+
             - name: 提取依赖版本
               id: deps
               run: |
@@ -79,6 +86,7 @@ jobs:
                   ${{ secrets.DOCKERHUB_USERNAME }}/302_llm_playground
                   ghcr.io/${{ github.repository }}/302_llm_playground
                   crpi-wk2d8umombj539de.cn-shanghai.personal.cr.aliyuncs.com/xmz-1/302_llm_playground
+                  swr.cn-east-3.myhuaweicloud.com/xmzzuzhi/302_llm_playground
                 # 关闭所有默认生成器
                 flavor: |
                   latest=false
@@ -128,6 +136,11 @@ jobs:
                           echo "跳过阿里云 ACR 镜像: $tag"
                           continue
                       fi
+                      # 跳过华为云 SWR 镜像（不支持签名）
+                      if [[ "$tag" == *"swr.cn-"* ]]; then
+                          echo "跳过华为云 SWR 镜像: $tag"
+                          continue
+                      fi
                       echo "正在签名 $tag"
                       cosign sign --yes "$tag"
                   done <<< "${{ steps.meta.outputs.tags }}"
@@ -143,6 +156,13 @@ jobs:
               uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
               with:
                 subject-name: ghcr.io/${{ github.repository }}/302_llm_playground
+                subject-digest: ${{ steps.build.outputs.digest }}
+                push-to-registry: true
+
+            - name: 证明华为云 SWR 镜像
+              uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
+              with:
+                subject-name: swr.cn-east-3.myhuaweicloud.com/xmzzuzhi/302_llm_playground
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 

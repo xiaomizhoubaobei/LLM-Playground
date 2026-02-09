@@ -125,7 +125,7 @@ const SHORTCUTS = [
 /**
  * 键盘快捷键帮助组件
  */
-export function KeyboardShortcuts(): JSX.Element {
+export function KeyboardShortcuts() {
   return (
     <Dialog>
       <DialogTrigger asChild>

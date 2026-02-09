@@ -98,7 +98,7 @@ export const MessageList = memo(function MessageList({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const lastScrollHeightRef = useRef<number>(0)
   const lastScrollTopRef = useRef<number>(0)
-  const scrollTimeoutRef = useRef<number>()
+  const scrollTimeoutRef = useRef<number | undefined>(undefined)
   const isScrollingRef = useRef(false)
 
   /**

@@ -554,7 +554,7 @@ const COMPONENTS = {
  * @param Tag - HTML元素标签
  * @param classes - 要应用的CSS类
  */
-function withClass(Tag: keyof JSX.IntrinsicElements, classes: string) {
+function withClass(Tag: string, classes: string) {
   const Component = ({ ...props }: any) => (
     <Tag className={classes} {...props} />
   )
