@@ -79,12 +79,12 @@ export async function POST(req: Request) {
       // 获取所有模型列表
       logger.debug('正在获取所有模型', { context: { provider }, module: 'ModelsAPI' })
       const models = await fetchAllModels(provider, apiKey)
-      
+
       logger.info('所有模型获取成功', {
         context: { provider, modelCount: models.length },
         module: 'ModelsAPI'
       })
-      
+
       // 确保返回纯对象，移除任何可能的 null prototype 或其他不可序列化的属性
       const serializedModels = models.map((model) => ({
         id: String(model.id),
@@ -99,15 +99,15 @@ export async function POST(req: Request) {
         context: { provider, modelProvider },
         module: 'ModelsAPI'
       })
-      
+
       const allModels = await fetchAllModels(provider, apiKey)
       const filteredModels = filterModelsByProvider(allModels, modelProvider)
-      
+
       logger.info('过滤后的模型获取成功', {
         context: { provider, modelProvider, modelCount: filteredModels.length },
         module: 'ModelsAPI'
       })
-      
+
       const serializedModels = filteredModels.map((model) => ({
         id: String(model.id),
         object: String(model.object || 'model'),

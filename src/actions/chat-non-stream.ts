@@ -159,7 +159,7 @@ export async function chatNonStream({
   })
 
   const baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
-  
+
   const requestBody: any = {
     model,
     messages,
@@ -197,7 +197,7 @@ export async function chatNonStream({
     })
 
     const content = response.choices[0]?.message?.content || ''
-    
+
     return {
       content,
       usage: response.usage,
