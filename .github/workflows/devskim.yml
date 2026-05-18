@@ -1,0 +1,47 @@
+# 此工作流使用的操作未经 GitHub 认证。
+# 它们由第三方提供，并受单独的
+# 服务条款、隐私政策和支持文档约束。
+
+# DevSkim 安全代码扫描
+# DevSkim 是一个安全扫描器，可在代码中查找不安全的编码模式
+
+name: "DevSkim 安全代码扫描"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  devskim:
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    runs-on: ubuntu-latest
+    name: DevSkim 代码扫描
+
+    steps:
+      - name: 加固运行器（审计所有出站调用）
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        with:
+          egress-policy: audit
+
+      - name: 检出仓库
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: 运行 DevSkim 扫描器
+        uses: microsoft/DevSkim-Action@4b5047945a44163b94642a1cecc0d93a3f428cc6 # v1.0.16
+
+      - name: 上传 DevSkim 扫描结果到 GitHub 安全标签
+        uses: github/codeql-action/upload-sarif@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4.31.9
+        with:
+          sarif_file: devskim-results.sarif
