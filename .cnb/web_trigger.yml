@@ -1,0 +1,6 @@
+branch:
+  - buttons:
+      - name: 生成 Code Wiki
+        description: 手动触发 Code Wiki 生成
+        event: web_trigger
+        isDefault: true
