@@ -73,7 +73,7 @@ main:
             branch: main
             git_user: ${GIT_USERNAME}
             git_email: ${GIT_EMAIL}
-  "crontab: 0 0 1 * *":
+  web_trigger:
     - services:
         - docker
       docker:
