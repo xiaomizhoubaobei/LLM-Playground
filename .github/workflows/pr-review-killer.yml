@@ -91,7 +91,7 @@ jobs:
                 "selectedAuthType": "iflow",
                 "apiKey": "${{ secrets.IFLOW_API_KEY }}",
                 "baseUrl": "https://api.iamhc.cn/v1",
-                "modelName": "deepseek-v4-flash",
+                "modelName": "kat-coder-pro-v2",
                 "searchApiKey": "${{ secrets.IFLOW_API_KEY }}",
                 "mcpServers": {
                   "github": {
