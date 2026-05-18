@@ -63,8 +63,6 @@ jobs:
           #   - `publish_results` 将始终设置为 `false`，
           #     无论在此处输入的值如何。
           publish_results: true
-          # 使用 OIDC 进行身份验证（无需手动登录）
-          use_oidc: true
 
           # (可选) 如果您有标记为 export-ignore 的文件的 .gitattributes，请取消注释 file_mode
           # file_mode: git
@@ -83,4 +81,4 @@ jobs:
       - name: "上传到代码扫描"
         uses: github/codeql-action/upload-sarif@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4.31.9
         with:
-          sarif_file: results.sariff
+          sarif_file: results.sarif
