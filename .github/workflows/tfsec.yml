@@ -1,7 +1,7 @@
 # 此工作流程使用未经 GitHub 认证的操作。
 # 它们由第三方提供，并受单独的服务条款、隐私政策和支持文档的约束。
 
-name: tfsec
+name: 基础设施安全扫描
 on:
   push:
     branches: [ "main" ]
