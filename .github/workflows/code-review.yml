@@ -1,4 +1,4 @@
-name: Code Review
+name: 代码审查
 on:
   pull_request:
 permissions:
@@ -10,7 +10,7 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - name: Harden Runner
+      - name: 加固运行器（审计所有出站调用）
         uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
         with:
           disable-sudo: true
@@ -18,5 +18,5 @@ jobs:
           allowed-endpoints: >
             api.github.com:443
 
-      - name: Code Review
-        uses: step-security/ai-codewise@e352b2a5372e83d61ad449550deb2f3c61089e09 # v1.0.0
+      - name: 代码审查
+        uses: step-security/ai-codewise@e352b2a5372e83d61ad449550deb2f3c61089e09 # v1.0.0d449550deb2f3c61089e09 # v1.0.0
