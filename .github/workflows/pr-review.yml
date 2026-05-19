@@ -161,7 +161,7 @@ jobs:
           } >> "${GITHUB_OUTPUT}"
 
       - name: '运行 iFLOW CLI PR 审查'
-        uses: iflow-ai/iflow-cli-action@v2.2.1
+        uses: iflow-ai/iflow-cli-action@66bf336db117b4a06147af2901a34dc802bbd236 # v2.2.1
         id: 'iflow_cli_pr_review'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
@@ -437,4 +437,6 @@ jobs:
               repo: '${{ github.repository }}'.split('/')[1],
               issue_number: '${{ steps.get_pr.outputs.pr_number || steps.get_pr_comment.outputs.pr_number }}',
               body: 'iFLOW CLI PR 审查存在问题。请检查 [action 日志](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) 了解详情。'
+            })
+在问题。请检查 [action 日志](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) 了解详情。'
             })
