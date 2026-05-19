@@ -438,5 +438,3 @@ jobs:
               issue_number: '${{ steps.get_pr.outputs.pr_number || steps.get_pr_comment.outputs.pr_number }}',
               body: 'iFLOW CLI PR 审查存在问题。请检查 [action 日志](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) 了解详情。'
             })
-在问题。请检查 [action 日志](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) 了解详情。'
-            })
