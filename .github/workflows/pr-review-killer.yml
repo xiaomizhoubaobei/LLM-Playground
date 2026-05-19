@@ -58,7 +58,7 @@ jobs:
           fetch-depth: 0
 
       - name: 检出 PR 分支
-        uses: xt0rted/pull-request-comment-branch@v3.0.0
+        uses: xt0rted/pull-request-comment-branch@e8b8daa837e8ea7331c0003c9c316a64c6d8b0b1 # v3.0.0
         id: checkout_pr
 
       - name: 从评论中提取说明
