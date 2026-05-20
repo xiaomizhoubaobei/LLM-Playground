@@ -32,7 +32,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.1.1",
-    "dexie": "^4.0.10",
+    "dexie": "^4.4.2",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.14.1",
     "jotai": "^2.17.1",
