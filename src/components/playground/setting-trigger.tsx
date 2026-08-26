@@ -37,12 +37,12 @@ import { forwardRef } from 'react'
  */
 export const SettingTrigger = forwardRef<HTMLButtonElement>((props, ref) => {
   const { toggleSidebar } = useSidebar()
-  
+
   return (
-    <Button 
+    <Button
       ref={ref}
-      variant='ghost' 
-      size='icon' 
+      variant='ghost'
+      size='icon'
       onClick={toggleSidebar}
     >
       <Settings className='h-5 w-5' />
