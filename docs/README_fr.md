@@ -8,21 +8,21 @@
 
 <p align="center"><a href="../README.md">中文</a> | <a href="README_en.md">English</a> | <a href="README_ja.md">日本語</a> | <a href="README_ru.md">Русский</a> | <a href="README_fr.md">Français</a> | <a href="README_de.md">Deutsch</a></p>
 
-![Aperçu de l'interface](../images/302-LLM-游乐场.png) 
+![Aperçu de l'interface](../images/302-LLM-游乐场.png)
 
 ## Aperçu de l'interface
    Génération de résultats basés sur l'entrée utilisateur avec prise en charge du rendu d'expressions LaTeX.
-   ![Exemple de génération de résultats](../images/LLM1.png)     
+   ![Exemple de génération de résultats](../images/LLM1.png)
 
    Possibilité de télécharger des images comme contexte pour la conversation.
-   ![Fonction de téléchargement d'images](../images/LLM2.png)     
+   ![Fonction de téléchargement d'images](../images/LLM2.png)
 
    Prise en charge du rendu de graphiques.
    ![Exemple de rendu de graphiques](../images/LLM3.png)
 
    Dans les modèles OpenAI, il y a une fonction d'affichage de la probabilité des tokens, permettant d'obtenir la probabilité du token actuellement sélectionné, ainsi que plusieurs tokens alternatifs et leurs probabilités.
    ![Affichage de la probabilité des tokens](../images/LLM4.jpg)
-   
+
 ## ✨ Fonctionnalités principales ✨
 
 1. **Interface de chat interactive**
@@ -97,7 +97,7 @@ src/
    git clone https://github.com/xiaomizhoubaobei/LLM-Playground
    cd LLM-Playground
    ```
-   
+
 2. Installez les dépendances :
    ```bash
    pnpm install
