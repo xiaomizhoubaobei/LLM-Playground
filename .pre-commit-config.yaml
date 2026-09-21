@@ -13,6 +13,6 @@ repos:
   - id: end-of-file-fixer
   - id: trailing-whitespace
 - repo: https://github.com/pre-commit/mirrors-eslint
-  rev: v8.38.0
+  rev: v10.11.0
   hooks:
   - id: eslint
