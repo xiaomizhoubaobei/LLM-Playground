@@ -88,7 +88,7 @@ jobs:
 
             - name: 构建并推送（主流容器注册表，支持 OCI）
               id: build
-              uses: docker/build-push-action@ee4ca427a2f43b6a16632044ca514c076267da23 # v6.19.0
+              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
               with:
                 context: .
                 platforms: linux/amd64,linux/arm64
@@ -146,4 +146,4 @@ jobs:
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
-            
+

@@ -260,4 +260,3 @@ export {
   CommandSeparator,
   CommandShortcut
 }
-
