@@ -45,7 +45,7 @@ import { v4 as uuidv4 } from 'uuid'
 /**
  * 提供消息管理功能的 React Hook
  * 处理消息持久化、状态管理和用户交互
- * 
+ *
  * @function useMessages
  */
 export function useMessages(defaultSystemMessage?: string) {
@@ -57,7 +57,7 @@ export function useMessages(defaultSystemMessage?: string) {
   useEffect(() => {
     messageStore.init().then(async () => {
       const allMessages = await messageStore.getAllMessages()
-      
+
       // 如果不存在消息，则添加默认系统消息
       if (allMessages.length === 0 && defaultSystemMessage) {
         await messageStore.addMessage({
@@ -66,10 +66,10 @@ export function useMessages(defaultSystemMessage?: string) {
           content: defaultSystemMessage,
         })
       }
-      
+
       setLoading(false)
     })
-    
+
     // 订阅消息存储更新
     return messageStore.subscribe(setMessages)
   }, [defaultSystemMessage])
