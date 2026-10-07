@@ -74,6 +74,26 @@
   resolved "https://repo.huaweicloud.com/repository/npm/@electric-sql/pglite/-/pglite-0.3.14.tgz#ea464c0bc52435ceba710d3ebd33917e91d893cf"
   integrity sha512-3DB258dhqdsArOI1fIt7cb9RpUOgcDg5hXWVgVHAeqVQ/qxtFy605QKs4gx6mFq3jWsSPqDN8TgSEsqC3OfV9Q==
 
+"@eloqnt/config@^0.1.0", "@eloqnt/config@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@eloqnt/config/-/config-0.1.1.tgz#8b4a589e1f592599859bbe15db77e497ccda0393"
+  integrity sha512-YRDigSaiJEzKDfzTth5kG+L/PKfB3mo8h7yNzpXExPfvQmcD05WoZT57PdhJE0jI+Vva6eb0OCU8hnHHgdME3g==
+
+"@eloqnt/format-json@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@eloqnt/format-json/-/format-json-0.1.0.tgz#b1823cfe14637b620cf91bd9f9a2df2a24f7ee03"
+  integrity sha512-4Pkb+HyzgWNJXoU48aJhUyNZSjZvMGooPCNG1ZFmBm55xTiNNPQCNXH66Ob6sXS6RvbWZrRpCf+Uo/Jz9K9g+A==
+  dependencies:
+    "@eloqnt/config" "^0.1.0"
+
+"@eloqnt/format-po@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@eloqnt/format-po/-/format-po-0.1.1.tgz#23a4575b673b66ab2177eecd8e18d0b13d0d2765"
+  integrity sha512-aLtmIoqXGEaeTT0RcsLN8sZ3aIrsT/c/dVs28zrLhDjO3+vA3KNP+r98N0xq8w/k36+/GIUt4uZNbqcA71GVWw==
+  dependencies:
+    "@eloqnt/config" "^0.1.1"
+    po-parser "^2.2.0"
+
 "@emnapi/runtime@^1.7.0":
   version "1.8.1"
   resolved "https://repo.huaweicloud.com/repository/npm/@emnapi/runtime/-/runtime-1.8.1.tgz#550fa7e3c0d49c5fb175a116e8cd70614f9a22a5"
@@ -949,74 +969,86 @@
   resolved "https://repo.huaweicloud.com/repository/npm/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz#a90ab31d0cc1dfb54c66a69e515bf624fa7b2224"
   integrity sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==
 
-"@swc/core-darwin-arm64@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-darwin-arm64/-/core-darwin-arm64-1.15.11.tgz#6f177125831b765e5dacdd1d8c07de576962ad16"
-  integrity sha512-QoIupRWVH8AF1TgxYyeA5nS18dtqMuxNwchjBIwJo3RdwLEFiJq6onOx9JAxHtuPwUkIVuU2Xbp+jCJ7Vzmgtg==
+"@swc/core-darwin-arm64@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-darwin-arm64/-/core-darwin-arm64-1.16.13.tgz#c1a6de95a10a42443a1003b0dec7b1d153ea1ea3"
+  integrity sha512-JrMH2h7ohd4mOIneNRx/diqTmCDSdWfp9uOdQ8VJ2V2CA7jOJ1jWb+qp8RoZLqgiVmwDDC7eySKB1kbvZ+jVXQ==
 
-"@swc/core-darwin-x64@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-darwin-x64/-/core-darwin-x64-1.15.11.tgz#31381b6560bbd8b8ca6a0755262df321e28c039d"
-  integrity sha512-S52Gu1QtPSfBYDiejlcfp9GlN+NjTZBRRNsz8PNwBgSE626/FUf2PcllVUix7jqkoMC+t0rS8t+2/aSWlMuQtA==
+"@swc/core-darwin-x64@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-darwin-x64/-/core-darwin-x64-1.16.13.tgz#5bfc741891ff3c72c7c0b8ab7d5db353243d4b07"
+  integrity sha512-HauZMRxpOImRxgY6GXjw5gbD8ts2NcPZuLMM8htY8Mic7j1Izt/lxkXrKYUwqyU56YLwQZ4dHRT+6jFHkztcag==
 
-"@swc/core-linux-arm-gnueabihf@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.15.11.tgz#ea7831776f7d8a548db4a8a5f38ef37faf5c0c66"
-  integrity sha512-lXJs8oXo6Z4yCpimpQ8vPeCjkgoHu5NoMvmJZ8qxDyU99KVdg6KwU9H79vzrmB+HfH+dCZ7JGMqMF//f8Cfvdg==
+"@swc/core-linux-arm-gnueabihf@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.16.13.tgz#ad91bcabb916b293f4db2eac5f551c0d58edb5fd"
+  integrity sha512-tUSojGIythnHJKrElDM9OvuhBnK+FF39eM9iIBgj9kdfbAm6PhAM7dKbaSDcnX2gOLG2slkasjD0Z8m/YUlzOA==
 
-"@swc/core-linux-arm64-gnu@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.15.11.tgz#c99a5843115ef57cbefd40b93c99cb130d6db12f"
-  integrity sha512-chRsz1K52/vj8Mfq/QOugVphlKPWlMh10V99qfH41hbGvwAU6xSPd681upO4bKiOr9+mRIZZW+EfJqY42ZzRyA==
+"@swc/core-linux-arm64-gnu@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.16.13.tgz#3e9222e5fc50751194fd8a22de6804a4335145cb"
+  integrity sha512-qS3bk/ezRrLXGn1b764S/EG3/oKj6uRhnTNRAALpnuu8d9I0YwSiUkQghnX7lOH9X/yRr+qrFI3R0wAruO47Tg==
 
-"@swc/core-linux-arm64-musl@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.15.11.tgz#9a7831f558b2ff504d3d6eaaf6a4c84e5232284b"
-  integrity sha512-PYftgsTaGnfDK4m6/dty9ryK1FbLk+LosDJ/RJR2nkXGc8rd+WenXIlvHjWULiBVnS1RsjHHOXmTS4nDhe0v0w==
+"@swc/core-linux-arm64-musl@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.16.13.tgz#bb44b8cf20e39f862bc6b7a151a8b297038a186d"
+  integrity sha512-aeoYoG6fQsOS3mFOuTKvnJo1aaaxYNI0aRRlhdHaGP4q1YQx4XOc5Hkd35IFduWCBG3eZl3fPTjRuYvxpl7eTA==
 
-"@swc/core-linux-x64-gnu@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.15.11.tgz#4a1fce9b9abedde04459fefe5da9dd9e405a2ae8"
-  integrity sha512-DKtnJKIHiZdARyTKiX7zdRjiDS1KihkQWatQiCHMv+zc2sfwb4Glrodx2VLOX4rsa92NLR0Sw8WLcPEMFY1szQ==
+"@swc/core-linux-ppc64-gnu@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-ppc64-gnu/-/core-linux-ppc64-gnu-1.16.13.tgz#7b3c7b32e03a9600903cb04568fd8381126fa0e9"
+  integrity sha512-eEFoueZXWZ2S1lsqL8Ve2C8RjhzH9+Ktj8U4IGTUQL6CNG04+VhQiYQWJOf5xfVBU6I+PbH80yvsYegqZOOSZQ==
 
-"@swc/core-linux-x64-musl@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.15.11.tgz#0865f23b1cc532d9d77e743a83279e074edbee25"
-  integrity sha512-mUjjntHj4+8WBaiDe5UwRNHuEzLjIWBTSGTw0JT9+C9/Yyuh4KQqlcEQ3ro6GkHmBGXBFpGIj/o5VMyRWfVfWw==
+"@swc/core-linux-s390x-gnu@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-s390x-gnu/-/core-linux-s390x-gnu-1.16.13.tgz#eaf0af276e71e522be18db7383d8605dc34acf88"
+  integrity sha512-K0q1ReVXL3d5bzBgZxS+yJq5q2xRjg4k2XXGj9yiCEpE5ZqJGQ4Gtk1sRrk8W2lo3KY0DCJD3Myt6x2SMvGArQ==
 
-"@swc/core-win32-arm64-msvc@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.15.11.tgz#73eda8b54c94046728f5983e5516223ad1009c59"
-  integrity sha512-ZkNNG5zL49YpaFzfl6fskNOSxtcZ5uOYmWBkY4wVAvgbSAQzLRVBp+xArGWh2oXlY/WgL99zQSGTv7RI5E6nzA==
+"@swc/core-linux-x64-gnu@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.16.13.tgz#8aaa2e39039a921240b1f8269b908a0dcb004800"
+  integrity sha512-Qvpihw30irhIjy2f91BR1pamcJBCgf8hmr9XWenztAX1YLkneRkkTB/PFGWQubhaBqQhY2uZKViMj/xV61uMBQ==
 
-"@swc/core-win32-ia32-msvc@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.15.11.tgz#0df41547974ba9f26ba3e903e803ff523c15650b"
-  integrity sha512-6XnzORkZCQzvTQ6cPrU7iaT9+i145oLwnin8JrfsLG41wl26+5cNQ2XV3zcbrnFEV6esjOceom9YO1w9mGJByw==
+"@swc/core-linux-x64-musl@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.16.13.tgz#6505099e3e6357a20ffb7a12a1d5869a177c1f70"
+  integrity sha512-iCGxHbh3Cq5vqRvCPlw3XkkDz4RlkPSyQwfFKbOKTMj5tiEuojY/rLmf4BMfI9Z8yPJTf9VB07t3NbKInoC97g==
 
-"@swc/core-win32-x64-msvc@1.15.11":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.15.11.tgz#f6f97500472c0ea4ab756c383c5d97896075f95c"
-  integrity sha512-IQ2n6af7XKLL6P1gIeZACskSxK8jWtoKpJWLZmdXTDj1MGzktUy4i+FvpdtxFmJWNavRWH1VmTr6kAubRDHeKw==
+"@swc/core-win32-arm64-msvc@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.16.13.tgz#e4b185adbc4526ac8d92e1e52388cb2d2538f09d"
+  integrity sha512-iOabn6cd+hg3cnoKlAC8j3Yufv8nQHBVU5OIDX8dCPA95PjAZ0B0TlDn9sWivk8ezo/cLJux7p9n0B9vRej+1Q==
 
-"@swc/core@^1.15.2":
-  version "1.15.11"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/core/-/core-1.15.11.tgz#8f52ab37b4d874b9cc1b1ae809778620b42dbf9f"
-  integrity sha512-iLmLTodbYxU39HhMPaMUooPwO/zqJWvsqkrXv1ZI38rMb048p6N7qtAtTp37sw9NzSrvH6oli8EdDygo09IZ/w==
+"@swc/core-win32-ia32-msvc@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.16.13.tgz#4207d5bfabbf8c09159e7123f1d8b36c4e369adf"
+  integrity sha512-+1b/3xBNuVbpnJIZUCAaSdscOPYRWq85eohKx44y/3qbPp56UMiCJWBiWtyr7K5F1nf1JENXm2IBSEJaLgWq6Q==
+
+"@swc/core-win32-x64-msvc@1.16.13":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.16.13.tgz#5d8232e993a822d3390969b9cace9961bf6f1079"
+  integrity sha512-6kEJhYshk7OVoVIWryiHqjCNuwZeOlPTS6et+bKV/WhtHs8fLA01wyTLrQGi+4ultgRe/o0M4b25K/KKdvl0dQ==
+
+"@swc/core@~1.16.0":
+  version "1.16.13"
+  resolved "https://registry.yarnpkg.com/@swc/core/-/core-1.16.13.tgz#2a9a576314d6013ce76d3d272f1bd349b4b2abc7"
+  integrity sha512-k4uUsIMS0IwOKVsrQs48IZK75O4roV3FnuJEdL7ES+DFESftdgvz73QBqN3VUAbUmUr78We4tzG0kgYj36M22Q==
   dependencies:
     "@swc/counter" "^0.1.3"
-    "@swc/types" "^0.1.25"
+    "@swc/types" "^0.1.28"
   optionalDependencies:
-    "@swc/core-darwin-arm64" "1.15.11"
-    "@swc/core-darwin-x64" "1.15.11"
-    "@swc/core-linux-arm-gnueabihf" "1.15.11"
-    "@swc/core-linux-arm64-gnu" "1.15.11"
-    "@swc/core-linux-arm64-musl" "1.15.11"
-    "@swc/core-linux-x64-gnu" "1.15.11"
-    "@swc/core-linux-x64-musl" "1.15.11"
-    "@swc/core-win32-arm64-msvc" "1.15.11"
-    "@swc/core-win32-ia32-msvc" "1.15.11"
-    "@swc/core-win32-x64-msvc" "1.15.11"
+    "@swc/core-darwin-arm64" "1.16.13"
+    "@swc/core-darwin-x64" "1.16.13"
+    "@swc/core-linux-arm-gnueabihf" "1.16.13"
+    "@swc/core-linux-arm64-gnu" "1.16.13"
+    "@swc/core-linux-arm64-musl" "1.16.13"
+    "@swc/core-linux-ppc64-gnu" "1.16.13"
+    "@swc/core-linux-s390x-gnu" "1.16.13"
+    "@swc/core-linux-x64-gnu" "1.16.13"
+    "@swc/core-linux-x64-musl" "1.16.13"
+    "@swc/core-win32-arm64-msvc" "1.16.13"
+    "@swc/core-win32-ia32-msvc" "1.16.13"
+    "@swc/core-win32-x64-msvc" "1.16.13"
 
 "@swc/counter@^0.1.3":
   version "0.1.3"
@@ -1030,10 +1062,10 @@
   dependencies:
     tslib "^2.8.0"
 
-"@swc/types@^0.1.25":
-  version "0.1.25"
-  resolved "https://repo.huaweicloud.com/repository/npm/@swc/types/-/types-0.1.25.tgz#b517b2a60feb37dd933e542d93093719e4cf1078"
-  integrity sha512-iAoY/qRhNH8a/hBvm3zKj9qQ4oc2+3w1unPJa2XvTK3XjeLXtzcCingVPw/9e5mn1+0yPqxcBGp9Jf0pkfMb1g==
+"@swc/types@^0.1.28":
+  version "0.1.28"
+  resolved "https://registry.yarnpkg.com/@swc/types/-/types-0.1.28.tgz#e3cd892383fba3b8904c40518bbe1265a50753f2"
+  integrity sha512-V6Mnml8v09QALx6K0elJ7o9K/MkVDtW3t6L+7Ou/JcWtb3xwId2AH4FeOceySd2JaO87IMw4+6vSZxLm34LPbw==
   dependencies:
     "@swc/counter" "^0.1.3"
 
@@ -2228,10 +2260,10 @@ iconv-lite@0.6:
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
 
-icu-minify@^4.12.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/icu-minify/-/icu-minify-4.12.0.tgz#b187caecaa4369187a9025c624f657bf78397488"
-  integrity sha512-zDmM05uav3t3+kxSfRrNlmyXOdj2b+uHA+p04CG32eJabtaHbugXujuL+YfRkwP9joAnf0Uh+RMGCKD5NLa5rQ==
+icu-minify@^4.14.9:
+  version "4.14.9"
+  resolved "https://registry.yarnpkg.com/icu-minify/-/icu-minify-4.14.9.tgz#604295631a4fcf0d69766b1b281dfefff7427d8c"
+  integrity sha512-PmO+fNnC3K3mfPKTnm3RrPERrhQZnjm1AlpyZQ0ShbXi8Y/kYZ3YOde8TEjCLz9k3P2DmzkBn8lykGrCAi1Ajw==
   dependencies:
     "@formatjs/icu-messageformat-parser" "^3.4.0"
 
@@ -2983,24 +3015,26 @@ negotiator@^1.0.0:
   resolved "https://mirrors.huaweicloud.com/repository/npm/negotiator/-/negotiator-1.0.0.tgz#b6c91bb47172d69f93cfd7c357bbb529019b5f6a"
   integrity sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==
 
-next-intl-swc-plugin-extractor@^4.12.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/next-intl-swc-plugin-extractor/-/next-intl-swc-plugin-extractor-4.12.0.tgz#a8710a0da49a2fa45bc66696975764cc83717b94"
-  integrity sha512-jUxVEu1Nryjt4YgaDktSys7ioOgQfcNPF/SF2dbPNxbVb6U+P1INRgHeCVN+EC59H2rnTFIQwbddmOCrUWFr3g==
+next-intl-swc-plugin-extractor@4.14.9:
+  version "4.14.9"
+  resolved "https://registry.yarnpkg.com/next-intl-swc-plugin-extractor/-/next-intl-swc-plugin-extractor-4.14.9.tgz#0bc3608c6865418cfb3cbd1e8c09b63824cc7348"
+  integrity sha512-8jAkmDwQJo6RDavBHm9QRl1YTn2WXf+rI4SVhMaZxZcxopnwZic6fKTXOoNIo3kzC+a6vJySkOkXmHTVFLAYtg==
 
-next-intl@^4.9.2:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-4.12.0.tgz#976fef8889a4d9510c454e6abf7eb6d042c56375"
-  integrity sha512-v8KpppWG0yLLlChJ3Of6uoPew9LeRDBAtY6vpJmF7YJmBZlHEzzoEL4w1g1dAU+VleEPNoXNm9hg1eEsKWV5hw==
+next-intl@^4.14.9:
+  version "4.14.9"
+  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-4.14.9.tgz#49d9531adbea2153f68d104e2809711ae7916df1"
+  integrity sha512-uauRtUC+TrYNA1OL/QcwL9irndLrI9jK3Wdaa9W0B5AeKh9cqVdNeT0IWgLnhBqBRrVwppVdI0M+C1+JdGPQ3w==
   dependencies:
+    "@eloqnt/config" "^0.1.1"
+    "@eloqnt/format-json" "^0.1.0"
+    "@eloqnt/format-po" "^0.1.1"
     "@formatjs/intl-localematcher" "^0.8.1"
     "@parcel/watcher" "^2.4.1"
-    "@swc/core" "^1.15.2"
-    icu-minify "^4.12.0"
+    "@swc/core" "~1.16.0"
+    icu-minify "^4.14.9"
     negotiator "^1.0.0"
-    next-intl-swc-plugin-extractor "^4.12.0"
-    po-parser "^2.1.1"
-    use-intl "^4.12.0"
+    next-intl-swc-plugin-extractor "4.14.9"
+    use-intl "^4.14.9"
 
 next-themes@^0.4.4:
   version "0.4.6"
@@ -3133,10 +3167,10 @@ pirates@^4.0.1:
   resolved "https://repo.huaweicloud.com/repository/npm/pirates/-/pirates-4.0.7.tgz#643b4a18c4257c8a65104b73f3049ce9a0a15e22"
   integrity sha512-TfySrs/5nm8fQJDcBDuUng3VOUKsd7S+zqvbOTiGXHfxX4wK31ard+hoNuvkicM/2YFzlpDgABOevKSsB4G/FA==
 
-po-parser@^2.1.1:
-  version "2.1.1"
-  resolved "https://repo.huaweicloud.com/repository/npm/po-parser/-/po-parser-2.1.1.tgz#54bb7a0bd11c91ce8f21f54db5e02406492854b2"
-  integrity sha512-ECF4zHLbUItpUgE3OTtLKlPjeBN+fKEczj2zYjDfCGOzicNs0GK3Vg2IoAYwx7LH/XYw43fZQP6xnZ4TkNxSLQ==
+po-parser@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/po-parser/-/po-parser-2.2.0.tgz#93686f271ee9ad1a5ed096f15cb2723232cf307c"
+  integrity sha512-NdTrKgh0oO7+y+RFX8KKhOB438x/j94UGXEFzl/7pHH0JjWSn42iJ9tgmPksIO6n1JKDHmNDcejPJfKspljB9g==
 
 points-on-curve@0.2.0, points-on-curve@^0.2.0:
   version "0.2.0"
@@ -3763,14 +3797,14 @@ use-callback-ref@^1.3.3:
   dependencies:
     tslib "^2.0.0"
 
-use-intl@^4.12.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-4.12.0.tgz#1017700cf01a60caecc4f1625a934ee72503d832"
-  integrity sha512-r+qVb7UI1+kiOhjYsmsNUCY+jrnjVopwGeFlmMyQj4YInlwZzgMeMSv9n8MqnWWy77HL5BVM8K2WgX50SbtcpA==
+use-intl@^4.14.9:
+  version "4.14.9"
+  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-4.14.9.tgz#ca83a8be71a4aa5372e1d7d791fbf1f69e3b85f8"
+  integrity sha512-37ktvdCCz+6JY2VFPl/GV69Ds4ahiUT2c2xEZZRZYxdgGLxFsUbdxzjQVRm3YMIOUU0VPs6zvlifb4Yjk4IxIg==
   dependencies:
     "@formatjs/fast-memoize" "^3.1.0"
     "@schummar/icu-type-parser" "1.21.5"
-    icu-minify "^4.12.0"
+    icu-minify "^4.14.9"
     intl-messageformat "^11.1.0"
 
 use-sidecar@^1.1.3:
