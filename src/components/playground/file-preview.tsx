@@ -83,7 +83,7 @@ export function FilePreview({ files, canDelete, onDelete, className }: FilePrevi
           <div key={file.url} className="relative group">
             {file.type === 'image' ? (
               /* 图片预览项 */
-              <div 
+              <div
                 className="relative w-20 h-20 rounded-md overflow-hidden border border-border transition-all duration-200 hover:shadow-md cursor-pointer"
                 onClick={() => setSelectedImage(file.url)}
               >
