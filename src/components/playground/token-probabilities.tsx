@@ -97,7 +97,7 @@ const TokenPopover = memo(function TokenPopover({
   const colorClass = TOKEN_COLORS[colorIndex % TOKEN_COLORS.length]
   // 计算概率百分比
   const probability = Math.exp(logprob) * 100
-  
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -144,9 +144,9 @@ const TokenPopover = memo(function TokenPopover({
                         <span className="font-mono">{top.token}</span>
                         <div className="flex items-center gap-1.5">
                           {/* 备选令牌概率条形图 */}
-                          <div 
-                            className="h-2 rounded bg-primary/40" 
-                            style={{ width: `${Math.min(altProbability, 100)}px` }} 
+                          <div
+                            className="h-2 rounded bg-primary/40"
+                            style={{ width: `${Math.min(altProbability, 100)}px` }}
                           />
                           <span className="text-sm text-muted-foreground">
                             {altProbability.toFixed(2)}%
@@ -174,7 +174,7 @@ export const TokenProbabilities = memo(function TokenProbabilities({
   return (
     <div className="flex flex-wrap gap-1">
       {logprobs.map((item, index) => (
-        <TokenPopover 
+        <TokenPopover
           key={index}
           token={item.token}
           logprob={item.logprob}
@@ -184,4 +184,4 @@ export const TokenProbabilities = memo(function TokenProbabilities({
       ))}
     </div>
   )
-}) 
+})

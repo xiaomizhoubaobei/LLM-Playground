@@ -116,7 +116,7 @@ export const SortableMessage = memo(
     isRunning = false,
   }: SortableMessageProps) {
     const t = useTranslations('playground')
-    
+
     // 配置拖拽排序行为
     const { attributes, listeners, setNodeRef, transform, transition } =
       useSortable({
@@ -218,7 +218,7 @@ export const SortableMessage = memo(
         try {
           const uploadedFiles = await upload(files)
           const newFiles = [...(message.files || []), ...uploadedFiles]
-          
+
           handleEdit(message.id!, {
             ...message,
             files: newFiles,
