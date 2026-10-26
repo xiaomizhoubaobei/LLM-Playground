@@ -34,7 +34,7 @@ import { defineRouting } from 'next-intl/routing'
 /**
  * 定义国际化的基础路由配置
  * 使用全局常量指定支持的语言和默认语言
- * 
+ *
  * @constant routing
  */
 export const routing = defineRouting({
