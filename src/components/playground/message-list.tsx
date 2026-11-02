@@ -206,7 +206,7 @@ export const MessageList = memo(function MessageList({
   const allMessages = useMemo(() => {
     const result = [...messages]
     const generatingMsg = (isRunning && generatingMessage) || (isRegenerating && regeneratingMessage)
-    
+
     if (generatingMsg) {
       const existingIndex = result.findIndex(msg => msg.id === generatingMsg.id)
       if (existingIndex >= 0) {
@@ -215,7 +215,7 @@ export const MessageList = memo(function MessageList({
         result.push(generatingMsg)
       }
     }
-    
+
     return result
   }, [messages, generatingMessage, regeneratingMessage, isRunning, isRegenerating])
 
