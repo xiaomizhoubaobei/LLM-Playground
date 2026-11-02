@@ -42,7 +42,7 @@ type ClientOnlyProps = React.PropsWithChildren<
  * <ClientOnly>
  *   <BrowserOnlyComponent />
  * </ClientOnly>
- * 
+ *
  * // 带有额外div属性
  * <ClientOnly className="mt-4 p-2">
  *   <BrowserOnlyContent />
