@@ -53,7 +53,7 @@ export function useIsMobile() {
   React.useEffect(() => {
     // 为移动端断点创建媒体查询列表
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    
+
     // 视口变化时更新状态
     const onChange = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)

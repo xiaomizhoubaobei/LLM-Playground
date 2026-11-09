@@ -101,7 +101,7 @@ async function* streamChatResponse(
   } else {
     baseUrl = normalizeUrl(env.AI_302_API_URL || 'https://api.302.ai') + '/v1'
   }
-  
+
   const requestBody: any = {
     model,
     messages,
