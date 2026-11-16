@@ -47,7 +47,7 @@ type UseCopyToClipboardProps = {
 /**
  * 提供剪贴板复制功能的 React Hook，带有视觉反馈
  * 管理复制状态并显示成功/失败的通知消息
- * 
+ *
  * @function useCopyToClipboard
  */
 export function useCopyToClipboard({
